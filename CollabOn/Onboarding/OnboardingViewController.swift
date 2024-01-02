@@ -15,8 +15,7 @@ final class OnboardingViewController: BaseViewController {
 
     private let onboardingImage = UIImageView()
     private let onboardingLabel = UILabel()
-    private let startButton = UIButton()
-
+    private let startButton = BaseButton()
     override func configHierarchy() {
         view.addSubview(onboardingImage)
         view.addSubview(onboardingLabel)
@@ -53,11 +52,7 @@ final class OnboardingViewController: BaseViewController {
         onboardingLabel.textAlignment = .center
         onboardingLabel.numberOfLines = 2
 
-        startButton.backgroundColor = .main
-        startButton.titleLabel?.font = .title2
         startButton.setTitle(String(localized: "시작하기"), for: .normal)
-        startButton.setTitleColor(.white, for: .normal)
-        startButton.layer.cornerRadius = 8
     }
 
 }
