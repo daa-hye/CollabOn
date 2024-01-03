@@ -9,17 +9,17 @@ import UIKit
 
 final class OnboardingViewController: BaseViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
     private let onboardingImage = UIImageView()
     private let onboardingLabel = UILabel()
-    private let startButton = BaseButton()
+    private let startButton = BaseButton(title: String(localized: "시작하기"))
     override func configHierarchy() {
         view.addSubview(onboardingImage)
         view.addSubview(onboardingLabel)
         view.addSubview(startButton)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
 
     override func setLayout() {
@@ -39,7 +39,7 @@ final class OnboardingViewController: BaseViewController {
 
         startButton.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(24)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(45)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(24)
             $0.height.equalTo(44)
         }
     }
@@ -52,7 +52,19 @@ final class OnboardingViewController: BaseViewController {
         onboardingLabel.textAlignment = .center
         onboardingLabel.numberOfLines = 2
 
-        startButton.setTitle(String(localized: "시작하기"), for: .normal)
+        startButton.addTarget(self, action: #selector(startButtonDidTap), for: .touchUpInside)
+    }
+
+    @objc
+    private func startButtonDidTap() {
+        let vc = AuthSheetViewController()
+        if let sheet = vc.sheetPresentationController {
+            sheet.detents = [.custom { _ in return 269 }]
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 10
+        }
+
+        present(vc, animated: true)
     }
 
 }

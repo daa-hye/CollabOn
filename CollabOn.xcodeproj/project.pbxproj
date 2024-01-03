@@ -16,6 +16,12 @@
 		53D7B2182B43FC01003116D7 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7B2172B43FC01003116D7 /* BaseViewController.swift */; };
 		53D7B21A2B44032B003116D7 /* Extension + UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7B2192B44032B003116D7 /* Extension + UIFont.swift */; };
 		53D7B21D2B44CF90003116D7 /* BaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7B21C2B44CF90003116D7 /* BaseButton.swift */; };
+		53D7B21F2B44D5E2003116D7 /* AuthSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7B21E2B44D5E2003116D7 /* AuthSheetViewController.swift */; };
+		53D7B2222B44D7DC003116D7 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 53D7B2212B44D7DC003116D7 /* RxCocoa */; };
+		53D7B2242B44D7DC003116D7 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 53D7B2232B44D7DC003116D7 /* RxSwift */; };
+		53D7B2292B4518EB003116D7 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7B2282B4518EB003116D7 /* SignUpViewController.swift */; };
+		53D7B22B2B451C17003116D7 /* InputTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7B22A2B451C17003116D7 /* InputTextField.swift */; };
+		53D7B22E2B457B20003116D7 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 53D7B22D2B457B20003116D7 /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +35,10 @@
 		53D7B2172B43FC01003116D7 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		53D7B2192B44032B003116D7 /* Extension + UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + UIFont.swift"; sourceTree = "<group>"; };
 		53D7B21C2B44CF90003116D7 /* BaseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseButton.swift; sourceTree = "<group>"; };
+		53D7B21E2B44D5E2003116D7 /* AuthSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthSheetViewController.swift; sourceTree = "<group>"; };
+		53D7B2282B4518EB003116D7 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		53D7B22A2B451C17003116D7 /* InputTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextField.swift; sourceTree = "<group>"; };
+		53D7B22D2B457B20003116D7 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +46,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53D7B2242B44D7DC003116D7 /* RxSwift in Frameworks */,
+				53D7B2222B44D7DC003116D7 /* RxCocoa in Frameworks */,
 				53D7B2152B43F9B7003116D7 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -64,12 +76,14 @@
 			children = (
 				53D7B2162B43FBF8003116D7 /* Base */,
 				53D7B2122B43F8C7003116D7 /* Onboarding */,
+				53D7B2272B451896003116D7 /* SignUp */,
 				53D7B1FC2B43F638003116D7 /* AppDelegate.swift */,
 				53D7B1FE2B43F638003116D7 /* SceneDelegate.swift */,
 				53D7B21B2B440590003116D7 /* Extension */,
 				53D7B2052B43F639003116D7 /* Assets.xcassets */,
 				53D7B2072B43F639003116D7 /* LaunchScreen.storyboard */,
 				53D7B20A2B43F639003116D7 /* Info.plist */,
+				53D7B22D2B457B20003116D7 /* Localizable.xcstrings */,
 			);
 			path = CollabOn;
 			sourceTree = "<group>";
@@ -78,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				53D7B2102B43F8BE003116D7 /* OnboardingViewController.swift */,
+				53D7B21E2B44D5E2003116D7 /* AuthSheetViewController.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -87,6 +102,7 @@
 			children = (
 				53D7B2172B43FC01003116D7 /* BaseViewController.swift */,
 				53D7B21C2B44CF90003116D7 /* BaseButton.swift */,
+				53D7B22A2B451C17003116D7 /* InputTextField.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -97,6 +113,14 @@
 				53D7B2192B44032B003116D7 /* Extension + UIFont.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		53D7B2272B451896003116D7 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				53D7B2282B4518EB003116D7 /* SignUpViewController.swift */,
+			);
+			path = SignUp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -117,6 +141,8 @@
 			name = CollabOn;
 			packageProductDependencies = (
 				53D7B2142B43F9B7003116D7 /* SnapKit */,
+				53D7B2212B44D7DC003116D7 /* RxCocoa */,
+				53D7B2232B44D7DC003116D7 /* RxSwift */,
 			);
 			productName = CollabOn;
 			productReference = 53D7B1F92B43F638003116D7 /* CollabOn.app */;
@@ -139,15 +165,17 @@
 			};
 			buildConfigurationList = 53D7B1F42B43F638003116D7 /* Build configuration list for PBXProject "CollabOn" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = 53D7B1F02B43F638003116D7;
 			packageReferences = (
 				53D7B2132B43F9B7003116D7 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				53D7B2202B44D7DC003116D7 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 53D7B1FA2B43F638003116D7 /* Products */;
 			projectDirPath = "";
@@ -165,6 +193,7 @@
 			files = (
 				53D7B2092B43F639003116D7 /* LaunchScreen.storyboard in Resources */,
 				53D7B2062B43F639003116D7 /* Assets.xcassets in Resources */,
+				53D7B22E2B457B20003116D7 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,7 +204,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53D7B21F2B44D5E2003116D7 /* AuthSheetViewController.swift in Sources */,
 				53D7B1FD2B43F638003116D7 /* AppDelegate.swift in Sources */,
+				53D7B2292B4518EB003116D7 /* SignUpViewController.swift in Sources */,
+				53D7B22B2B451C17003116D7 /* InputTextField.swift in Sources */,
 				53D7B2182B43FC01003116D7 /* BaseViewController.swift in Sources */,
 				53D7B2112B43F8BE003116D7 /* OnboardingViewController.swift in Sources */,
 				53D7B21A2B44032B003116D7 /* Extension + UIFont.swift in Sources */,
@@ -409,6 +441,14 @@
 				minimumVersion = 5.7.0;
 			};
 		};
+		53D7B2202B44D7DC003116D7 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -416,6 +456,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 53D7B2132B43F9B7003116D7 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		53D7B2212B44D7DC003116D7 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 53D7B2202B44D7DC003116D7 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		53D7B2232B44D7DC003116D7 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 53D7B2202B44D7DC003116D7 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

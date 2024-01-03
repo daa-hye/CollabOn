@@ -18,9 +18,11 @@ class BaseViewController: UIViewController {
         configHierarchy()
         setLayout()
         setUIProperties()
+        bindRx()
     }
 
     func configHierarchy() {}
     func setLayout() {}
     func setUIProperties() {}
+    func bindRx() {}
 }
