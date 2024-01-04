@@ -9,7 +9,7 @@ import UIKit
 
 final class SignUpViewController: BaseViewController {
 
-    //let scrollView = UIScrollView()
+    let scrollView = UIScrollView()
     let contentView = UIView()
     let inputStackView = UIStackView()
     let emailStackView = UIStackView()
@@ -20,6 +20,7 @@ final class SignUpViewController: BaseViewController {
     let passwordTextField = InputTextField()
     let checkPasswordTextField = InputTextField()
     let signUpButton = BaseButton(title: "가입하기")
+    let buttonView = UIView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,9 +28,8 @@ final class SignUpViewController: BaseViewController {
     }
 
     override func configHierarchy() {
-        //view.addSubview(scrollView)
-        //scrollView.addSubview(contentView)
-        view.addSubview(contentView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
         contentView.addSubview(inputStackView)
         emailStackView.addArrangedSubview(emailTextField)
         emailStackView.addArrangedSubview(emailCheckButton)
@@ -38,19 +38,31 @@ final class SignUpViewController: BaseViewController {
         inputStackView.addArrangedSubview(phoneTextField)
         inputStackView.addArrangedSubview(passwordTextField)
         inputStackView.addArrangedSubview(checkPasswordTextField)
-        contentView.addSubview(signUpButton)
+        view.addSubview(buttonView)
+        buttonView.addSubview(signUpButton)
     }
 
     override func setLayout() {
-//        scrollView.snp.makeConstraints {
-//            $0.horizontalEdges.equalToSuperview()
-//        }
+
+        buttonView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
+            $0.height.equalTo(68)
+        }
+
+        signUpButton.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(24)
+            $0.verticalEdges.equalToSuperview().inset(12)
+        }
+
+        scrollView.snp.makeConstraints {
+            $0.top.horizontalEdges.equalToSuperview()
+            $0.bottom.equalTo(buttonView.snp.top)
+        }
 
         contentView.snp.makeConstraints {
-//            $0.edges.equalTo(scrollView.contentLayoutGuide)
-//            $0.width.equalTo(scrollView.frameLayoutGuide)
-            $0.horizontalEdges.equalToSuperview()
-            $0.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.width.equalTo(scrollView.frameLayoutGuide)
         }
 
         emailTextField.snp.makeConstraints {
@@ -65,17 +77,14 @@ final class SignUpViewController: BaseViewController {
             $0.top.horizontalEdges.equalToSuperview().inset(24)
         }
 
-        signUpButton.snp.makeConstraints {
-            $0.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide).inset(24)
-        }
     }
 
     override func setUIProperties() {
-//        let contentInset = UIEdgeInsets.zero
-//        scrollView.contentInset = contentInset
-//        scrollView.scrollIndicatorInsets = contentInset
-//        scrollView.bounces = false
-//        scrollView.alwaysBounceHorizontal = false
+        let contentInset = UIEdgeInsets.zero
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
+        scrollView.bounces = false
+        scrollView.alwaysBounceHorizontal = false
 
         inputStackView.axis = .vertical
         inputStackView.spacing = 24
