@@ -1,60 +1,40 @@
 //
-//  BaseButton.swift
+//  SocialLoginButton.swift
 //  CollabOn
 //
-//  Created by 박다혜 on 1/3/24.
+//  Created by 박다혜 on 1/6/24.
 //
 
 import UIKit
 
-class BaseButton: UIButton {
-
-    init(title: String) {
-        super.init(frame: .zero)
-
-        var config = UIButton.Configuration.filled()
-        config.imagePadding = 8
-        config.baseBackgroundColor = .main
-
-        var titleAttribute = AttributedString.init(title)
-        titleAttribute.font = UIFont.title2
-        titleAttribute.foregroundColor = .white
-
-        config.attributedTitle = titleAttribute
-
-        self.configuration = config
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.layer.cornerRadius = 8
-        self.heightAnchor.constraint(equalToConstant: 44).isActive = true
-
-    }
+final class SocialLoginButton: PrimaryButton {
 
     init(type: ButtonType) {
-        super.init(frame: .zero)
 
-        var config = UIButton.Configuration.filled()
-        config.baseBackgroundColor = type.backgroundColor
-        config.imagePadding = 8
+        super.init(title: type.title)
 
         var titleAttribute = AttributedString.init(type.title)
         titleAttribute.font = UIFont.title2
         titleAttribute.foregroundColor = type.titleColor
-        config.attributedTitle = titleAttribute
-        self.configuration = config
+
+        configuration = .filled()
+        configuration?.imagePadding = 8
+        configuration?.attributedTitle = titleAttribute
+        configuration?.background.backgroundColor = type.backgroundColor
 
         self.setImage(type.image, for: .normal)
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.layer.cornerRadius = 8
-        self.heightAnchor.constraint(equalToConstant: 44).isActive = true
-    }
 
+        configurationUpdateHandler = nil
+
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
 }
 
-extension BaseButton {
+extension SocialLoginButton {
 
     enum ButtonType {
         case apple

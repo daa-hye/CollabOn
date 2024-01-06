@@ -11,7 +11,7 @@ final class OnboardingViewController: BaseViewController {
 
     private let onboardingImage = UIImageView()
     private let onboardingLabel = UILabel()
-    private let startButton = BaseButton(title: String(localized: "시작하기"))
+    private let startButton = PrimaryButton(title: String(localized: "시작하기"))
     override func configHierarchy() {
         view.addSubview(onboardingImage)
         view.addSubview(onboardingLabel)

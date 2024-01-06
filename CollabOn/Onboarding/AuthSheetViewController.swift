@@ -10,9 +10,9 @@ import AuthenticationServices
 
 final class AuthSheetViewController: BaseViewController {
 
-    let appleLoginButton = BaseButton(type: .apple)
-    let kakaoLoginButton = BaseButton(type: .kakao)
-    let emailLoginButton = BaseButton(title: String(localized: "이메일로 계속하기"))
+    let appleLoginButton = SocialLoginButton(type: .apple)
+    let kakaoLoginButton = SocialLoginButton(type: .kakao)
+    let emailLoginButton = PrimaryButton(title: String(localized: "이메일로 계속하기"))
     let signUpLabel = UILabel()
 
     override func viewDidLoad() {

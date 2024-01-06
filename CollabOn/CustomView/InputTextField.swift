@@ -6,11 +6,21 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+
+protocol InputTextFieldDelegate {
+    func anyImplement(_ view: InputTextField)
+}
 
 class InputTextField: UIView {
 
     private var label = UILabel()
     private var textField = UITextField()
+
+    var isValid = BehaviorSubject(value: true)
+
+    var disposeBag = DisposeBag()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,6 +33,17 @@ class InputTextField: UIView {
 
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    var isEmpty: Observable<Bool> {
+        textField.rx.text.orEmpty
+            .map { $0.isEmpty }
+            .asObservable()
+    }
+
+    var text: Observable<String> {
+        textField.rx.text.orEmpty
+            .asObservable()
     }
 
     private func configHierarchy() {
@@ -42,6 +63,18 @@ class InputTextField: UIView {
     }
 
     private func setUIProperties() {
+
+        isValid
+            .asDriver(onErrorJustReturn: false)
+            .drive(with: self) { owner, value in
+                if value {
+                    self.label.textColor = .black
+                } else {
+                    self.label.textColor = .error
+                }
+            }
+            .disposed(by: disposeBag)
+
         label.font = .title2
         textField.heightAnchor.constraint(equalToConstant: 44).isActive = true
         textField.backgroundColor = .white
@@ -58,6 +91,18 @@ class InputTextField: UIView {
         attributedString.addAttribute(.foregroundColor, value: UIColor.coGray, range: NSRange(location: 0, length: placeHolder.count))
         attributedString.addAttribute(.font, value: UIFont.body, range: NSRange(location: 0, length: placeHolder.count))
         textField.attributedPlaceholder = attributedString
+    }
+
+    func setKeyboardType(_ type: UIKeyboardType) {
+        textField.keyboardType = type
+    }
+
+    func setTextContentType(_ type: UITextContentType) {
+        textField.textContentType = type
+    }
+
+    func setSecure() {
+        textField.isSecureTextEntry = true
     }
 
 }
