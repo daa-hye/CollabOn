@@ -104,11 +104,10 @@ final class SignUpViewController: BaseViewController {
     }
 
     override func configHierarchy() {
-
-        //view.addSubview(scrollView)
-        //scrollView.addSubview(contentView)
-        view.addSubview(contentView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
         contentView.addSubview(inputStackView)
+
         emailStackView.addArrangedSubview(emailTextField)
         emailStackView.addArrangedSubview(emailCheckButton)
         inputStackView.addArrangedSubview(emailStackView)
@@ -134,16 +133,15 @@ final class SignUpViewController: BaseViewController {
             $0.verticalEdges.equalToSuperview().inset(12)
         }
 
-//        scrollView.snp.makeConstraints {
-//            $0.top.horizontalEdges.equalToSuperview()
-//            $0.bottom.equalTo(buttonView.snp.top)
-//        }
+        scrollView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalTo(buttonView.snp.top)
+        }
 
         contentView.snp.makeConstraints {
-//            $0.edges.equalTo(scrollView.contentLayoutGuide)
-//            $0.width.equalTo(scrollView.frameLayoutGuide)
-            $0.top.horizontalEdges.equalToSuperview()
-            $0.bottom.equalTo(buttonView.snp.top)
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.width.equalToSuperview()
         }
 
         emailTextField.snp.makeConstraints {
@@ -156,17 +154,18 @@ final class SignUpViewController: BaseViewController {
 
         inputStackView.snp.makeConstraints {
             $0.top.horizontalEdges.equalToSuperview().inset(24)
+            $0.bottom.equalToSuperview()
         }
 
     }
 
     override func setUIProperties() {
 
-//        let contentInset = UIEdgeInsets.zero
-//        scrollView.contentInset = contentInset
-//        scrollView.scrollIndicatorInsets = contentInset
-//        scrollView.bounces = false
-//        scrollView.alwaysBounceHorizontal = false
+        let contentInset = UIEdgeInsets.zero
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
+        scrollView.bounces = false
+        scrollView.alwaysBounceHorizontal = false
 
         inputStackView.axis = .vertical
         inputStackView.spacing = 24
