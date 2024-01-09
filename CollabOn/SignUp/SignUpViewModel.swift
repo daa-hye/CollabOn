@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RegexBuilder
 
-class SignUpViewModel: ViewModelType {
+final class SignUpViewModel: ViewModelType {
 
     let input: Input
     let output: Output
@@ -19,6 +19,8 @@ class SignUpViewModel: ViewModelType {
     private let phone = PublishSubject<String>()
     private let password = PublishSubject<String>()
     private let checkPassword = PublishSubject<String>()
+    private let allInputs = PublishSubject<(email: String,nickname: String,phone: String,password: String,String)>()
+    private let emailCheckButtonDidTap = PublishSubject<Void>()
     private let signUpButtonDidTap = PublishSubject<Void>()
 
     private let isEmailValid = BehaviorSubject(value: false)
@@ -27,45 +29,10 @@ class SignUpViewModel: ViewModelType {
     private let isPhoneValid = PublishSubject<Bool>()
     private let isPasswordValid = PublishSubject<Bool>()
     private let isCheckPasswordValid = PublishSubject<Bool>()
+    private let areAllInputsValid = PublishSubject<Bool>()
+    private let toastMessage = PublishSubject<String>()
 
     var disposeBag = DisposeBag()
-
-    init() {
-
-        input = .init(
-            email: email.asObserver(),
-            nickname: nickname.asObserver(),
-            phone: phone.asObserver(),
-            password: password.asObserver(),
-            checkPassword: checkPassword.asObserver(),
-            signUpButtonDidTap: signUpButtonDidTap.asObserver()
-        )
-
-        output = .init(
-            isEmailValid: isEmailValid.observe(on: MainScheduler.instance),
-            isNicknameValid: isNicknameValid.observe(on: MainScheduler.instance),
-            isPhoneValid: isPhoneValid.observe(on: MainScheduler.instance),
-            isPasswordValid: isPasswordValid.observe(on: MainScheduler.instance),
-            isCheckPasswordValid: isCheckPasswordValid.observe(on: MainScheduler.instance)
-        )
-
-        email
-            .map { self.emailValidation($0) }
-            .bind(to: isEmailValid)
-            .disposed(by: disposeBag)
-
-        signUpButtonDidTap
-            .withUnretained(self)
-            .withLatestFrom(Observable.combineLatest(nickname, phone, password, checkPassword))
-            .subscribe { (nickname, phone, password, checkPassword) in
-                self.isNicknameValid.onNext(self.nicknameValidation(nickname))
-                self.isPhoneValid.onNext(self.phoneValidation(phone))
-                self.isPasswordValid.onNext(self.passwordValidation(password))
-                self.isCheckPasswordValid.onNext(self.checkPasswordValidation(password, checkPassword))
-            }
-            .disposed(by: disposeBag)
-
-    }
 
     struct Input {
         let email: AnyObserver<String>
@@ -73,6 +40,7 @@ class SignUpViewModel: ViewModelType {
         let phone: AnyObserver<String>
         let password: AnyObserver<String>
         let checkPassword: AnyObserver<String>
+        let emailCheckButtonDidTap: AnyObserver<Void>
         let signUpButtonDidTap: AnyObserver<Void>
     }
 
@@ -82,14 +50,82 @@ class SignUpViewModel: ViewModelType {
         let isPhoneValid: Observable<Bool>
         let isPasswordValid: Observable<Bool>
         let isCheckPasswordValid: Observable<Bool>
+        let toastMessage: Observable<String>
     }
 
+    init() {
+
+        input = .init(
+            email: email.asObserver(),
+            nickname: nickname.asObserver(),
+            phone: phone.asObserver(),
+            password: password.asObserver(),
+            checkPassword: checkPassword.asObserver(),
+            emailCheckButtonDidTap: emailCheckButtonDidTap.asObserver(),
+            signUpButtonDidTap: signUpButtonDidTap.asObserver()
+        )
+
+        output = .init(
+            isEmailValid: isEmailValid.observe(on: MainScheduler.instance),
+            isNicknameValid: isNicknameValid.observe(on: MainScheduler.instance),
+            isPhoneValid: isPhoneValid.observe(on: MainScheduler.instance),
+            isPasswordValid: isPasswordValid.observe(on: MainScheduler.instance),
+            isCheckPasswordValid: isCheckPasswordValid.observe(on: MainScheduler.instance), 
+            toastMessage: toastMessage.observe(on: MainScheduler.instance)
+        )
+
+        email
+            .map { self.validateEmail($0) }
+            .bind(to: isEmailValid)
+            .disposed(by: disposeBag)
+
+        emailCheckButtonDidTap
+            .withLatestFrom(Observable.combineLatest(isEmailValid, email))
+            .subscribe(onNext: { [weak self] (isEmailValid, email) in
+                if isEmailValid{
+                    AuthService.shared.validateEmail(Email(email: email)) { result in
+                        switch result {
+                        case .success(let value):
+                            self?.isEmailChecked.onNext(value)
+                            if value {
+                                self?.toastMessage.onNext(Toast.emailValid.message)
+                                print("gooooood")
+                            } else {
+                                self?.toastMessage.onNext(Toast.etc.message)
+                            }
+                        case .failure(let error):
+                            switch error {
+                            case .duplicateData:
+                                self?.toastMessage.onNext(Toast.emailDuplicated.message)
+                            default:
+                                self?.toastMessage.onNext(Toast.etc.message)
+                            }
+                        }
+                    }
+                } else {
+                    self?.toastMessage.onNext(Toast.emailInvalid.message)
+                }
+            })
+            .disposed(by: disposeBag)
+
+        signUpButtonDidTap
+            .withUnretained(self)
+            .withLatestFrom(Observable.combineLatest(nickname, phone, password, checkPassword))
+            .subscribe { (nickname, phone, password, checkPassword) in
+                self.isNicknameValid.onNext(self.validateNickname(nickname))
+                self.isPhoneValid.onNext(self.validatePhone(phone))
+                self.isPasswordValid.onNext(self.validatePassword(password))
+                self.isCheckPasswordValid.onNext(self.validateCheckPassword(password, checkPassword))
+            }
+            .disposed(by: disposeBag)
+
+    }
 
 }
 
 extension SignUpViewModel {
 
-    private func emailValidation(_ email: String) -> Bool {
+    private func validateEmail(_ email: String) -> Bool {
 
         let emailPattern = Regex {
             OneOrMore {
@@ -122,7 +158,7 @@ extension SignUpViewModel {
 
     }
 
-    private func nicknameValidation(_ nickname: String) -> Bool {
+    private func validateNickname(_ nickname: String) -> Bool {
 
         let nicknamePattern = Regex {
             Repeat(1...30) {
@@ -138,7 +174,7 @@ extension SignUpViewModel {
 
     }
 
-    private func phoneValidation(_ phone: String) -> Bool {
+    private func validatePhone(_ phone: String) -> Bool {
 
         guard phone != "" else { return true }
         let phonePattern = Regex {
@@ -155,7 +191,7 @@ extension SignUpViewModel {
 
     }
 
-    private func passwordValidation(_ password: String) -> Bool {
+    private func validatePassword(_ password: String) -> Bool {
 
         let passwordPattern = Regex {
             Repeat(8...20) {
@@ -172,8 +208,47 @@ extension SignUpViewModel {
 
     }
 
-    private func checkPasswordValidation(_ password: String, _ check: String) -> Bool {
+    private func validateCheckPassword(_ password: String, _ check: String) -> Bool {
         return password == check
+    }
+
+}
+
+extension SignUpViewModel {
+
+    private enum Toast {
+        case emailInvalid
+        case emailValid
+        case emailUnchecked
+        case nicknameInvalid
+        case phoneInvalid
+        case passwordInvalid
+        case checkPasswordInvalid
+        case emailDuplicated
+        case etc
+
+        var message: String {
+            switch self {
+            case .emailInvalid:
+                String(localized: "이메일 형식이 올바르지 않습니다.")
+            case .emailValid:
+                String(localized: "사용 가능한 이메일입니다.")
+            case .emailUnchecked:
+                String(localized: "이메일 중복 확인을 진행해주세요.")
+            case .nicknameInvalid:
+                String(localized: "닉네임은 1글자 이상 30글자 이내로 부탁드려요.")
+            case .phoneInvalid:
+                String(localized: "잘못된 전화번호 형식입니다.")
+            case .passwordInvalid:
+                String(localized: "비밀번호는 최소 8자 이상, 하나 이상의 대소문자/숫자/특수 문자를 설정해주세요.")
+            case .checkPasswordInvalid:
+                String(localized: "작성하신 비밀번호가 일치하지 않습니다.")
+            case .emailDuplicated:
+                String(localized: "이미 가입된 회원입니다. 로그인을 진행해주세요.")
+            case .etc:
+                String(localized: "에러가 발생했어요. 잠시 후 다시 시도해주세요.")
+            }
+        }
     }
 
 }

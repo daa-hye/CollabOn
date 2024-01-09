@@ -13,7 +13,7 @@ protocol InputTextFieldDelegate: AnyObject {
     func setTextLimit(_ textField: InputTextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
 }
 
-class InputTextField: UIView {
+final class InputTextField: UIView {
 
     private var label = UILabel()
     private var textField = UITextField()
@@ -84,6 +84,7 @@ class InputTextField: UIView {
             .disposed(by: disposeBag)
 
         label.font = .title2
+        textField.autocapitalizationType = .none
         textField.heightAnchor.constraint(equalToConstant: 44).isActive = true
         textField.backgroundColor = .white
         textField.layer.cornerRadius = 8

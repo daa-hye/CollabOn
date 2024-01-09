@@ -41,11 +41,13 @@ extension AuthService {
     func validateEmail(_ data: Email, completion: @escaping (Result<Bool, EndPointError>) -> Void) {
         AFManager.request(AuthRouter.validationEmail(model: data)).responseData { response in
             switch response.result {
-            case .success(let success):
+            case .success(let value):
                 guard let statusCode = response.response?.statusCode else { return }
                 let result = self.handleResponse(statusCode: statusCode, response.data)
-            case .failure(let failure):
+                completion(.success(true))
+            case .failure(let error):
                 completion(.failure(.networkError))
+                print(error)
             }
         }
     }

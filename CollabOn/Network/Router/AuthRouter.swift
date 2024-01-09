@@ -23,7 +23,14 @@ extension AuthRouter: Router {
             return "/v1/users/validation/email"
         }
     }
-    
+
+    var header: HeaderType {
+        switch self {
+        case .join, .validationEmail:
+            return .default
+        }
+    }
+
     var method: Alamofire.HTTPMethod {
         switch self {
         case .join, .validationEmail:
@@ -41,13 +48,13 @@ extension AuthRouter: Router {
                 "phone": model.phone ?? "",
                 "deviceToken": model.deviceToken ?? ""
             ]
-            return .requestParameters(body)
+            return .requestBody(body)
 
         case .validationEmail(let model):
             let body: [String: String] = [
                 "email": model.email
             ]
-            return .requestParameters(body)
+            return .requestBody(body)
         }
     }
 

@@ -9,19 +9,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-extension SignUpViewController: InputTextFieldDelegate {
-    func anyImplement(_ view: InputTextField) {
-        switch view {
-        case emailTextField:
-            break
-        case phoneTextField:
-            break
-        default:
-            break
-        }
-    }
-}
-
 final class SignUpViewController: BaseViewController {
 
     let scrollView = UIScrollView()
@@ -55,8 +42,7 @@ final class SignUpViewController: BaseViewController {
             .disposed(by: disposeBag)
 
         emailCheckButton.rx.tap
-            .withLatestFrom(emailTextField.text)
-            .bind(to: viewModel.input.email)
+            .bind(to: viewModel.input.emailCheckButtonDidTap)
             .disposed(by: disposeBag)
 
         signUpButton.rx.tap
@@ -67,6 +53,10 @@ final class SignUpViewController: BaseViewController {
             .map { !$0 && !$1 && !$2 && !$3 }
             .asDriver(onErrorJustReturn: true)
             .drive(signUpButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+
+        emailTextField.text
+            .bind(to: viewModel.input.email)
             .disposed(by: disposeBag)
 
         nicknameTextField.text
@@ -176,15 +166,24 @@ final class SignUpViewController: BaseViewController {
 
         emailTextField.setText(label: String(localized: "이메일"), placeHolder: String(localized: "이메일을 입력하세요"))
         emailTextField.setKeyboardType(.emailAddress)
+        emailTextField.delegate = self
+
         nicknameTextField.setText(label: String(localized: "닉네임"), placeHolder: String(localized: "닉네임을 입력하세요"))
+        nicknameTextField.delegate = self
+
         phoneTextField.setText(label: String(localized: "연락처"), placeHolder: String(localized: "연락처를 입력하세요"))
         phoneTextField.setKeyboardType(.numberPad)
+        phoneTextField.delegate = self
+
         passwordTextField.setText(label: String(localized: "비밀번호"), placeHolder: String(localized: "비밀번호를 입력하세요"))
         passwordTextField.setTextContentType(.password)
         passwordTextField.setSecure()
+        passwordTextField.delegate = self
+
         checkPasswordTextField.setText(label: String(localized: "비밀번호 확인"), placeHolder: String(localized: "비밀번호를 한 번 더 입력하세요"))
         checkPasswordTextField.setTextContentType(.password)
         checkPasswordTextField.setSecure()
+        checkPasswordTextField.delegate = self
 
     }
 
@@ -210,6 +209,26 @@ extension SignUpViewController {
     @objc
     private func closeButtonDidTap() {
         dismiss(animated: true)
+    }
+
+}
+
+extension SignUpViewController: InputTextFieldDelegate {
+    
+    func setTextLimit(_ textField: InputTextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        switch textField {
+        case nicknameTextField:
+            print(textField.count + range.length)
+            return (textField.count + range.length) < 30
+        case phoneTextField:
+            return (textField.count + range.length) < 13
+        case passwordTextField:
+            return (textField.count + range.length) < 20
+        case checkPasswordTextField:
+            return (textField.count + range.length) < 20
+        default:
+            return true
+        }
     }
 
 }

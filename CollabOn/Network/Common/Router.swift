@@ -57,10 +57,11 @@ extension Router {
         switch parameters {
         case .query(let query):
             request = try URLEncodedFormParameterEncoder(destination: .queryString).encode(query, into: request)
-        case .body(let body):
+        case .requestBody(let body):
             request = try URLEncodedFormParameterEncoder(destination: .httpBody).encode(body, into: request)
-        case .requestParameters(let requestParams):
-            request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(requestParams, into: request)
+        case .queryAndBody(let query, let body):
+            request = try URLEncodedFormParameterEncoder(destination: .queryString).encode(query, into: request)
+            request = try URLEncodedFormParameterEncoder(destination: .httpBody).encode(body, into: request)
         }
 
         return request
@@ -85,7 +86,7 @@ extension Router {
 }
 
 enum RequestParams {
-    case query(_ parameter: Codable)
-    case body(_ parameter: Codable)
-    case requestParameters(_ parameter: [String : String])
+    case query(_ query: [String : String])
+    case requestBody(_ body: [String : String])
+    case queryAndBody(query: [String : String], body: Codable)
 }
