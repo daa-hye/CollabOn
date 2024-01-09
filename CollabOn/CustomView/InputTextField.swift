@@ -9,8 +9,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol InputTextFieldDelegate {
-    func anyImplement(_ view: InputTextField)
+protocol InputTextFieldDelegate: AnyObject {
+    func setTextLimit(_ textField: InputTextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
 }
 
 class InputTextField: UIView {
@@ -18,17 +18,21 @@ class InputTextField: UIView {
     private var label = UILabel()
     private var textField = UITextField()
 
+    weak var delegate: InputTextFieldDelegate?
+
     var isValid = BehaviorSubject(value: true)
 
     var disposeBag = DisposeBag()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         self.heightAnchor.constraint(equalToConstant: 76).isActive = true
         configHierarchy()
         setLayout()
         setUIProperties()
+
+        textField.delegate = self
     }
 
     required init(coder: NSCoder) {
@@ -44,6 +48,10 @@ class InputTextField: UIView {
     var text: Observable<String> {
         textField.rx.text.orEmpty
             .asObservable()
+    }
+
+    var count: Int {
+        textField.text?.count ?? 0
     }
 
     private func configHierarchy() {
@@ -105,4 +113,19 @@ class InputTextField: UIView {
         textField.isSecureTextEntry = true
     }
 
+}
+
+extension InputTextField: UITextFieldDelegate {
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let delegate else { return true }
+        if let char = string.cString(using: String.Encoding.utf8) {
+            let isBackSpace = strcmp(char, "\\b")
+            if isBackSpace == -92 {
+                return true
+            }
+        }
+        return delegate.setTextLimit(self, shouldChangeCharactersIn: range, replacementString: string)
+    }
+    
 }
