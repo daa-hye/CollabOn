@@ -36,4 +36,19 @@ class Service {
         }
     }
 
+    func handleResponse(statusCode: Int, _ data: Data?) -> Result<Bool, EndPointError> {
+        let decoder = JSONDecoder()
+        switch statusCode {
+        case 200:
+            return .success(true)
+        case 400:
+            guard let data = data else { return .failure(.undefinedError) }
+            guard let error = try? decoder.decode(ErrorResponse.self, from: data),
+                    let errorCode = EndPointError(rawValue: error.errorCode) else { return .failure(.undefinedError) }
+            return .failure(errorCode)
+        default:
+            return .failure(.networkError)
+        }
+    }
+
 }
