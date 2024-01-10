@@ -10,7 +10,7 @@ import Alamofire
 
 protocol Router: URLRequestConvertible {
 
-    var baseURL: String { get }
+    var baseURL: URL? { get }
     var path: String { get }
     var header: HeaderType { get }
     var method: HTTPMethod { get }
@@ -25,8 +25,9 @@ protocol Router: URLRequestConvertible {
 extension Router {
 
     func asURLRequest() throws -> URLRequest {
-        let url = try baseURL.asURL()
-        var request = try URLRequest(url: url.appending(path: path), method: method)
+        let url = baseURL!.appendingPathComponent(path)
+        var request = URLRequest(url: url)
+        request.method = method
         request = makeHeader(for: request)
         return try makeParameter(for: request)
     }
@@ -38,12 +39,15 @@ extension Router {
         switch header {
         case .withToken:
             request.setValue(HTTPHeaderContent.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
-            request.setValue(SLP.key, forHTTPHeaderField: HTTPHeaderField.auth.rawValue)
+            request.setValue(SLP.key, forHTTPHeaderField: HTTPHeaderField.key.rawValue)
+            request.setValue(AppUserData.token, forHTTPHeaderField: HTTPHeaderField.auth.rawValue)
         case .multipartWithToken:
             request.setValue(HTTPHeaderContent.multipart.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
-            request.setValue(SLP.key, forHTTPHeaderField: HTTPHeaderField.auth.rawValue)
+            request.setValue(SLP.key, forHTTPHeaderField: HTTPHeaderField.key.rawValue)
+            request.setValue(AppUserData.token, forHTTPHeaderField: HTTPHeaderField.auth.rawValue)
         case .default:
             request.setValue(HTTPHeaderContent.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
+            request.setValue(SLP.key, forHTTPHeaderField: HTTPHeaderField.key.rawValue)
         }
 
         return request
@@ -58,10 +62,10 @@ extension Router {
         case .query(let query):
             request = try URLEncodedFormParameterEncoder(destination: .queryString).encode(query, into: request)
         case .requestBody(let body):
-            request = try URLEncodedFormParameterEncoder(destination: .httpBody).encode(body, into: request)
+            request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
         case .queryAndBody(let query, let body):
             request = try URLEncodedFormParameterEncoder(destination: .queryString).encode(query, into: request)
-            request = try URLEncodedFormParameterEncoder(destination: .httpBody).encode(body, into: request)
+            request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
         }
 
         return request
@@ -71,8 +75,8 @@ extension Router {
 
 extension Router {
 
-    var baseURL: String {
-        return SLP.baseURL
+    var baseURL: URL? {
+        return URL(string: SLP.baseURL)
     }
 
     var header: HeaderType {
@@ -87,6 +91,6 @@ extension Router {
 
 enum RequestParams {
     case query(_ query: [String : String])
-    case requestBody(_ body: [String : String])
-    case queryAndBody(query: [String : String], body: Codable)
+    case requestBody(_ body: [String : Any])
+    case queryAndBody(query: [String : String], body: [String : Any])
 }

@@ -70,6 +70,7 @@
 		53D7B22D2B457B20003116D7 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		53D7B22F2B466A41003116D7 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		53D7B2312B466A6D003116D7 /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
+		53F5D82F2B4E6FA600809760 /* CollabOn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CollabOn.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +173,7 @@
 		53D7B1FB2B43F638003116D7 /* CollabOn */ = {
 			isa = PBXGroup;
 			children = (
+				53F5D82F2B4E6FA600809760 /* CollabOn.entitlements */,
 				5302F9F42B4A9F34001B3F47 /* Network */,
 				53D7B2162B43FBF8003116D7 /* Base */,
 				53D7B2122B43F8C7003116D7 /* Onboarding */,
@@ -474,6 +476,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CollabOn/CollabOn.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KLYH4UN5ZC;
@@ -504,6 +507,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CollabOn/CollabOn.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KLYH4UN5ZC;

@@ -41,7 +41,7 @@ extension AuthRouter: Router {
     var parameters: RequestParams {
         switch self {
         case .join(let model):
-            let body: [String : String] = [
+            let body: [String : Any] = [
                 "email": model.email,
                 "password": model.password,
                 "nickname": model.nickname,
@@ -51,7 +51,7 @@ extension AuthRouter: Router {
             return .requestBody(body)
 
         case .validationEmail(let model):
-            let body: [String: String] = [
+            let body: [String: Any] = [
                 "email": model.email
             ]
             return .requestBody(body)

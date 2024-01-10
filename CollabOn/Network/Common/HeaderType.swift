@@ -16,6 +16,7 @@ import Foundation
 @frozen enum HTTPHeaderField: String {
     case contentType = "Content-Type"
     case auth = "Authorization"
+    case key = "SesacKey"
 }
 
 @frozen enum HTTPHeaderContent: String {

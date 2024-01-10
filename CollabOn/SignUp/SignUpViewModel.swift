@@ -19,7 +19,7 @@ final class SignUpViewModel: ViewModelType {
     private let phone = PublishSubject<String>()
     private let password = PublishSubject<String>()
     private let checkPassword = PublishSubject<String>()
-    private let allInputs = PublishSubject<(email: String,nickname: String,phone: String,password: String,String)>()
+    //private let allInputs = PublishSubject<(email: String,nickname: String,phone: String,password: String,String)>()
     private let emailCheckButtonDidTap = PublishSubject<Void>()
     private let signUpButtonDidTap = PublishSubject<Void>()
 
@@ -29,7 +29,7 @@ final class SignUpViewModel: ViewModelType {
     private let isPhoneValid = PublishSubject<Bool>()
     private let isPasswordValid = PublishSubject<Bool>()
     private let isCheckPasswordValid = PublishSubject<Bool>()
-    private let areAllInputsValid = PublishSubject<Bool>()
+//    private let areAllInputsValid = PublishSubject<Bool>()
     private let toastMessage = PublishSubject<String>()
 
     var disposeBag = DisposeBag()
@@ -79,31 +79,42 @@ final class SignUpViewModel: ViewModelType {
             .bind(to: isEmailValid)
             .disposed(by: disposeBag)
 
+        email
+            .subscribe(with: self) { owner, _ in
+                owner.isEmailChecked.onNext(false)
+            }
+            .disposed(by: disposeBag)
+
         emailCheckButtonDidTap
-            .withLatestFrom(Observable.combineLatest(isEmailValid, email))
-            .subscribe(onNext: { [weak self] (isEmailValid, email) in
+            .withUnretained(self)
+            .withLatestFrom(Observable.combineLatest(isEmailChecked, isEmailValid, email))
+            .subscribe(onNext: { (isEmailChecked, isEmailValid, email) in
+                guard !isEmailChecked else {
+                    self.isEmailChecked.onNext(isEmailChecked)
+                    return
+                }
                 if isEmailValid{
                     AuthService.shared.validateEmail(Email(email: email)) { result in
                         switch result {
                         case .success(let value):
-                            self?.isEmailChecked.onNext(value)
+                            self.isEmailChecked.onNext(value)
                             if value {
-                                self?.toastMessage.onNext(Toast.emailValid.message)
+                                self.toastMessage.onNext(Toast.emailValid.message)
                                 print("gooooood")
                             } else {
-                                self?.toastMessage.onNext(Toast.etc.message)
+                                self.toastMessage.onNext(Toast.etc.message)
                             }
                         case .failure(let error):
                             switch error {
                             case .duplicateData:
-                                self?.toastMessage.onNext(Toast.emailDuplicated.message)
+                                self.toastMessage.onNext(Toast.emailDuplicated.message)
                             default:
-                                self?.toastMessage.onNext(Toast.etc.message)
+                                self.toastMessage.onNext(Toast.etc.message)
                             }
                         }
                     }
                 } else {
-                    self?.toastMessage.onNext(Toast.emailInvalid.message)
+                    self.toastMessage.onNext(Toast.emailInvalid.message)
                 }
             })
             .disposed(by: disposeBag)
@@ -111,11 +122,53 @@ final class SignUpViewModel: ViewModelType {
         signUpButtonDidTap
             .withUnretained(self)
             .withLatestFrom(Observable.combineLatest(nickname, phone, password, checkPassword))
-            .subscribe { (nickname, phone, password, checkPassword) in
+            .flatMapLatest { (nickname, phone, password, checkPassword) -> Observable<Bool> in
                 self.isNicknameValid.onNext(self.validateNickname(nickname))
                 self.isPhoneValid.onNext(self.validatePhone(phone))
                 self.isPasswordValid.onNext(self.validatePassword(password))
                 self.isCheckPasswordValid.onNext(self.validateCheckPassword(password, checkPassword))
+
+                return Observable.combineLatest(self.isEmailChecked, self.isNicknameValid, self.isPhoneValid, self.isPasswordValid, self.isCheckPasswordValid)
+                    .map { (isEmailChecked, isNicknameValid, isPhoneValid, isPasswordValid, isCheckPasswordValid) in
+                        var validCheck = Array(repeating: false, count: 5)
+                        validCheck[0] = isEmailChecked
+                        validCheck[1] = isNicknameValid
+                        validCheck[2] = isPhoneValid
+                        validCheck[3] = isPasswordValid
+                        validCheck[4] = isCheckPasswordValid
+
+                        for index in (0..<validCheck.count) {
+                            if validCheck[index] == false {
+                                guard let message = Toast(rawValue: index)?.message else { break }
+                                self.toastMessage.onNext(message)
+                                return false
+                            }
+                        }
+                        return true
+                    }
+            }
+            .filter { $0 }
+            .withLatestFrom(Observable.combineLatest(email, nickname, phone, password, checkPassword))
+            .subscribe { (email, nickname, phone, password, checkPassword) in
+                AuthService.shared.join(Join(email: email, password: password, nickname: nickname, phone: phone, deviceToken: nil)) { result in
+                    switch result {
+                    case .success(let value):
+                        print("회원가입 완")
+                    case .failure(let error):
+                        switch error {
+                        case .duplicateData:
+                            self.toastMessage.onNext(Toast.emailDuplicated.message)
+                        default:
+                            self.toastMessage.onNext(Toast.etc.message)
+                        }
+                    }
+                }
+            }
+            .disposed(by: disposeBag)
+
+        toastMessage
+            .subscribe(with: self) { owner, value in
+                print(value)
             }
             .disposed(by: disposeBag)
 
@@ -216,14 +269,14 @@ extension SignUpViewModel {
 
 extension SignUpViewModel {
 
-    private enum Toast {
-        case emailInvalid
-        case emailValid
+    private enum Toast: Int {
         case emailUnchecked
         case nicknameInvalid
         case phoneInvalid
         case passwordInvalid
         case checkPasswordInvalid
+        case emailInvalid
+        case emailValid
         case emailDuplicated
         case etc
 

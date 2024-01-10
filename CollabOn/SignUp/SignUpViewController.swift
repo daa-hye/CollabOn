@@ -94,10 +94,10 @@ final class SignUpViewController: BaseViewController {
     }
 
     override func configHierarchy() {
+
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(inputStackView)
-
         emailStackView.addArrangedSubview(emailTextField)
         emailStackView.addArrangedSubview(emailCheckButton)
         inputStackView.addArrangedSubview(emailStackView)
@@ -218,7 +218,6 @@ extension SignUpViewController: InputTextFieldDelegate {
     func setTextLimit(_ textField: InputTextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         switch textField {
         case nicknameTextField:
-            print(textField.count + range.length)
             return (textField.count + range.length) < 30
         case phoneTextField:
             return (textField.count + range.length) < 13

@@ -32,19 +32,24 @@ extension AuthService {
                 case .failure(let error):
                     completion(.failure(error))
                 }
-            case .failure(let error):
-                completion(.failure(.networkError))
+            case .failure(_):
+                completion(.failure(.undefinedError))
             }
         }
     }
 
     func validateEmail(_ data: Email, completion: @escaping (Result<Bool, EndPointError>) -> Void) {
-        AFManager.request(AuthRouter.validationEmail(model: data)).responseData { response in
+        AFManager.request(AuthRouter.validationEmail(model: data)).response { response in
             switch response.result {
-            case .success(let value):
+            case .success(_):
                 guard let statusCode = response.response?.statusCode else { return }
                 let result = self.handleResponse(statusCode: statusCode, response.data)
-                completion(.success(true))
+                switch result {
+                case .success(let value):
+                    completion(.success(value))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
             case .failure(let error):
                 completion(.failure(.networkError))
                 print(error)
