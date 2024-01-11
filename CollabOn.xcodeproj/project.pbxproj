@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		5302F9EB2B4985F7001B3F47 /* SocialLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5302F9EA2B4985F7001B3F47 /* SocialLoginButton.swift */; };
-		5302F9EE2B4A9DC5001B3F47 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 5302F9ED2B4A9DC5001B3F47 /* .gitignore */; };
 		5302F9F62B4A9F45001B3F47 /* SLP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5302F9F52B4A9F45001B3F47 /* SLP.swift */; };
 		5302F9F82B4AA439001B3F47 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5302F9F72B4AA439001B3F47 /* Router.swift */; };
 		5302F9FB2B4AA464001B3F47 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 5302F9FA2B4AA464001B3F47 /* Alamofire */; };
@@ -312,7 +311,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5302F9EE2B4A9DC5001B3F47 /* .gitignore in Resources */,
 				53D7B2092B43F639003116D7 /* LaunchScreen.storyboard in Resources */,
 				53D7B2062B43F639003116D7 /* Assets.xcassets in Resources */,
 				53D7B22E2B457B20003116D7 /* Localizable.xcstrings in Resources */,
