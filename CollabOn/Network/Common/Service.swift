@@ -21,12 +21,12 @@ class Service {
         return session
     }()
 
-    func handleResponse<T: Decodable>(statusCode: Int, _ data: Data, type: T.Type) -> Result<T, EndPointError> {
+    func handleResponse<T: Decodable>(statusCode: Int, _ data: Data, type: T.Type) -> Result<T?, EndPointError> {
         let decoder = JSONDecoder()
         switch statusCode {
         case 200:
-            guard let decodedData = try? decoder.decode(EndPointResponse<T>.self, from: data) else { return .failure(.nonExistentData) }
-            return .success(decodedData as! T)
+            guard let decodedData = try? decoder.decode(type, from: data) else { return .failure(.nonExistentData) }
+            return .success(decodedData)
         case 400:
             guard let error = try? decoder.decode(ErrorResponse.self, from: data),
                     let errorCode = EndPointError(rawValue: error.errorCode) else { return .failure(.nonExistentData) }

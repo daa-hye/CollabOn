@@ -15,6 +15,12 @@ enum AppUserData {
     }
 
     @UserDafaultsManager(key: Key.token.rawValue, defaultValue: "")
+    static var nickname
+
+    @UserDafaultsManager(key: Key.token.rawValue, defaultValue: "")
+    static var profileImage
+
+    @UserDafaultsManager(key: Key.token.rawValue, defaultValue: "")
     static var token
 
     @UserDafaultsManager(key: Key.refreshToken.rawValue, defaultValue: "")

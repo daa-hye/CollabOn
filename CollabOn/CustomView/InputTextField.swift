@@ -47,6 +47,7 @@ final class InputTextField: UIView {
 
     var text: Observable<String> {
         textField.rx.text.orEmpty
+            .distinctUntilChanged()
             .asObservable()
     }
 
@@ -114,6 +115,15 @@ final class InputTextField: UIView {
         textField.isSecureTextEntry = true
     }
 
+    func setPhoneNumberFormat() {
+        guard let text = textField.text else { return }
+        if 12...13 ~= count {
+            textField.text = text.formated(by: "###-####-####")
+        } else {
+            textField.text = text.formated(by: "###-###-####")
+        }
+    }
+
 }
 
 extension InputTextField: UITextFieldDelegate {
@@ -128,5 +138,5 @@ extension InputTextField: UITextFieldDelegate {
         }
         return delegate.setTextLimit(self, shouldChangeCharactersIn: range, replacementString: string)
     }
-    
+
 }

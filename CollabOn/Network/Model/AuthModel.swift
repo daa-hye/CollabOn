@@ -16,6 +16,8 @@ struct Join: Encodable {
 }
 
 struct JoinResponse: Decodable {
+    let nickname: String
+    let profileImage: String?
     let token: Token
 }
 

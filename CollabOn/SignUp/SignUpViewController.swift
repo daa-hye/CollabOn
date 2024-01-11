@@ -75,6 +75,14 @@ final class SignUpViewController: BaseViewController {
             .bind(to: viewModel.input.checkPassword)
             .disposed(by: disposeBag)
 
+        viewModel.output.isEmailChecked
+            .map {
+                guard let isChecked = $0 else { return true }
+                return isChecked
+            }
+            .bind(to: emailTextField.isValid)
+            .disposed(by: disposeBag)
+
         viewModel.output.isNicknameValid
             .bind(to: nicknameTextField.isValid)
             .disposed(by: disposeBag)
@@ -89,6 +97,19 @@ final class SignUpViewController: BaseViewController {
 
         viewModel.output.isCheckPasswordValid
             .bind(to: checkPasswordTextField.isValid)
+            .disposed(by: disposeBag)
+
+        viewModel.output.loginSucceeded
+            .asDriver(onErrorJustReturn: ())
+            .drive(onNext: {
+                let vc = WorkspaceInitialViewController()
+                let nav = UINavigationController(rootViewController: vc)
+                
+                let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+                guard let sceneDelegate else { return }
+                
+                sceneDelegate.window?.rootViewController = nav
+            })
             .disposed(by: disposeBag)
 
     }
@@ -220,6 +241,7 @@ extension SignUpViewController: InputTextFieldDelegate {
         case nicknameTextField:
             return (textField.count + range.length) < 30
         case phoneTextField:
+            textField.setPhoneNumberFormat()
             return (textField.count + range.length) < 13
         case passwordTextField:
             return (textField.count + range.length) < 20

@@ -19,18 +19,17 @@ final class SignUpViewModel: ViewModelType {
     private let phone = PublishSubject<String>()
     private let password = PublishSubject<String>()
     private let checkPassword = PublishSubject<String>()
-    //private let allInputs = PublishSubject<(email: String,nickname: String,phone: String,password: String,String)>()
     private let emailCheckButtonDidTap = PublishSubject<Void>()
     private let signUpButtonDidTap = PublishSubject<Void>()
 
     private let isEmailValid = BehaviorSubject(value: false)
-    private let isEmailChecked = BehaviorSubject(value: false)
+    private let isEmailChecked = BehaviorSubject<Bool?>(value: nil)
     private let isNicknameValid = PublishSubject<Bool>()
     private let isPhoneValid = PublishSubject<Bool>()
     private let isPasswordValid = PublishSubject<Bool>()
     private let isCheckPasswordValid = PublishSubject<Bool>()
-//    private let areAllInputsValid = PublishSubject<Bool>()
     private let toastMessage = PublishSubject<String>()
+    private let loginSucceeded = PublishSubject<Void>()
 
     var disposeBag = DisposeBag()
 
@@ -45,12 +44,13 @@ final class SignUpViewModel: ViewModelType {
     }
 
     struct Output {
-        let isEmailValid: Observable<Bool>
+        let isEmailChecked: Observable<Bool?>
         let isNicknameValid: Observable<Bool>
         let isPhoneValid: Observable<Bool>
         let isPasswordValid: Observable<Bool>
         let isCheckPasswordValid: Observable<Bool>
         let toastMessage: Observable<String>
+        let loginSucceeded: Observable<Void>
     }
 
     init() {
@@ -66,12 +66,13 @@ final class SignUpViewModel: ViewModelType {
         )
 
         output = .init(
-            isEmailValid: isEmailValid.observe(on: MainScheduler.instance),
+            isEmailChecked: isEmailChecked.observe(on: MainScheduler.instance),
             isNicknameValid: isNicknameValid.observe(on: MainScheduler.instance),
             isPhoneValid: isPhoneValid.observe(on: MainScheduler.instance),
             isPasswordValid: isPasswordValid.observe(on: MainScheduler.instance),
             isCheckPasswordValid: isCheckPasswordValid.observe(on: MainScheduler.instance), 
-            toastMessage: toastMessage.observe(on: MainScheduler.instance)
+            toastMessage: toastMessage.observe(on: MainScheduler.instance),
+            loginSucceeded: loginSucceeded.observe(on: MainScheduler.instance)
         )
 
         email
@@ -81,7 +82,7 @@ final class SignUpViewModel: ViewModelType {
 
         email
             .subscribe(with: self) { owner, _ in
-                owner.isEmailChecked.onNext(false)
+                owner.isEmailChecked.onNext(nil)
             }
             .disposed(by: disposeBag)
 
@@ -89,18 +90,17 @@ final class SignUpViewModel: ViewModelType {
             .withUnretained(self)
             .withLatestFrom(Observable.combineLatest(isEmailChecked, isEmailValid, email))
             .subscribe(onNext: { (isEmailChecked, isEmailValid, email) in
-                guard !isEmailChecked else {
-                    self.isEmailChecked.onNext(isEmailChecked)
-                    return
+                guard isEmailChecked != true else {
+                    return self.toastMessage.onNext(Toast.emailValid.message)
                 }
-                if isEmailValid{
+
+                if isEmailValid {
                     AuthService.shared.validateEmail(Email(email: email)) { result in
                         switch result {
                         case .success(let value):
                             self.isEmailChecked.onNext(value)
                             if value {
                                 self.toastMessage.onNext(Toast.emailValid.message)
-                                print("gooooood")
                             } else {
                                 self.toastMessage.onNext(Toast.etc.message)
                             }
@@ -120,40 +120,15 @@ final class SignUpViewModel: ViewModelType {
             .disposed(by: disposeBag)
 
         signUpButtonDidTap
-            .withUnretained(self)
-            .withLatestFrom(Observable.combineLatest(nickname, phone, password, checkPassword))
-            .flatMapLatest { (nickname, phone, password, checkPassword) -> Observable<Bool> in
-                self.isNicknameValid.onNext(self.validateNickname(nickname))
-                self.isPhoneValid.onNext(self.validatePhone(phone))
-                self.isPasswordValid.onNext(self.validatePassword(password))
-                self.isCheckPasswordValid.onNext(self.validateCheckPassword(password, checkPassword))
-
-                return Observable.combineLatest(self.isEmailChecked, self.isNicknameValid, self.isPhoneValid, self.isPasswordValid, self.isCheckPasswordValid)
-                    .map { (isEmailChecked, isNicknameValid, isPhoneValid, isPasswordValid, isCheckPasswordValid) in
-                        var validCheck = Array(repeating: false, count: 5)
-                        validCheck[0] = isEmailChecked
-                        validCheck[1] = isNicknameValid
-                        validCheck[2] = isPhoneValid
-                        validCheck[3] = isPasswordValid
-                        validCheck[4] = isCheckPasswordValid
-
-                        for index in (0..<validCheck.count) {
-                            if validCheck[index] == false {
-                                guard let message = Toast(rawValue: index)?.message else { break }
-                                self.toastMessage.onNext(message)
-                                return false
-                            }
-                        }
-                        return true
-                    }
-            }
-            .filter { $0 }
-            .withLatestFrom(Observable.combineLatest(email, nickname, phone, password, checkPassword))
-            .subscribe { (email, nickname, phone, password, checkPassword) in
+            .withLatestFrom(Observable.combineLatest(email, phone, nickname, password, checkPassword, isEmailChecked))
+            .filter { self.validateSignUpData(email: $0.0, phone: $0.1, nickname: $0.2, password: $0.3, checkPassword: $0.4, isEmailChecked: $0.5) }
+            .subscribe { (email, phone, nickname, password, checkPassword, isEmailChecked) in
                 AuthService.shared.join(Join(email: email, password: password, nickname: nickname, phone: phone, deviceToken: nil)) { result in
                     switch result {
                     case .success(let value):
-                        print("회원가입 완")
+                        if value {
+                            self.loginSucceeded.onNext(())
+                        }
                     case .failure(let error):
                         switch error {
                         case .duplicateData:
@@ -177,6 +152,35 @@ final class SignUpViewModel: ViewModelType {
 }
 
 extension SignUpViewModel {
+
+    private func validateSignUpData(email: String, phone: String, nickname: String, password: String, checkPassword: String, isEmailChecked: Bool?) -> Bool {
+        let isNicknameValid = self.validateNickname(nickname)
+        let isPhoneValid = self.validatePhone(phone)
+        let isPasswordValid = self.validatePassword(password)
+        let isCheckPasswordValid = self.validateCheckPassword(password, checkPassword)
+
+        var validCheck: [Bool] = [
+            isEmailChecked ?? false,
+            isNicknameValid,
+            isPhoneValid,
+            isPasswordValid,
+            isCheckPasswordValid
+        ]
+
+        if validCheck.first == false {
+            self.isEmailChecked.onNext(false)
+        }
+
+        for index in (0..<validCheck.count) {
+            if validCheck[index] == false {
+                guard let message = Toast(rawValue: index)?.message else { break }
+                self.toastMessage.onNext(message)
+                return false
+            }
+        }
+
+        return true
+    }
 
     private func validateEmail(_ email: String) -> Bool {
 
@@ -207,7 +211,7 @@ extension SignUpViewModel {
             }
         }
 
-        return email.contains(emailPattern)
+        return email.wholeMatch(of: emailPattern) != nil
 
     }
 
@@ -223,7 +227,7 @@ extension SignUpViewModel {
                 )
             }
         }
-        return nickname.contains(nicknamePattern)
+        return nickname.wholeMatch(of: nicknamePattern) != nil
 
     }
 
@@ -240,7 +244,7 @@ extension SignUpViewModel {
                 ("0"..."9")
             }
         }
-        return phone.contains(phonePattern)
+        return phone.wholeMatch(of: phonePattern) != nil
 
     }
 
@@ -257,7 +261,7 @@ extension SignUpViewModel {
             }
         }
 
-        return password.contains(passwordPattern)
+        return password.wholeMatch(of: passwordPattern) != nil
 
     }
 
