@@ -104,10 +104,8 @@ final class SignUpViewController: BaseViewController {
             .drive(onNext: {
                 let vc = WorkspaceInitialViewController()
                 let nav = UINavigationController(rootViewController: vc)
-                
                 let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
                 guard let sceneDelegate else { return }
-                
                 sceneDelegate.window?.rootViewController = nav
             })
             .disposed(by: disposeBag)

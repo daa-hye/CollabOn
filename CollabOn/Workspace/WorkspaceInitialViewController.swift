@@ -30,7 +30,7 @@ class WorkspaceInitialViewController: BaseViewController {
 
         mainLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(24)
             $0.horizontalEdges.equalToSuperview().inset(24)
         }
 
@@ -72,7 +72,8 @@ extension WorkspaceInitialViewController {
     private func setNavItem() {
 
         navigationController?.navigationBar.backgroundColor = .backgroundSecondary
-        navigationItem.title = String(localized: "시작하기")
+        navigationController?.navigationBar.prefersLargeTitles = true
+        self.title = String(localized: "시작하기")
 
         let closeButton = UIBarButtonItem(
             image: .close,
