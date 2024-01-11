@@ -16,6 +16,7 @@ class WorkspaceInitialViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setNavItem()
     }
 
     override func configHierarchy() {

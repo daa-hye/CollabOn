@@ -159,7 +159,7 @@ extension SignUpViewModel {
         let isPasswordValid = self.validatePassword(password)
         let isCheckPasswordValid = self.validateCheckPassword(password, checkPassword)
 
-        var validCheck: [Bool] = [
+        let validCheck: [Bool] = [
             isEmailChecked ?? false,
             isNicknameValid,
             isPhoneValid,
@@ -170,6 +170,10 @@ extension SignUpViewModel {
         if validCheck.first == false {
             self.isEmailChecked.onNext(false)
         }
+        self.isNicknameValid.onNext(isNicknameValid)
+        self.isPhoneValid.onNext(isPhoneValid)
+        self.isPasswordValid.onNext(isPasswordValid)
+        self.isCheckPasswordValid.onNext(isCheckPasswordValid)
 
         for index in (0..<validCheck.count) {
             if validCheck[index] == false {
@@ -223,10 +227,14 @@ extension SignUpViewModel {
                     .anyOf("._%+-"),
                     ("A"..."Z"),
                     ("0"..."9"),
-                    ("a"..."z")
+                    ("a"..."z"),
+                    ("ㄱ"..."ㅎ"),
+                    ("ㅏ"..."ㅣ"),
+                    ("가"..."힣")
                 )
             }
         }
+
         return nickname.wholeMatch(of: nicknamePattern) != nil
 
     }
