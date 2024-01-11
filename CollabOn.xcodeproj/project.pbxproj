@@ -43,7 +43,6 @@
 
 /* Begin PBXFileReference section */
 		5302F9EA2B4985F7001B3F47 /* SocialLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButton.swift; sourceTree = "<group>"; };
-		5302F9ED2B4A9DC5001B3F47 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		5302F9F52B4A9F45001B3F47 /* SLP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLP.swift; sourceTree = "<group>"; };
 		5302F9F72B4AA439001B3F47 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		5302F9FC2B4AAF04001B3F47 /* HeaderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderType.swift; sourceTree = "<group>"; };
@@ -191,7 +190,6 @@
 				53D7B2052B43F639003116D7 /* Assets.xcassets */,
 				53D7B2072B43F639003116D7 /* LaunchScreen.storyboard */,
 				53D7B20A2B43F639003116D7 /* Info.plist */,
-				5302F9ED2B4A9DC5001B3F47 /* .gitignore */,
 				53D7B22D2B457B20003116D7 /* Localizable.xcstrings */,
 			);
 			path = CollabOn;
