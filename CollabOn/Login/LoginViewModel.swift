@@ -56,9 +56,24 @@ class LoginViewModel: ViewModelType {
         loginButtonDidTap
             .withLatestFrom(Observable.combineLatest(email, password))
             .filter { self.validateLoginData(email: $0.0, password: $0.1) }
-            .subscribe { (email, password) in
-                
+            .flatMapLatest { (email, password) in
+                AuthService.shared.emailLogin(EmailLogin(email: email, password: password, deviceToken: nil))
+                    .catchAndReturn(false)
             }
+            .subscribe(with: self, onNext: { owner, value in
+                if value {
+                    owner.loginSucceeded.onNext(())
+                } else {
+                    owner.toastMessage.onNext(Toast.loginFailed.message)
+                }
+            }, onError: { owner, error in
+                switch error {
+                case EndPointError.requestFailed:
+                    owner.toastMessage.onNext(Toast.loginFailed.message)
+                default:
+                    owner.toastMessage.onNext(Toast.etc.message)
+                }
+            })
             .disposed(by: disposeBag)
 
         toastMessage
@@ -110,18 +125,25 @@ extension LoginViewModel {
             "@"
             OneOrMore {
                 CharacterClass(
-                    .anyOf(".-"),
+                    .anyOf("._%+-"),
                     ("A"..."Z"),
-                    ("a"..."z"),
-                    ("0"..."9")
+                    ("0"..."9"),
+                    ("a"..."z")
                 )
             }
             "."
-            Repeat(2...) {
-                CharacterClass(
-                    ("A"..."Z"),
-                    ("a"..."z")
-                )
+            ChoiceOf {
+                "com"
+                "net"
+                Regex {
+                    Repeat(count: 2) {
+                        CharacterClass (
+                            ("a"..."z"),
+                            ("A"..."Z")
+                        )
+                    }
+                    ".kr"
+                }
             }
         }
 
@@ -154,6 +176,8 @@ extension LoginViewModel {
     private enum Toast: Int {
         case emailInvalid
         case passwordInvalid
+        case loginFailed
+        case etc
 
         var message: String {
             switch self {
@@ -161,6 +185,10 @@ extension LoginViewModel {
                 String(localized: "이메일 형식이 올바르지 않습니다.")
             case .passwordInvalid:
                 String(localized: "비밀번호는 최소 8자 이상, 하나 이상의 대소문자/숫자/특수 문자를 입력해주세요.")
+            case .loginFailed:
+                String(localized: "이메일 또는 비밀번호가 올바르지 않습니다.")
+            case .etc:
+                String(localized: "에러가 발생했어요. 잠시 후 다시 시도해주세요.")
             }
         }
     }

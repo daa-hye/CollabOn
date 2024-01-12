@@ -53,6 +53,17 @@ class LoginViewController: BaseViewController {
             .bind(to: passwordTextField.isValid)
             .disposed(by: disposeBag)
 
+        viewModel.output.loginSucceeded
+            .asDriver(onErrorJustReturn: ())
+            .drive(onNext: {
+                let vc = WorkspaceInitialViewController()
+                let nav = UINavigationController(rootViewController: vc)
+                let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+                guard let sceneDelegate else { return }
+                sceneDelegate.window?.rootViewController = nav
+            })
+            .disposed(by: disposeBag)
+
     }
 
     override func configHierarchy() {

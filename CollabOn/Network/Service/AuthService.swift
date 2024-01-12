@@ -19,7 +19,36 @@ class AuthService: Service {
 
 extension AuthService {
 
-    //func emailLogin(_ data: EmailLogin)
+    func emailLogin(_ data: EmailLogin) -> Single<Bool> {
+        Single.create { observer in
+            let request = self.AFManager.request(AuthRouter.emailLogin(model: data))
+                .responseData { response in
+                    switch response.result {
+                    case .success:
+                        guard let statusCode = response.response?.statusCode else { return }
+                        guard let data = response.data else { return observer(.failure(EndPointError.undefinedError)) }
+                        let result = self.handleResponse(statusCode: statusCode, data, type: EmailLoginResponse.self)
+                        switch result {
+                        case .success(let value):
+                            guard let value = value else {  return observer(.failure(EndPointError.undefinedError)) }
+                            AppUserData.nickname = value.nickname
+                            AppUserData.token = value.accessToken
+                            AppUserData.token = value.refreshToken
+                            observer(.success(true))
+                        case .failure(let error):
+                            observer(.failure(error))
+                        }
+                    case .failure:
+                        observer(.failure(EndPointError.networkError))
+                    }
+                }
+
+            return Disposables.create {
+                request.cancel()
+            }
+
+        }
+    }
 
     func join(_ data: Join) -> Single<Bool> {
         Single.create { observer in
