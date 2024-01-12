@@ -93,7 +93,7 @@ final class SignUpViewModel: ViewModelType {
                     self.toastMessage.onNext(Toast.emailValid.message)
                     return false
                 }
-                if isEmailChecked == false {
+                if isEmailValid == false {
                     self.toastMessage.onNext(Toast.emailInvalid.message)
                     return false
                 }
@@ -105,9 +105,11 @@ final class SignUpViewModel: ViewModelType {
             }
             .subscribe(with: self, onNext: { owner, value in
                 if value {
-                    self.toastMessage.onNext(Toast.emailValid.message)
+                    owner.toastMessage.onNext(Toast.emailValid.message)
+                    owner.isEmailChecked.onNext(value)
                 } else {
-                    self.toastMessage.onNext(Toast.etc.message)
+                    owner.toastMessage.onNext(Toast.etc.message)
+                    owner.isEmailChecked.onNext(value)
                 }
             }, onError: { owner, error in
                 switch error {
@@ -201,18 +203,25 @@ extension SignUpViewModel {
             "@"
             OneOrMore {
                 CharacterClass(
-                    .anyOf(".-"),
+                    .anyOf("._%+-"),
                     ("A"..."Z"),
-                    ("a"..."z"),
-                    ("0"..."9")
+                    ("0"..."9"),
+                    ("a"..."z")
                 )
             }
             "."
-            Repeat(2...) {
-                CharacterClass(
-                    ("A"..."Z"),
-                    ("a"..."z")
-                )
+            ChoiceOf {
+                "com"
+                "net"
+                Regex {
+                    Repeat(count: 2) {
+                        CharacterClass (
+                            ("a"..."z"),
+                            ("A"..."Z")
+                        )
+                    }
+                    ".kr"
+                }
             }
         }
 
