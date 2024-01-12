@@ -60,9 +60,29 @@ final class AuthSheetViewController: BaseViewController {
         signUpLabel.attributedText = attributedString
         signUpLabel.textAlignment = .center
 
+        emailLoginButton.addTarget(self, action: #selector(emailLoginButtonDidTap), for: .touchUpInside)
+
         signUpLabel.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(signUpLabelDidTap))
         signUpLabel.addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    @objc
+    private func emailLoginButtonDidTap() {
+        guard let rootView = self.presentingViewController else { return }
+
+        let vc = LoginViewController()
+        let nav = UINavigationController(rootViewController: vc)
+
+        if let sheet = nav.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 10
+        }
+
+        self.dismiss(animated: false) {
+            rootView.present(nav, animated: true)
+        }
     }
 
     @objc

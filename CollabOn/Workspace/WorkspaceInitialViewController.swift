@@ -70,9 +70,11 @@ class WorkspaceInitialViewController: BaseViewController {
 extension WorkspaceInitialViewController {
 
     private func setNavItem() {
-
-        navigationController?.navigationBar.backgroundColor = .backgroundSecondary
-        navigationController?.navigationBar.prefersLargeTitles = true
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .backgroundSecondary
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
         self.title = String(localized: "시작하기")
 
         let closeButton = UIBarButtonItem(

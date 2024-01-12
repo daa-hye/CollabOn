@@ -212,8 +212,12 @@ extension SignUpViewController {
 
     private func setNavItem() {
 
-        navigationController?.navigationBar.backgroundColor = .backgroundSecondary
-        navigationItem.title = String(localized: "회원가입")
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .backgroundSecondary
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.title = String(localized: "회원가입")
 
         let closeButton = UIBarButtonItem(
             image: .close,

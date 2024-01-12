@@ -39,6 +39,7 @@
 		53D7B2322B466A6D003116D7 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7B2312B466A6D003116D7 /* ViewModelType.swift */; };
 		53F5D8322B4F6BD200809760 /* WorkspaceInitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F5D8312B4F6BD200809760 /* WorkspaceInitialViewController.swift */; };
 		53F5D8342B4FB24D00809760 /* Extension + String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F5D8332B4FB24D00809760 /* Extension + String.swift */; };
+		53F5D84E2B50AF4400809760 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F5D84D2B50AF4400809760 /* LoginViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +74,7 @@
 		53F5D82F2B4E6FA600809760 /* CollabOn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CollabOn.entitlements; sourceTree = "<group>"; };
 		53F5D8312B4F6BD200809760 /* WorkspaceInitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceInitialViewController.swift; sourceTree = "<group>"; };
 		53F5D8332B4FB24D00809760 /* Extension + String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + String.swift"; sourceTree = "<group>"; };
+		53F5D84D2B50AF4400809760 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +184,7 @@
 				5302F9F42B4A9F34001B3F47 /* Network */,
 				53D7B2162B43FBF8003116D7 /* Base */,
 				53D7B2122B43F8C7003116D7 /* Onboarding */,
+				53F5D84C2B50AF3100809760 /* Login */,
 				53D7B2272B451896003116D7 /* SignUp */,
 				53F5D8302B4F6B9C00809760 /* Workspace */,
 				53D7B21B2B440590003116D7 /* Extension */,
@@ -237,6 +240,14 @@
 				53F5D8312B4F6BD200809760 /* WorkspaceInitialViewController.swift */,
 			);
 			path = Workspace;
+			sourceTree = "<group>";
+		};
+		53F5D84C2B50AF3100809760 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				53F5D84D2B50AF4400809760 /* LoginViewController.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -346,6 +357,7 @@
 				53D7B21D2B44CF90003116D7 /* PrimaryButton.swift in Sources */,
 				5302F9EB2B4985F7001B3F47 /* SocialLoginButton.swift in Sources */,
 				53D7B1FF2B43F638003116D7 /* SceneDelegate.swift in Sources */,
+				53F5D84E2B50AF4400809760 /* LoginViewController.swift in Sources */,
 				5302FA1C2B4C2985001B3F47 /* AppUserData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
