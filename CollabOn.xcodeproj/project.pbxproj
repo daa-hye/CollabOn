@@ -40,6 +40,7 @@
 		53F5D8322B4F6BD200809760 /* WorkspaceInitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F5D8312B4F6BD200809760 /* WorkspaceInitialViewController.swift */; };
 		53F5D8342B4FB24D00809760 /* Extension + String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F5D8332B4FB24D00809760 /* Extension + String.swift */; };
 		53F5D84E2B50AF4400809760 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F5D84D2B50AF4400809760 /* LoginViewController.swift */; };
+		53F5D8502B50FE8C00809760 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F5D84F2B50FE8C00809760 /* LoginViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +76,7 @@
 		53F5D8312B4F6BD200809760 /* WorkspaceInitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceInitialViewController.swift; sourceTree = "<group>"; };
 		53F5D8332B4FB24D00809760 /* Extension + String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + String.swift"; sourceTree = "<group>"; };
 		53F5D84D2B50AF4400809760 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		53F5D84F2B50FE8C00809760 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				53F5D84D2B50AF4400809760 /* LoginViewController.swift */,
+				53F5D84F2B50FE8C00809760 /* LoginViewModel.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -341,6 +344,7 @@
 				53D7B1FD2B43F638003116D7 /* AppDelegate.swift in Sources */,
 				53D7B2302B466A41003116D7 /* SignUpViewModel.swift in Sources */,
 				5302FA1A2B4C260F001B3F47 /* UserDafaultsManager.swift in Sources */,
+				53F5D8502B50FE8C00809760 /* LoginViewModel.swift in Sources */,
 				5302FA062B4AE4A5001B3F47 /* Service.swift in Sources */,
 				5302FA0C2B4B75FA001B3F47 /* AuthService.swift in Sources */,
 				53D7B2292B4518EB003116D7 /* SignUpViewController.swift in Sources */,

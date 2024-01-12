@@ -99,7 +99,7 @@ final class SignUpViewController: BaseViewController {
             .bind(to: checkPasswordTextField.isValid)
             .disposed(by: disposeBag)
 
-        viewModel.output.loginSucceeded
+        viewModel.output.signUpSucceeded
             .asDriver(onErrorJustReturn: ())
             .drive(onNext: {
                 let vc = WorkspaceInitialViewController()
@@ -231,7 +231,19 @@ extension SignUpViewController {
 
     @objc
     private func closeButtonDidTap() {
-        dismiss(animated: true)
+        guard let rootView = self.presentingViewController else { return }
+
+        let vc = AuthSheetViewController()
+
+        if let sheet = vc.sheetPresentationController {
+            sheet.detents = [.custom { _ in return 269 }]
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 10
+        }
+
+        dismiss(animated: false) {
+            rootView.present(vc, animated: false)
+        }
     }
 
 }
@@ -240,6 +252,8 @@ extension SignUpViewController: InputTextFieldDelegate {
     
     func setTextLimit(_ textField: InputTextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         switch textField {
+        case emailTextField:
+            return (textField.count + range.length) < 30
         case nicknameTextField:
             return (textField.count + range.length) < 30
         case phoneTextField:

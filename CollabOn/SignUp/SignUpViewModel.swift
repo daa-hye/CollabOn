@@ -29,7 +29,7 @@ final class SignUpViewModel: ViewModelType {
     private let isPasswordValid = PublishSubject<Bool>()
     private let isCheckPasswordValid = PublishSubject<Bool>()
     private let toastMessage = PublishSubject<String>()
-    private let loginSucceeded = PublishSubject<Void>()
+    private let signUpSucceeded = PublishSubject<Void>()
 
     var disposeBag = DisposeBag()
 
@@ -50,7 +50,7 @@ final class SignUpViewModel: ViewModelType {
         let isPasswordValid: Observable<Bool>
         let isCheckPasswordValid: Observable<Bool>
         let toastMessage: Observable<String>
-        let loginSucceeded: Observable<Void>
+        let signUpSucceeded: Observable<Void>
     }
 
     init() {
@@ -72,7 +72,7 @@ final class SignUpViewModel: ViewModelType {
             isPasswordValid: isPasswordValid.observe(on: MainScheduler.instance),
             isCheckPasswordValid: isCheckPasswordValid.observe(on: MainScheduler.instance), 
             toastMessage: toastMessage.observe(on: MainScheduler.instance),
-            loginSucceeded: loginSucceeded.observe(on: MainScheduler.instance)
+            signUpSucceeded: signUpSucceeded.observe(on: MainScheduler.instance)
         )
 
         email
@@ -127,7 +127,7 @@ final class SignUpViewModel: ViewModelType {
                     switch result {
                     case .success(let value):
                         if value {
-                            self.loginSucceeded.onNext(())
+                            self.signUpSucceeded.onNext(())
                         }
                     case .failure(let error):
                         switch error {
@@ -294,10 +294,6 @@ extension SignUpViewModel {
 
         var message: String {
             switch self {
-            case .emailInvalid:
-                String(localized: "이메일 형식이 올바르지 않습니다.")
-            case .emailValid:
-                String(localized: "사용 가능한 이메일입니다.")
             case .emailUnchecked:
                 String(localized: "이메일 중복 확인을 진행해주세요.")
             case .nicknameInvalid:
@@ -308,6 +304,10 @@ extension SignUpViewModel {
                 String(localized: "비밀번호는 최소 8자 이상, 하나 이상의 대소문자/숫자/특수 문자를 설정해주세요.")
             case .checkPasswordInvalid:
                 String(localized: "작성하신 비밀번호가 일치하지 않습니다.")
+            case .emailInvalid:
+                String(localized: "이메일 형식이 올바르지 않습니다.")
+            case .emailValid:
+                String(localized: "사용 가능한 이메일입니다.")
             case .emailDuplicated:
                 String(localized: "이미 가입된 회원입니다. 로그인을 진행해주세요.")
             case .etc:
