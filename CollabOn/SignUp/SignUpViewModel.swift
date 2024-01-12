@@ -114,9 +114,9 @@ final class SignUpViewModel: ViewModelType {
             }, onError: { owner, error in
                 switch error {
                 case EndPointError.duplicateData:
-                    self.toastMessage.onNext(Toast.emailDuplicated.message)
+                    owner.toastMessage.onNext(Toast.emailDuplicated.message)
                 default:
-                    self.toastMessage.onNext(Toast.etc.message)
+                    owner.toastMessage.onNext(Toast.etc.message)
                 }
             })
             .disposed(by: disposeBag)
@@ -132,14 +132,14 @@ final class SignUpViewModel: ViewModelType {
                 if value {
                     owner.signUpSucceeded.onNext(())
                 } else {
-                    self.toastMessage.onNext(Toast.etc.message)
+                    owner.toastMessage.onNext(Toast.etc.message)
                 }
             }, onError: { owner, error in
                 switch error {
                 case EndPointError.duplicateData:
-                    self.toastMessage.onNext(Toast.emailDuplicated.message)
+                    owner.toastMessage.onNext(Toast.emailDuplicated.message)
                 default:
-                    self.toastMessage.onNext(Toast.etc.message)
+                    owner.toastMessage.onNext(Toast.etc.message)
                 }
             })
             .disposed(by: self.disposeBag)

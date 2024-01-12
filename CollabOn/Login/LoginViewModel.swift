@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RegexBuilder
 
-class LoginViewModel: ViewModelType {
+final class LoginViewModel: ViewModelType {
 
     let input: Input
     let output: Output
@@ -68,7 +68,7 @@ class LoginViewModel: ViewModelType {
                 }
             }, onError: { owner, error in
                 switch error {
-                case EndPointError.requestFailed:
+                case EndPointError.unknownUser:
                     owner.toastMessage.onNext(Toast.loginFailed.message)
                 default:
                     owner.toastMessage.onNext(Toast.etc.message)

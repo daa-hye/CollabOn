@@ -34,7 +34,10 @@ enum NetworkEnvironment {
 
 enum EndPointError: String, Error {
 
-    case requestFailed = "E03"
+    case keyRequired = "E01"
+    case AuthorizationFailed = "E02"
+    case unknownUser = "E03"
+    case tokenExpired = "E05"
     case invalidInput = "E11"
     case duplicateData = "E12"
     case nonExistentData = "E13"
@@ -43,6 +46,7 @@ enum EndPointError: String, Error {
     case insufficientCoins = "E21"
     case existingPaymentCase = "E81"
     case invalidPaymentCase = "E82"
+    case serverError = "E99"
     case networkError
     case undefinedError
 

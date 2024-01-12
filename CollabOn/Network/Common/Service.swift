@@ -31,6 +31,8 @@ class Service {
             guard let error = try? decoder.decode(ErrorResponse.self, from: data),
                     let errorCode = EndPointError(rawValue: error.errorCode) else { return .failure(.nonExistentData) }
             return .failure(errorCode)
+        case 500:
+            return .failure(EndPointError.serverError)
         default:
             return .failure(.networkError)
         }
@@ -46,6 +48,8 @@ class Service {
             guard let error = try? decoder.decode(ErrorResponse.self, from: data),
                     let errorCode = EndPointError(rawValue: error.errorCode) else { return .failure(.undefinedError) }
             return .failure(errorCode)
+        case 500:
+            return .failure(EndPointError.serverError)
         default:
             return .failure(.networkError)
         }
