@@ -87,34 +87,34 @@ final class SignUpViewModel: ViewModelType {
             .disposed(by: disposeBag)
 
         emailCheckButtonDidTap
-            .withUnretained(self)
             .withLatestFrom(Observable.combineLatest(isEmailChecked, isEmailValid, email))
-            .subscribe(onNext: { (isEmailChecked, isEmailValid, email) in
-                guard isEmailChecked != true else {
-                    return self.toastMessage.onNext(Toast.emailValid.message)
+            .filter({ (isEmailChecked, isEmailValid, _) in
+                if isEmailChecked == true {
+                    self.toastMessage.onNext(Toast.emailValid.message)
+                    return false
                 }
-
-                if isEmailValid {
-                    AuthService.shared.validateEmail(Email(email: email)) { result in
-                        switch result {
-                        case .success(let value):
-                            self.isEmailChecked.onNext(value)
-                            if value {
-                                self.toastMessage.onNext(Toast.emailValid.message)
-                            } else {
-                                self.toastMessage.onNext(Toast.etc.message)
-                            }
-                        case .failure(let error):
-                            switch error {
-                            case .duplicateData:
-                                self.toastMessage.onNext(Toast.emailDuplicated.message)
-                            default:
-                                self.toastMessage.onNext(Toast.etc.message)
-                            }
-                        }
-                    }
-                } else {
+                if isEmailChecked == false {
                     self.toastMessage.onNext(Toast.emailInvalid.message)
+                    return false
+                }
+                return true
+            })
+            .flatMapLatest { (isEmailChecked, isEmailValid, email: String) in
+                AuthService.shared.validateEmail(Email(email: email))
+                    .catchAndReturn(false)
+            }
+            .subscribe(with: self, onNext: { owner, value in
+                if value {
+                    self.toastMessage.onNext(Toast.emailValid.message)
+                } else {
+                    self.toastMessage.onNext(Toast.etc.message)
+                }
+            }, onError: { owner, error in
+                switch error {
+                case EndPointError.duplicateData:
+                    self.toastMessage.onNext(Toast.emailDuplicated.message)
+                default:
+                    self.toastMessage.onNext(Toast.etc.message)
                 }
             })
             .disposed(by: disposeBag)
@@ -122,24 +122,25 @@ final class SignUpViewModel: ViewModelType {
         signUpButtonDidTap
             .withLatestFrom(Observable.combineLatest(email, phone, nickname, password, checkPassword, isEmailChecked))
             .filter { self.validateSignUpData(email: $0.0, phone: $0.1, nickname: $0.2, password: $0.3, checkPassword: $0.4, isEmailChecked: $0.5) }
-            .subscribe { (email, phone, nickname, password, checkPassword, isEmailChecked) in
-                AuthService.shared.join(Join(email: email, password: password, nickname: nickname, phone: phone, deviceToken: nil)) { result in
-                    switch result {
-                    case .success(let value):
-                        if value {
-                            self.signUpSucceeded.onNext(())
-                        }
-                    case .failure(let error):
-                        switch error {
-                        case .duplicateData:
-                            self.toastMessage.onNext(Toast.emailDuplicated.message)
-                        default:
-                            self.toastMessage.onNext(Toast.etc.message)
-                        }
-                    }
-                }
+            .flatMapLatest{ (email, phone, nickname, password, checkPassword, isEmailChecked) in
+                AuthService.shared.join(Join(email: email, password: password, nickname: nickname, phone: phone, deviceToken: nil))
+                    .catchAndReturn(false)
             }
-            .disposed(by: disposeBag)
+            .subscribe(with: self, onNext: { owner, value in
+                if value {
+                    owner.signUpSucceeded.onNext(())
+                } else {
+                    self.toastMessage.onNext(Toast.etc.message)
+                }
+            }, onError: { owner, error in
+                switch error {
+                case EndPointError.duplicateData:
+                    self.toastMessage.onNext(Toast.emailDuplicated.message)
+                default:
+                    self.toastMessage.onNext(Toast.etc.message)
+                }
+            })
+            .disposed(by: self.disposeBag)
 
         toastMessage
             .subscribe(with: self) { owner, value in
