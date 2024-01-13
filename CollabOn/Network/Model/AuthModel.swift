@@ -19,6 +19,17 @@ struct EmailLoginResponse: Decodable {
     let refreshToken: String
 }
 
+struct AppleJoin: Decodable {
+    let idToken: String
+    let nickname: String
+    let deviceToken: String?
+}
+
+struct AppleLogin: Decodable {
+    let idToken: String
+    let deviceToken: String?
+}
+
 struct LoginResponse: Decodable {
     let nickname: String
     let profileImage: String?

@@ -55,8 +55,7 @@ final class OnboardingViewController: BaseViewController {
         startButton.addTarget(self, action: #selector(startButtonDidTap), for: .touchUpInside)
     }
 
-    @objc
-    private func startButtonDidTap() {
+    @objc private func startButtonDidTap() {
         let vc = AuthSheetViewController()
         if let sheet = vc.sheetPresentationController {
             sheet.detents = [.custom { _ in return 269 }]

@@ -41,6 +41,7 @@
 		53F5D8342B4FB24D00809760 /* Extension + String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F5D8332B4FB24D00809760 /* Extension + String.swift */; };
 		53F5D84E2B50AF4400809760 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F5D84D2B50AF4400809760 /* LoginViewController.swift */; };
 		53F5D8502B50FE8C00809760 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F5D84F2B50FE8C00809760 /* LoginViewModel.swift */; };
+		53F5D8522B52080900809760 /* AuthSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F5D8512B52080900809760 /* AuthSheetViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +78,7 @@
 		53F5D8332B4FB24D00809760 /* Extension + String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + String.swift"; sourceTree = "<group>"; };
 		53F5D84D2B50AF4400809760 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		53F5D84F2B50FE8C00809760 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		53F5D8512B52080900809760 /* AuthSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthSheetViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +207,7 @@
 			children = (
 				53D7B2102B43F8BE003116D7 /* OnboardingViewController.swift */,
 				53D7B21E2B44D5E2003116D7 /* AuthSheetViewController.swift */,
+				53F5D8512B52080900809760 /* AuthSheetViewModel.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				53D7B2292B4518EB003116D7 /* SignUpViewController.swift in Sources */,
 				5302FA042B4AD9F5001B3F47 /* AuthRouter.swift in Sources */,
 				5302F9F62B4A9F45001B3F47 /* SLP.swift in Sources */,
+				53F5D8522B52080900809760 /* AuthSheetViewModel.swift in Sources */,
 				53D7B22B2B451C17003116D7 /* InputTextField.swift in Sources */,
 				53D7B2182B43FC01003116D7 /* BaseViewController.swift in Sources */,
 				5302FA0A2B4AED54001B3F47 /* NetworkConstants.swift in Sources */,
@@ -524,6 +528,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -555,6 +560,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

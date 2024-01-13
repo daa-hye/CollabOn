@@ -58,22 +58,25 @@ final class LoginViewModel: ViewModelType {
             .filter { self.validateLoginData(email: $0.0, password: $0.1) }
             .flatMapLatest { (email, password) in
                 AuthService.shared.emailLogin(EmailLogin(email: email, password: password, deviceToken: nil))
-                    .catchAndReturn(false)
+                    .asObservable()
+                    .materialize()
             }
-            .subscribe(with: self, onNext: { owner, value in
-                if value {
+            .subscribe(with: self) { owner, event in
+                switch event {
+                case .next:
                     owner.loginSucceeded.onNext(())
-                } else {
-                    owner.toastMessage.onNext(Toast.loginFailed.message)
-                }
-            }, onError: { owner, error in
-                switch error {
-                case EndPointError.unknownUser:
-                    owner.toastMessage.onNext(Toast.loginFailed.message)
+                case .error(let error):
+                    switch error {
+                    case EndPointError.unknownUser:
+                        owner.toastMessage.onNext(Toast.loginFailed.message)
+                    default:
+                        owner.toastMessage.onNext(Toast.etc.message)
+                    }
                 default:
                     owner.toastMessage.onNext(Toast.etc.message)
                 }
-            })
+
+            }
             .disposed(by: disposeBag)
 
         toastMessage

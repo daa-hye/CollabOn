@@ -10,33 +10,41 @@ import Alamofire
 
 enum AuthRouter {
     case emailLogin(model: EmailLogin)
+    case appleJoin(model: AppleJoin)
+    case appleLogin(model: AppleLogin)
     case join(model: Join)
     case validationEmail(model: Email)
 }
 
 extension AuthRouter: Router {
 
+    var baseURL: URL? {
+        return URL(string: SLP.baseURL)!.appendingPathComponent("/v1/users")
+    }
+
     var path: String {
         switch self {
         case .emailLogin: 
-            return "/v1/users/login"
+            return "/login"
+        case .appleJoin, .appleLogin:
+            return "/login/apple"
         case .join:
-            return "/v1/users/join"
+            return "/join"
         case .validationEmail:
-            return "/v1/users/validation/email"
+            return "/validation/email"
         }
     }
 
     var header: HeaderType {
         switch self {
-        case .emailLogin, .join, .validationEmail:
+        case .emailLogin, .appleJoin, .appleLogin, .join, .validationEmail:
             return .default
         }
     }
 
     var method: Alamofire.HTTPMethod {
         switch self {
-        case .emailLogin, .join, .validationEmail:
+        case .emailLogin, .appleJoin, .appleLogin, .join, .validationEmail:
             return .post
         }
     }
@@ -46,10 +54,26 @@ extension AuthRouter: Router {
         case .emailLogin(let model):
             let body: [String : Any] = [
                 "email": model.email,
-                "password": model.password
+                "password": model.password,
+                "deviceToken": model.deviceToken ?? ""
             ]
             return .requestBody(body)
-            
+
+        case .appleJoin(let model):
+            let body: [String: Any] = [
+                "idToken": model.idToken,
+                "nickname": model.nickname,
+                "deviceToken": model.deviceToken ?? ""
+            ]
+            return .requestBody(body)
+
+        case .appleLogin(let model):
+            let body: [String: Any] = [
+                "idToken": model.idToken,
+                "deviceToken": model.deviceToken ?? ""
+            ]
+            return .requestBody(body)
+
         case .join(let model):
             let body: [String : Any] = [
                 "email": model.email,

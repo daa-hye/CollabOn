@@ -7,16 +7,58 @@
 
 import UIKit
 import AuthenticationServices
+import RxSwift
+import RxCocoa
 
 final class AuthSheetViewController: BaseViewController {
 
-    let appleLoginButton = SocialLoginButton(type: .apple)
-    let kakaoLoginButton = SocialLoginButton(type: .kakao)
-    let emailLoginButton = PrimaryButton(title: String(localized: "이메일로 계속하기"))
-    let signUpLabel = UILabel()
+    private let appleLoginButton = SocialLoginButton(type: .apple)
+    private let kakaoLoginButton = SocialLoginButton(type: .kakao)
+    private let emailLoginButton = PrimaryButton(title: String(localized: "이메일로 계속하기"))
+    private let signUpLabel = UILabel()
+
+    let viewModel = AuthSheetViewModel()
+
+    var disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+
+    override func bindRx() {
+
+        appleLoginButton.rx.tap
+            .asDriver()
+            .drive(onNext: {
+                let appleIDProvider = ASAuthorizationAppleIDProvider()
+                let request = appleIDProvider.createRequest()
+                request.requestedScopes = [.email, .fullName]
+
+                let controller = ASAuthorizationController(authorizationRequests: [request])
+                controller.delegate = self
+                controller.presentationContextProvider = self
+                controller.performRequests()
+            })
+            .disposed(by: disposeBag)
+
+        emailLoginButton.rx.tap
+            .asDriver()
+            .drive(with: self, onNext: { owner, _ in
+                owner.emailLoginButtonDidTap()
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.output.loginSucceeded
+            .asDriver(onErrorJustReturn: ())
+            .drive(onNext: {
+                let vc = WorkspaceInitialViewController()
+                let nav = UINavigationController(rootViewController: vc)
+                let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+                guard let sceneDelegate else { return }
+                sceneDelegate.window?.rootViewController = nav
+            })
+            .disposed(by: disposeBag)
+
     }
 
     override func configHierarchy() {
@@ -60,14 +102,11 @@ final class AuthSheetViewController: BaseViewController {
         signUpLabel.attributedText = attributedString
         signUpLabel.textAlignment = .center
 
-        emailLoginButton.addTarget(self, action: #selector(emailLoginButtonDidTap), for: .touchUpInside)
-
         signUpLabel.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(signUpLabelDidTap))
         signUpLabel.addGestureRecognizer(tapGestureRecognizer)
     }
 
-    @objc
     private func emailLoginButtonDidTap() {
         guard let rootView = self.presentingViewController else { return }
 
@@ -85,8 +124,7 @@ final class AuthSheetViewController: BaseViewController {
         }
     }
 
-    @objc
-    private func signUpLabelDidTap() {
+    @objc private func signUpLabelDidTap() {
         guard let rootView = self.presentingViewController else { return }
 
         let vc = SignUpViewController()
@@ -101,6 +139,39 @@ final class AuthSheetViewController: BaseViewController {
         self.dismiss(animated: false) {
             rootView.present(nav, animated: true)
         }
+    }
+
+}
+
+extension AuthSheetViewController: ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
+    }
+}
+
+extension AuthSheetViewController: ASAuthorizationControllerDelegate {
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        switch authorization.credential {
+        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+
+            let email = appleIDCredential.email
+            guard let token = appleIDCredential.identityToken,
+                  let tokenToString = String(data: token, encoding: .utf8) else {
+                print("Token error")
+                return
+            }
+            print(email, tokenToString)
+            viewModel.input.email.onNext(email)
+            viewModel.input.identityToken.onNext(tokenToString)
+
+        default:
+            break
+        }
+    }
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        //error
     }
 
 }

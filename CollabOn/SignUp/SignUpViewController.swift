@@ -229,21 +229,8 @@ extension SignUpViewController {
         navigationItem.leftBarButtonItem = closeButton
     }
 
-    @objc
-    private func closeButtonDidTap() {
-        guard let rootView = self.presentingViewController else { return }
-
-        let vc = AuthSheetViewController()
-
-        if let sheet = vc.sheetPresentationController {
-            sheet.detents = [.custom { _ in return 269 }]
-            sheet.prefersGrabberVisible = true
-            sheet.preferredCornerRadius = 10
-        }
-
-        dismiss(animated: false) {
-            rootView.present(vc, animated: false)
-        }
+    @objc private func closeButtonDidTap() {
+        dismiss(animated: true)
     }
 
 }
