@@ -1,5 +1,5 @@
 //
-//  AuthService.swift
+//  UserService.swift
 //  CollabOn
 //
 //  Created by 박다혜 on 1/8/24.
@@ -9,19 +9,19 @@ import Foundation
 import Alamofire
 import RxSwift
 
-class AuthService: Service {
+class UserService: Service {
 
-    static let shared = AuthService()
+    static let shared = UserService()
 
     private override init() {}
 
 }
 
-extension AuthService {
+extension UserService {
 
     func emailLogin(_ data: EmailLogin) -> Single<Void> {
         Single.create { observer in
-            let request = self.AFManager.request(AuthRouter.emailLogin(model: data))
+            let request = self.AFManager.request(UserRouter.emailLogin(model: data))
                 .responseData { response in
                     switch response.result {
                     case .success(let data):
@@ -51,7 +51,7 @@ extension AuthService {
 
     func appleJoin(_ data: AppleJoin) -> Single<Void> {
         Single.create { observer in
-            let request = self.AFManager.request(AuthRouter.appleJoin(model: data))
+            let request = self.AFManager.request(UserRouter.appleJoin(model: data))
                 .responseData { response in
                     switch response.result {
                     case .success(let data):
@@ -82,7 +82,7 @@ extension AuthService {
 
     func appleLogin(_ data: AppleLogin) -> Single<Void> {
         Single.create { observer in
-            let request = self.AFManager.request(AuthRouter.appleLogin(model: data))
+            let request = self.AFManager.request(UserRouter.appleLogin(model: data))
                 .responseData { response in
                     switch response.result {
                     case .success(let data):
@@ -113,7 +113,7 @@ extension AuthService {
 
     func kakaoLogin(_ data: KakaoLogin) -> Single<Void> {
         Single.create { observer in
-            let request = self.AFManager.request(AuthRouter.kakakLogin(model: data))
+            let request = self.AFManager.request(UserRouter.kakakLogin(model: data))
                 .responseData { response in
                     switch response.result {
                     case .success(let data):
@@ -144,7 +144,7 @@ extension AuthService {
 
     func join(_ data: Join) -> Single<Void> {
         Single.create { observer in
-            let request = self.AFManager.request(AuthRouter.join(model: data))
+            let request = self.AFManager.request(UserRouter.join(model: data))
                 .responseData { response in
                 switch response.result {
                 case .success(let data):
@@ -175,7 +175,7 @@ extension AuthService {
 
     func validateEmail(_ data: Email) -> Single<Void> {
         Single.create { observer in
-            let request = self.AFManager.request(AuthRouter.validationEmail(model: data))
+            let request = self.AFManager.request(UserRouter.validationEmail(model: data))
                 .response { response in
                 switch response.result {
                 case .success:

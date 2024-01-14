@@ -1,5 +1,5 @@
 //
-//  AuthRouter.swift
+//  UserRouter.swift
 //  CollabOn
 //
 //  Created by 박다혜 on 1/7/24.
@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-enum AuthRouter {
+enum UserRouter {
     case emailLogin(model: EmailLogin)
     case appleJoin(model: AppleJoin)
     case appleLogin(model: AppleLogin)
@@ -17,7 +17,7 @@ enum AuthRouter {
     case validationEmail(model: Email)
 }
 
-extension AuthRouter: Router {
+extension UserRouter: Router {
 
     var baseURL: URL? {
         return URL(string: SLP.baseURL)!.appendingPathComponent("/v1/users")
@@ -25,7 +25,7 @@ extension AuthRouter: Router {
 
     var path: String {
         switch self {
-        case .emailLogin: 
+        case .emailLogin:
             return "/login"
         case .appleJoin, .appleLogin:
             return "/login/apple"
