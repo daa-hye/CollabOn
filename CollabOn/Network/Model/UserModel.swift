@@ -57,3 +57,13 @@ struct Token: Decodable, Hashable {
     let accessToken: String
     let refreshToken: String
 }
+
+struct MyInfo: Decodable {
+    let email: String
+    let nickname: String
+    let profileImage: String?
+    let phone: String?
+    let vendor: String?
+    let sesacCoin: Int
+    let createdAt: String
+}

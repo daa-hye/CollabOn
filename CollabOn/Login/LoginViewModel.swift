@@ -57,7 +57,7 @@ final class LoginViewModel: ViewModelType {
             .withLatestFrom(Observable.combineLatest(email, password))
             .filter { self.validateLoginData(email: $0.0, password: $0.1) }
             .flatMapLatest { (email, password) in
-                AuthService.shared.emailLogin(EmailLogin(email: email, password: password, deviceToken: nil))
+                UserService.shared.emailLogin(EmailLogin(email: email, password: password, deviceToken: nil))
                     .asObservable()
                     .materialize()
             }

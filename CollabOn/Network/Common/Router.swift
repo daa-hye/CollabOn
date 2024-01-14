@@ -38,6 +38,9 @@ extension Router {
 
         switch header {
         case .withToken:
+            request.setValue(SLP.key, forHTTPHeaderField: HTTPHeaderField.key.rawValue)
+            request.setValue(AppUserData.token, forHTTPHeaderField: HTTPHeaderField.auth.rawValue)
+        case .jsonWithToken:
             request.setValue(HTTPHeaderContent.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
             request.setValue(SLP.key, forHTTPHeaderField: HTTPHeaderField.key.rawValue)
             request.setValue(AppUserData.token, forHTTPHeaderField: HTTPHeaderField.auth.rawValue)
@@ -45,6 +48,10 @@ extension Router {
             request.setValue(HTTPHeaderContent.multipart.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
             request.setValue(SLP.key, forHTTPHeaderField: HTTPHeaderField.key.rawValue)
             request.setValue(AppUserData.token, forHTTPHeaderField: HTTPHeaderField.auth.rawValue)
+        case .refreshToken:
+            request.setValue(SLP.key, forHTTPHeaderField: HTTPHeaderField.key.rawValue)
+            request.setValue(AppUserData.token, forHTTPHeaderField: HTTPHeaderField.auth.rawValue)
+            request.setValue(AppUserData.refreshToken, forHTTPHeaderField: HTTPHeaderField.refreshToken.rawValue)
         case .default:
             request.setValue(HTTPHeaderContent.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
             request.setValue(SLP.key, forHTTPHeaderField: HTTPHeaderField.key.rawValue)
@@ -66,6 +73,8 @@ extension Router {
         case .queryAndBody(let query, let body):
             request = try URLEncodedFormParameterEncoder(destination: .queryString).encode(query, into: request)
             request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+        case .none:
+            break
         }
 
         return request
@@ -93,4 +102,5 @@ enum RequestParams {
     case query(_ query: [String : String])
     case requestBody(_ body: [String : Any])
     case queryAndBody(query: [String : String], body: [String : Any])
+    case none
 }

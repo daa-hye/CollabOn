@@ -16,9 +16,9 @@ final class LoginViewController: BaseViewController {
     let loginButton = PrimaryButton(title: "로그인")
     let buttonView = UIView()
 
-    var disposeBag = DisposeBag()
-
     let viewModel = LoginViewModel()
+
+    let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()

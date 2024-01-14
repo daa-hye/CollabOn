@@ -15,17 +15,51 @@ final class SplashViewModel: ViewModelType {
     let input: Input
     let output: Output
 
-    struct Input {
+    private let viewDidLoad = PublishSubject<Void>()
 
+    private let isLoggedIn = PublishSubject<Bool>()
+
+    struct Input {
+        let viewDidLoad: AnyObserver<Void>
     }
 
     struct Output {
-
+        let isLoggedIn: Observable<Bool>
     }
 
     init() {
-        input = .init()
-        output = .init()
+
+        input = .init(
+            viewDidLoad: viewDidLoad.asObserver()
+        )
+
+        output = .init(
+            isLoggedIn: isLoggedIn.observe(on: MainScheduler.instance)
+        )
+
+        viewDidLoad
+            .delay(.seconds(3), scheduler: MainScheduler.instance)
+            .flatMapLatest { _ -> Observable<Event<Bool>> in
+                if AppUserData.token.isEmpty {
+                    self.isLoggedIn.onNext(false)
+                    return Observable.never()
+                } else {
+                    return UserService.shared.getUserLoginData()
+                        .asObservable()
+                        .materialize()
+                }
+            }
+            .subscribe(with: self) { owner, event in
+                switch event {
+                case .next(let value):
+                    owner.isLoggedIn.onNext(value)
+                case .error:
+                    owner.isLoggedIn.onNext(false)
+                default:
+                    owner.isLoggedIn.onNext(false)
+                }
+            }
+            .disposed(by: disposeBag)
     }
 
 }

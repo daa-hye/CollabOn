@@ -9,12 +9,13 @@ import Foundation
 import Alamofire
 
 enum UserRouter {
+    case join(model: Join)
+    case validationEmail(model: Email)
     case emailLogin(model: EmailLogin)
     case appleJoin(model: AppleJoin)
     case appleLogin(model: AppleLogin)
     case kakakLogin(model: KakaoLogin)
-    case join(model: Join)
-    case validationEmail(model: Email)
+    case getMyProfile
 }
 
 extension UserRouter: Router {
@@ -25,16 +26,18 @@ extension UserRouter: Router {
 
     var path: String {
         switch self {
+        case .join:
+            return "/join"
+        case .validationEmail:
+            return "/validation/email"
         case .emailLogin:
             return "/login"
         case .appleJoin, .appleLogin:
             return "/login/apple"
         case .kakakLogin:
             return "/login/kakao"
-        case .join:
-            return "/join"
-        case .validationEmail:
-            return "/validation/email"
+        case .getMyProfile:
+            return "/my"
         }
     }
 
@@ -42,6 +45,8 @@ extension UserRouter: Router {
         switch self {
         case .emailLogin, .appleJoin, .appleLogin, .kakakLogin, .join, .validationEmail:
             return .default
+        case .getMyProfile:
+            return .withToken
         }
     }
 
@@ -49,11 +54,29 @@ extension UserRouter: Router {
         switch self {
         case .emailLogin, .appleJoin, .appleLogin, .kakakLogin, .join, .validationEmail:
             return .post
+        case .getMyProfile:
+            return .get
         }
     }
     
     var parameters: RequestParams {
         switch self {
+        case .join(let model):
+            let body: [String : Any] = [
+                "email": model.email,
+                "password": model.password,
+                "nickname": model.nickname,
+                "phone": model.phone ?? "",
+                "deviceToken": model.deviceToken ?? ""
+            ]
+            return .requestBody(body)
+
+        case .validationEmail(let model):
+            let body: [String: Any] = [
+                "email": model.email
+            ]
+            return .requestBody(body)
+
         case .emailLogin(let model):
             let body: [String : Any] = [
                 "email": model.email,
@@ -84,21 +107,8 @@ extension UserRouter: Router {
             ]
             return .requestBody(body)
 
-        case .join(let model):
-            let body: [String : Any] = [
-                "email": model.email,
-                "password": model.password,
-                "nickname": model.nickname,
-                "phone": model.phone ?? "",
-                "deviceToken": model.deviceToken ?? ""
-            ]
-            return .requestBody(body)
-
-        case .validationEmail(let model):
-            let body: [String: Any] = [
-                "email": model.email
-            ]
-            return .requestBody(body)
+        case .getMyProfile:
+            return .none
         }
     }
 

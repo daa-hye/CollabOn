@@ -100,7 +100,7 @@ final class SignUpViewModel: ViewModelType {
                 return true
             })
             .flatMapLatest { (isEmailChecked, isEmailValid, email: String) in
-                AuthService.shared.validateEmail(Email(email: email))
+                UserService.shared.validateEmail(Email(email: email))
                     .asObservable()
                     .materialize()
             }
@@ -126,7 +126,7 @@ final class SignUpViewModel: ViewModelType {
             .withLatestFrom(Observable.combineLatest(email, phone, nickname, password, checkPassword, isEmailChecked))
             .filter { self.validateSignUpData(email: $0.0, phone: $0.1, nickname: $0.2, password: $0.3, checkPassword: $0.4, isEmailChecked: $0.5) }
             .flatMapLatest{ (email, phone, nickname, password, checkPassword, isEmailChecked) in
-                AuthService.shared.join(Join(email: email, password: password, nickname: nickname, phone: phone, deviceToken: nil))
+                UserService.shared.join(Join(email: email, password: password, nickname: nickname, phone: phone, deviceToken: nil))
                     .asObservable()
                     .materialize()
             }

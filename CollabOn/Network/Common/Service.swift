@@ -17,41 +17,28 @@ class Service {
         let configuration = URLSessionConfiguration.af.default
         configuration.timeoutIntervalForRequest = currentEnvironment.resourceTimeOut
         configuration.timeoutIntervalForResource = currentEnvironment.resourceTimeOut
-        session = Session(configuration: configuration)
+        let interceptor = Interceptor()
+        session = Session(configuration: configuration, interceptor: interceptor)
         return session
     }()
 
-    func handleResponse<T: Decodable>(statusCode: Int, _ data: Data, type: T.Type) -> Result<T?, EndPointError> {
+    func handleResponse<T: Decodable>(_ data: Data, type: T.Type) -> T? {
         let decoder = JSONDecoder()
-        switch statusCode {
-        case 200:
-            guard let decodedData = try? decoder.decode(type, from: data) else { return .failure(.nonExistentData) }
-            return .success(decodedData)
-        case 400:
-            guard let error = try? decoder.decode(ErrorResponse.self, from: data),
-                    let errorCode = EndPointError(rawValue: error.errorCode) else { return .failure(.nonExistentData) }
-            return .failure(errorCode)
-        case 500:
-            return .failure(EndPointError.serverError)
-        default:
-            return .failure(.networkError)
-        }
+        guard let decodedData = try? decoder.decode(type, from: data) else { return nil }
+        return decodedData
     }
 
-    func handleResponse(statusCode: Int, _ data: Data?) -> Result<Bool, EndPointError> {
+    func handleError(statusCode: Int, _ data: Data) -> EndPointError {
         let decoder = JSONDecoder()
         switch statusCode {
-        case 200:
-            return .success(true)
         case 400:
-            guard let data = data else { return .failure(.undefinedError) }
             guard let error = try? decoder.decode(ErrorResponse.self, from: data),
-                    let errorCode = EndPointError(rawValue: error.errorCode) else { return .failure(.undefinedError) }
-            return .failure(errorCode)
+                  let errorCode = EndPointError(rawValue: error.errorCode) else { return .undefinedError }
+            return errorCode
         case 500:
-            return .failure(EndPointError.serverError)
+            return .serverError
         default:
-            return .failure(.networkError)
+            return .networkError
         }
     }
 

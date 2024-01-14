@@ -16,12 +16,36 @@ final class SplashViewController: BaseViewController {
 
     let viewModel = SplashViewModel()
 
+    let disposeBag = DisposeBag()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-
+        viewModel.input.viewDidLoad.onNext(())
 
     }
+
+    override func bindRx() {
+
+        viewModel.output.isLoggedIn
+            .asDriver(onErrorJustReturn: false)
+            .drive(with: self) { owner, value in
+                if value {
+                    let vc = HomeViewController()
+                    let nav = UINavigationController(rootViewController: vc)
+                    let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+                    guard let sceneDelegate else { return }
+                    sceneDelegate.window?.rootViewController = nav
+                } else {
+                    let vc = OnboardingViewController()
+                    vc.modalPresentationStyle = .overFullScreen
+                    owner.present(vc, animated: false)
+                }
+            }
+            .disposed(by: disposeBag)
+
+    }
+
 
     override func configHierarchy() {
         view.addSubview(mainImage)
@@ -31,14 +55,13 @@ final class SplashViewController: BaseViewController {
     override func setLayout() {
 
         mainLabel.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(24)
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(39)
-            $0.height.equalTo(60)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            //$0.height.equalTo(60)
         }
 
         mainImage.snp.makeConstraints {
-            $0.center.equalToSuperview()
+            $0.centerY.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(12)
             $0.height.equalTo(mainImage.snp.width)
         }

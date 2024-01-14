@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NativeAppKey</key>
+	<string>$(NATIVE_APP_KEY)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -9,7 +11,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakaod00b46460dead69c7cb692d474b92bee</string>
+				<string>kakao$(NATIVE_APP_KEY)</string>
 			</array>
 		</dict>
 		<dict>
@@ -17,12 +19,13 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakaod00b46460dead69c7cb692d474b92bee://oauth</string>
+				<string>kakao$(NATIVE_APP_KEY)://oauth</string>
 			</array>
 		</dict>
 	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>kakaoplus</string>
 		<string>kakaolink</string>
 		<string>kakaokompassauth</string>
 	</array>

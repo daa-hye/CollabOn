@@ -9,7 +9,9 @@ import Foundation
 
 @frozen enum HeaderType {
     case withToken
+    case jsonWithToken
     case multipartWithToken
+    case refreshToken
     case `default`
 }
 
@@ -17,6 +19,7 @@ import Foundation
     case contentType = "Content-Type"
     case auth = "Authorization"
     case key = "SesacKey"
+    case refreshToken = "RefreshToken"
 }
 
 @frozen enum HTTPHeaderContent: String {

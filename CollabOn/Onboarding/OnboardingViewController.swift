@@ -26,14 +26,13 @@ final class OnboardingViewController: BaseViewController {
     override func setLayout() {
 
         mainLabel.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(24)
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(39)
             $0.height.equalTo(60)
         }
 
         mainImage.snp.makeConstraints {
-            $0.center.equalToSuperview()
+            $0.centerY.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(12)
             $0.height.equalTo(mainImage.snp.width)
         }

@@ -52,11 +52,11 @@ final class AuthSheetViewModel: ViewModelType {
         Observable.zip(identityToken, email)
             .flatMapLatest { (token, email) in
                 if let email = email, let nickname = email.components(separatedBy: "@").first  {
-                    return AuthService.shared.appleJoin(AppleJoin(idToken: token, nickname: nickname, deviceToken: nil))
+                    return UserService.shared.appleJoin(AppleJoin(idToken: token, nickname: nickname, deviceToken: nil))
                         .asObservable()
                         .materialize()
                 } else {
-                    return AuthService.shared.appleLogin(AppleLogin(idToken: token, deviceToken: nil))
+                    return UserService.shared.appleLogin(AppleLogin(idToken: token, deviceToken: nil))
                         .asObservable()
                         .materialize()
                 }
@@ -83,7 +83,7 @@ final class AuthSheetViewModel: ViewModelType {
             }
             .map { $0.accessToken }
             .flatMapLatest { token in
-                AuthService.shared.kakaoLogin(KakaoLogin(oauthToken: token, deviceToken: nil))
+                UserService.shared.kakaoLogin(KakaoLogin(oauthToken: token, deviceToken: nil))
                     .asObservable()
                     .materialize()
             }

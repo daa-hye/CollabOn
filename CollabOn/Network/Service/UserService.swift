@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 import RxSwift
 
-class UserService: Service {
+final class UserService: Service {
 
     static let shared = UserService()
 
@@ -19,150 +19,25 @@ class UserService: Service {
 
 extension UserService {
 
-    func emailLogin(_ data: EmailLogin) -> Single<Void> {
-        Single.create { observer in
-            let request = self.AFManager.request(UserRouter.emailLogin(model: data))
-                .responseData { response in
-                    switch response.result {
-                    case .success(let data):
-                        guard let statusCode = response.response?.statusCode else { return }
-                        let result = self.handleResponse(statusCode: statusCode, data, type: EmailLoginResponse.self)
-                        switch result {
-                        case .success(let value):
-                            guard let value = value else {  return observer(.failure(EndPointError.undefinedError)) }
-                            AppUserData.nickname = value.nickname
-                            AppUserData.token = value.accessToken
-                            AppUserData.token = value.refreshToken
-                            observer(.success(()))
-                        case .failure(let error):
-                            observer(.failure(error))
-                        }
-                    case .failure:
-                        observer(.failure(EndPointError.networkError))
-                    }
-                }
-
-            return Disposables.create {
-                request.cancel()
-            }
-
-        }
-    }
-
-    func appleJoin(_ data: AppleJoin) -> Single<Void> {
-        Single.create { observer in
-            let request = self.AFManager.request(UserRouter.appleJoin(model: data))
-                .responseData { response in
-                    switch response.result {
-                    case .success(let data):
-                        guard let statusCode = response.response?.statusCode else { return }
-                        let result = self.handleResponse(statusCode: statusCode, data, type: LoginResponse.self)
-                        switch result {
-                        case .success(let value):
-                            guard let value = value else {  return observer(.failure(EndPointError.undefinedError)) }
-                            AppUserData.nickname = value.nickname
-                            AppUserData.profileImage = value.profileImage ?? ""
-                            AppUserData.token = value.token.accessToken
-                            AppUserData.token = value.token.refreshToken
-                            observer(.success(()))
-                        case .failure(let error):
-                            observer(.failure(error))
-                        }
-                    case .failure:
-                        observer(.failure(EndPointError.networkError))
-                    }
-                }
-
-            return Disposables.create {
-                request.cancel()
-            }
-
-        }
-    }
-
-    func appleLogin(_ data: AppleLogin) -> Single<Void> {
-        Single.create { observer in
-            let request = self.AFManager.request(UserRouter.appleLogin(model: data))
-                .responseData { response in
-                    switch response.result {
-                    case .success(let data):
-                        guard let statusCode = response.response?.statusCode else { return }
-                        let result = self.handleResponse(statusCode: statusCode, data, type: LoginResponse.self)
-                        switch result {
-                        case .success(let value):
-                            guard let value = value else {  return observer(.failure(EndPointError.undefinedError)) }
-                            AppUserData.nickname = value.nickname
-                            AppUserData.profileImage = value.profileImage ?? ""
-                            AppUserData.token = value.token.accessToken
-                            AppUserData.token = value.token.refreshToken
-                            observer(.success(()))
-                        case .failure(let error):
-                            observer(.failure(error))
-                        }
-                    case .failure:
-                        observer(.failure(EndPointError.networkError))
-                    }
-                }
-
-            return Disposables.create {
-                request.cancel()
-            }
-
-        }
-    }
-
-    func kakaoLogin(_ data: KakaoLogin) -> Single<Void> {
-        Single.create { observer in
-            let request = self.AFManager.request(UserRouter.kakakLogin(model: data))
-                .responseData { response in
-                    switch response.result {
-                    case .success(let data):
-                        guard let statusCode = response.response?.statusCode else { return }
-                        let result = self.handleResponse(statusCode: statusCode, data, type: LoginResponse.self)
-                        switch result {
-                        case .success(let value):
-                            guard let value = value else {  return observer(.failure(EndPointError.undefinedError)) }
-                            AppUserData.nickname = value.nickname
-                            AppUserData.profileImage = value.profileImage ?? ""
-                            AppUserData.token = value.token.accessToken
-                            AppUserData.token = value.token.refreshToken
-                            observer(.success(()))
-                        case .failure(let error):
-                            observer(.failure(error))
-                        }
-                    case .failure:
-                        observer(.failure(EndPointError.networkError))
-                    }
-                }
-
-            return Disposables.create {
-                request.cancel()
-            }
-
-        }
-    }
-
     func join(_ data: Join) -> Single<Void> {
         Single.create { observer in
             let request = self.AFManager.request(UserRouter.join(model: data))
                 .responseData { response in
                 switch response.result {
                 case .success(let data):
-                    guard let statusCode = response.response?.statusCode else { return }
-                    let result = self.handleResponse(statusCode: statusCode, data, type: LoginResponse.self)
-                    switch result {
-                    case .success(let value):
-                        guard let value = value else {  return observer(.failure(EndPointError.undefinedError)) }
-                        AppUserData.nickname = value.nickname
-                        AppUserData.profileImage = value.profileImage ?? ""
-                        AppUserData.token = value.token.accessToken
-                        AppUserData.token = value.token.refreshToken
+                    if let result = self.handleResponse(data, type: LoginResponse.self) {
+                        AppUserData.nickname = result.nickname
+                        AppUserData.profileImage = result.profileImage ?? ""
+                        AppUserData.token = result.token.accessToken
+                        AppUserData.refreshToken = result.token.refreshToken
                         observer(.success(()))
-                    case .failure(let error):
-                        observer(.failure(error))
                     }
-                case .failure(_):
-                    observer(.failure(EndPointError.networkError))
+                case .failure:
+                    guard let statusCode = response.response?.statusCode, let data = response.data else {
+                        return observer(.failure(EndPointError.networkError))
+                    }
+                    let error = self.handleError(statusCode: statusCode, data)
+                    observer(.failure(error))
                 }
             }
 
@@ -179,18 +54,159 @@ extension UserService {
                 .response { response in
                 switch response.result {
                 case .success:
-                    guard let statusCode = response.response?.statusCode else { return }
-                    let result = self.handleResponse(statusCode: statusCode, response.data)
-                    switch result {
-                    case .success:
-                        observer(.success(()))
-                    case .failure(let error):
-                        observer(.failure(error))
-                    }
+                    observer(.success(()))
                 case .failure:
-                    observer(.failure(EndPointError.networkError))
+                    guard let statusCode = response.response?.statusCode, let data = response.data else {
+                        return observer(.failure(EndPointError.networkError))
+                    }
+                    let error = self.handleError(statusCode: statusCode, data)
+                    observer(.failure(error))
                 }
             }
+
+            return Disposables.create {
+                request.cancel()
+            }
+
+        }
+    }
+
+    func emailLogin(_ data: EmailLogin) -> Single<Void> {
+        Single.create { observer in
+            let request = self.AFManager.request(UserRouter.emailLogin(model: data))
+                .responseData { response in
+                    switch response.result {
+                    case .success(let data):
+                        if let result = self.handleResponse(data, type: EmailLoginResponse.self) {
+                            AppUserData.nickname = result.nickname
+                            AppUserData.token = result.accessToken
+                            AppUserData.refreshToken = result.refreshToken
+                            observer(.success(()))
+                        }
+                    case .failure:
+                        guard let statusCode = response.response?.statusCode, let data = response.data else {
+                            return observer(.failure(EndPointError.networkError))
+                        }
+                        let error = self.handleError(statusCode: statusCode, data)
+                        observer(.failure(error))
+                    }
+                }
+
+            return Disposables.create {
+                request.cancel()
+            }
+
+        }
+    }
+
+    func appleJoin(_ data: AppleJoin) -> Single<Void> {
+        Single.create { observer in
+            let request = self.AFManager.request(UserRouter.appleJoin(model: data))
+                .responseData { response in
+                    switch response.result {
+                    case .success(let data):
+                        if let result = self.handleResponse(data, type: LoginResponse.self) {
+                            AppUserData.nickname = result.nickname
+                            AppUserData.profileImage = result.profileImage ?? ""
+                            AppUserData.token = result.token.accessToken
+                            AppUserData.refreshToken = result.token.refreshToken
+                            observer(.success(()))
+                        }
+                    case .failure:
+                        guard let statusCode = response.response?.statusCode, let data = response.data else {
+                            return observer(.failure(EndPointError.networkError))
+                        }
+                        let error = self.handleError(statusCode: statusCode, data)
+                        observer(.failure(error))
+                    }
+                }
+
+            return Disposables.create {
+                request.cancel()
+            }
+
+        }
+    }
+
+    func appleLogin(_ data: AppleLogin) -> Single<Void> {
+        Single.create { observer in
+            let request = self.AFManager.request(UserRouter.appleLogin(model: data))
+                .responseData { response in
+                    switch response.result {
+                    case .success(let data):
+                        if let result = self.handleResponse(data, type: LoginResponse.self) {
+                            AppUserData.nickname = result.nickname
+                            AppUserData.profileImage = result.profileImage ?? ""
+                            AppUserData.token = result.token.accessToken
+                            AppUserData.refreshToken = result.token.refreshToken
+                            observer(.success(()))
+                        }
+                    case .failure:
+                        guard let statusCode = response.response?.statusCode, let data = response.data else {
+                            return observer(.failure(EndPointError.networkError))
+                        }
+                        let error = self.handleError(statusCode: statusCode, data)
+                        observer(.failure(error))
+                    }
+                }
+
+            return Disposables.create {
+                request.cancel()
+            }
+
+        }
+    }
+
+    func kakaoLogin(_ data: KakaoLogin) -> Single<Void> {
+        Single.create { observer in
+            let request = self.AFManager.request(UserRouter.kakakLogin(model: data))
+                .responseData { response in
+                    switch response.result {
+                    case .success(let data):
+                        if let result = self.handleResponse(data, type: LoginResponse.self) {
+                            AppUserData.nickname = result.nickname
+                            AppUserData.profileImage = result.profileImage ?? ""
+                            AppUserData.token = result.token.accessToken
+                            AppUserData.refreshToken = result.token.refreshToken
+                            observer(.success(()))
+                        }
+                    case .failure:
+                        guard let statusCode = response.response?.statusCode, let data = response.data else {
+                            return observer(.failure(EndPointError.networkError))
+                        }
+                        let error = self.handleError(statusCode: statusCode, data)
+                        observer(.failure(error))
+                    }
+                }
+
+            return Disposables.create {
+                request.cancel()
+            }
+
+        }
+    }
+
+    func getUserLoginData() -> Single<Bool> {
+        Single.create { observer in
+            let request = self.AFManager.request(UserRouter.getMyProfile)
+                .validate(statusCode: 200..<300)
+                .responseData { response in
+                    switch response.result {
+                    case .success(let data):
+                        if let result = self.handleResponse(data, type: MyInfo.self) {
+                            AppUserData.nickname = result.nickname
+                            AppUserData.profileImage = result.profileImage ?? ""
+                            observer(.success(true))
+                        }
+                    case .failure:
+                        guard let statusCode = response.response?.statusCode, let data = response.data else {
+                            observer(.failure(EndPointError.networkError))
+                            return
+                        }
+                        let error = self.handleError(statusCode: statusCode, data)
+                        observer(.failure(error))
+                    }
+                }
 
             return Disposables.create {
                 request.cancel()
