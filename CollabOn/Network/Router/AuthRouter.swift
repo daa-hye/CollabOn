@@ -12,6 +12,7 @@ enum AuthRouter {
     case emailLogin(model: EmailLogin)
     case appleJoin(model: AppleJoin)
     case appleLogin(model: AppleLogin)
+    case kakakLogin(model: KakaoLogin)
     case join(model: Join)
     case validationEmail(model: Email)
 }
@@ -28,6 +29,8 @@ extension AuthRouter: Router {
             return "/login"
         case .appleJoin, .appleLogin:
             return "/login/apple"
+        case .kakakLogin:
+            return "/login/kakao"
         case .join:
             return "/join"
         case .validationEmail:
@@ -37,14 +40,14 @@ extension AuthRouter: Router {
 
     var header: HeaderType {
         switch self {
-        case .emailLogin, .appleJoin, .appleLogin, .join, .validationEmail:
+        case .emailLogin, .appleJoin, .appleLogin, .kakakLogin, .join, .validationEmail:
             return .default
         }
     }
 
     var method: Alamofire.HTTPMethod {
         switch self {
-        case .emailLogin, .appleJoin, .appleLogin, .join, .validationEmail:
+        case .emailLogin, .appleJoin, .appleLogin, .kakakLogin, .join, .validationEmail:
             return .post
         }
     }
@@ -70,6 +73,13 @@ extension AuthRouter: Router {
         case .appleLogin(let model):
             let body: [String: Any] = [
                 "idToken": model.idToken,
+                "deviceToken": model.deviceToken ?? ""
+            ]
+            return .requestBody(body)
+
+        case.kakakLogin(let model):
+            let body: [String: Any] = [
+                "oauthToken": model.oauthToken,
                 "deviceToken": model.deviceToken ?? ""
             ]
             return .requestBody(body)

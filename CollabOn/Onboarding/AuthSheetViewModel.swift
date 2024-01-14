@@ -7,6 +7,9 @@
 
 import Foundation
 import RxSwift
+import KakaoSDKUser
+import KakaoSDKAuth
+import RxKakaoSDKUser
 
 final class AuthSheetViewModel: ViewModelType {
 
@@ -17,30 +20,33 @@ final class AuthSheetViewModel: ViewModelType {
 
     private let identityToken = PublishSubject<String>()
     private let email = PublishSubject<String?>()
+    private let kakaoLoginButtonDidTap = PublishSubject<Void>()
 
     private let loginSucceeded = PublishSubject<Void>()
-    private let toastMeaage = PublishSubject<String>()
+    private let toastMessage = PublishSubject<String>()
 
     struct Input {
         let identityToken: AnyObserver<String>
         let email: AnyObserver<String?>
+        let kakaoLoginButtonDidTap: AnyObserver<Void>
     }
 
     struct Output {
         let loginSucceeded: Observable<Void>
-        let toastMeaage: Observable<String>
+        let toastMessage: Observable<String>
     }
 
     init() {
 
         input = .init(
             identityToken: identityToken.asObserver(),
-            email: email.asObserver()
+            email: email.asObserver(), 
+            kakaoLoginButtonDidTap: kakaoLoginButtonDidTap.asObserver()
         )
 
         output = .init(
             loginSucceeded: loginSucceeded.observe(on: MainScheduler.instance),
-            toastMeaage: toastMeaage.observe(on: MainScheduler.instance)
+            toastMessage: toastMessage.observe(on: MainScheduler.instance)
         )
 
         Observable.zip(identityToken, email)
@@ -55,15 +61,47 @@ final class AuthSheetViewModel: ViewModelType {
                         .materialize()
                 }
             }
-            .subscribe(with: self) { owner, value in
-                switch value {
+            .subscribe(with: self) { owner, event in
+                switch event {
                 case .next:
                     owner.loginSucceeded.onNext(())
-                case .error(let error):
-                    owner.toastMeaage.onNext(Toast.loginFailed.message)
+                case .error:
+                    owner.toastMessage.onNext(Toast.loginFailed.message)
                 default:
-                    owner.toastMeaage.onNext(Toast.etc.message)
+                    owner.toastMessage.onNext(Toast.etc.message)
                 }
+            }
+            .disposed(by: disposeBag)
+
+        kakaoLoginButtonDidTap
+            .flatMapLatest { _ -> Observable<OAuthToken> in
+                if UserApi.isKakaoTalkLoginAvailable() {
+                    return UserApi.shared.rx.loginWithKakaoTalk()
+                } else {
+                    return UserApi.shared.rx.loginWithKakaoAccount()
+                }
+            }
+            .map { $0.accessToken }
+            .flatMapLatest { token in
+                AuthService.shared.kakaoLogin(KakaoLogin(oauthToken: token, deviceToken: nil))
+                    .asObservable()
+                    .materialize()
+            }
+            .subscribe(with: self) { owner, event in
+                switch event {
+                case .next:
+                    owner.loginSucceeded.onNext(())
+                case .error:
+                    owner.toastMessage.onNext(Toast.loginFailed.message)
+                default:
+                    break
+                }
+            }
+            .disposed(by: disposeBag)
+
+        toastMessage
+            .subscribe(with: self) { owner, value in
+                print(value)
             }
             .disposed(by: disposeBag)
 

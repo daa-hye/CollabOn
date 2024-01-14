@@ -111,6 +111,37 @@ extension AuthService {
         }
     }
 
+    func kakaoLogin(_ data: KakaoLogin) -> Single<Void> {
+        Single.create { observer in
+            let request = self.AFManager.request(AuthRouter.kakakLogin(model: data))
+                .responseData { response in
+                    switch response.result {
+                    case .success(let data):
+                        guard let statusCode = response.response?.statusCode else { return }
+                        let result = self.handleResponse(statusCode: statusCode, data, type: LoginResponse.self)
+                        switch result {
+                        case .success(let value):
+                            guard let value = value else {  return observer(.failure(EndPointError.undefinedError)) }
+                            AppUserData.nickname = value.nickname
+                            AppUserData.profileImage = value.profileImage ?? ""
+                            AppUserData.token = value.token.accessToken
+                            AppUserData.token = value.token.refreshToken
+                            observer(.success(()))
+                        case .failure(let error):
+                            observer(.failure(error))
+                        }
+                    case .failure:
+                        observer(.failure(EndPointError.networkError))
+                    }
+                }
+
+            return Disposables.create {
+                request.cancel()
+            }
+
+        }
+    }
+
     func join(_ data: Join) -> Single<Void> {
         Single.create { observer in
             let request = self.AFManager.request(AuthRouter.join(model: data))

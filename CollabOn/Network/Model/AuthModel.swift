@@ -30,6 +30,11 @@ struct AppleLogin: Decodable {
     let deviceToken: String?
 }
 
+struct KakaoLogin: Decodable {
+    let oauthToken: String
+    let deviceToken: String?
+}
+
 struct LoginResponse: Decodable {
     let nickname: String
     let profileImage: String?

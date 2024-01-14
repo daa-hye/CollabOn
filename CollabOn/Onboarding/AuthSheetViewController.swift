@@ -28,8 +28,7 @@ final class AuthSheetViewController: BaseViewController {
     override func bindRx() {
 
         appleLoginButton.rx.tap
-            .asDriver()
-            .drive(onNext: {
+            .subscribe(onNext: {
                 let appleIDProvider = ASAuthorizationAppleIDProvider()
                 let request = appleIDProvider.createRequest()
                 request.requestedScopes = [.email, .fullName]
@@ -41,9 +40,12 @@ final class AuthSheetViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
 
+        kakaoLoginButton.rx.tap
+            .bind(to: viewModel.input.kakaoLoginButtonDidTap)
+            .disposed(by: disposeBag)
+
         emailLoginButton.rx.tap
-            .asDriver()
-            .drive(with: self, onNext: { owner, _ in
+            .subscribe(with: self, onNext: { owner, _ in
                 owner.emailLoginButtonDidTap()
             })
             .disposed(by: disposeBag)
@@ -161,7 +163,6 @@ extension AuthSheetViewController: ASAuthorizationControllerDelegate {
                 print("Token error")
                 return
             }
-            print(email, tokenToString)
             viewModel.input.email.onNext(email)
             viewModel.input.identityToken.onNext(tokenToString)
 
