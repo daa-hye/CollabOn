@@ -13,7 +13,7 @@ import RxKakaoSDKUser
 
 final class AuthSheetViewModel: ViewModelType {
 
-    var disposeBag = DisposeBag()
+    let disposeBag = DisposeBag()
 
     let input: Input
     let output: Output

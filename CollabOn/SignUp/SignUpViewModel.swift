@@ -11,6 +11,8 @@ import RegexBuilder
 
 final class SignUpViewModel: ViewModelType {
 
+    let disposeBag = DisposeBag()
+
     let input: Input
     let output: Output
 
@@ -30,8 +32,6 @@ final class SignUpViewModel: ViewModelType {
     private let isCheckPasswordValid = PublishSubject<Bool>()
     private let toastMessage = PublishSubject<String>()
     private let signUpSucceeded = PublishSubject<Void>()
-
-    var disposeBag = DisposeBag()
 
     struct Input {
         let email: AnyObserver<String>

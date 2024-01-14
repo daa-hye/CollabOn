@@ -99,7 +99,7 @@ extension AuthService {
                         case .failure(let error):
                             observer(.failure(error))
                         }
-                    case .failure(let failure):
+                    case .failure:
                         observer(.failure(EndPointError.networkError))
                     }
                 }
@@ -187,7 +187,7 @@ extension AuthService {
                     case .failure(let error):
                         observer(.failure(error))
                     }
-                case .failure(let error):
+                case .failure:
                     observer(.failure(EndPointError.networkError))
                 }
             }

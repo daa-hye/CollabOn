@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WorkspaceInitialViewController: BaseViewController {
+final class WorkspaceInitialViewController: BaseViewController {
 
     private let mainImage = UIImageView()
     private let mainLabel = UILabel()
