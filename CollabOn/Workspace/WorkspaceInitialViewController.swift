@@ -87,9 +87,11 @@ extension WorkspaceInitialViewController {
         navigationItem.leftBarButtonItem = closeButton
     }
 
-    @objc
-    private func closeButtonDidTap() {
-        dismiss(animated: true)
+    @objc private func closeButtonDidTap() {
+        let vc = TabBarController()
+        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+        guard let sceneDelegate else { return }
+        sceneDelegate.window?.rootViewController = vc
     }
 
 }

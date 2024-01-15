@@ -31,11 +31,10 @@ final class SplashViewController: BaseViewController {
             .asDriver(onErrorJustReturn: false)
             .drive(with: self) { owner, value in
                 if value {
-                    let vc = HomeViewController()
-                    let nav = UINavigationController(rootViewController: vc)
+                    let vc = TabBarController()
                     let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
                     guard let sceneDelegate else { return }
-                    sceneDelegate.window?.rootViewController = nav
+                    sceneDelegate.window?.rootViewController = vc
                 } else {
                     let vc = OnboardingViewController()
                     vc.modalPresentationStyle = .overFullScreen
