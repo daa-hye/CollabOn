@@ -14,12 +14,22 @@ class Interceptor: RequestInterceptor {
     let disposeBag = DisposeBag()
 
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
-        guard let _ = request.request?.value(forHTTPHeaderField: HTTPHeaderField.auth.rawValue),
-              request.request?.value(forHTTPHeaderField: HTTPHeaderField.refreshToken.rawValue) == nil,
-              let response = request.task?.response as? HTTPURLResponse,
-              response.statusCode == 400 else {
+        guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 400 else {
             completion(.doNotRetryWithError(error))
             return
+        }
+
+        if let request = request as? DataRequest, let data = request.data {
+            let decoder = JSONDecoder()
+            guard let errorcode = try? decoder.decode(ErrorResponse.self, from: data).errorCode else {
+                completion(.doNotRetryWithError(error))
+                return
+            }
+
+            if EndPointError(rawValue: errorcode) != .tokenExpired {
+                completion(.doNotRetryWithError(error))
+            }
+
         }
 
         AuthService.shared.refreshToken()
