@@ -68,7 +68,7 @@ final class AuthSheetViewModel: ViewModelType {
                 case .error:
                     owner.toastMessage.onNext(Toast.loginFailed.message)
                 default:
-                    owner.toastMessage.onNext(Toast.etc.message)
+                    break
                 }
             }
             .disposed(by: disposeBag)

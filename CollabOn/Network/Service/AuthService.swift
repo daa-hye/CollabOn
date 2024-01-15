@@ -28,7 +28,8 @@ extension AuthService {
                     case .success(let data):
                         if let result = self.handleResponse(data, type: RefreshTokenResponse.self) {
                             AppUserData.token = result.accessToken
-                            observer(.success(()))}
+                            observer(.success(()))
+                        }
                     case .failure:
                         guard let statusCode = response.response?.statusCode, let data = response.data else {
                             return observer(.failure(EndPointError.networkError))

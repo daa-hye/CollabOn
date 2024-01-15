@@ -29,8 +29,10 @@ class Interceptor: RequestInterceptor {
                 switch event {
                 case .next:
                     completion(.retry)
-                default:
+                case .error:
                     completion(.doNotRetryWithError(error))
+                default:
+                    break
                 }
             }
             .disposed(by: disposeBag)
