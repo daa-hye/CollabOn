@@ -16,7 +16,7 @@ final class TabBarController: UITabBarController {
         tabBar.tintColor = .black
 
         let homeView = {
-            let view = HomeViewController()
+            let view = UINavigationController(rootViewController: HomeViewController())
             view.tabBarItem.image = .home
             view.tabBarItem.title = String(localized: "홈")
             return view

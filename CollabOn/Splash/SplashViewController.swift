@@ -55,8 +55,8 @@ final class SplashViewController: BaseViewController {
 
         mainLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(24)
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
-            //$0.height.equalTo(60)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(39)
+            $0.height.equalTo(60)
         }
 
         mainImage.snp.makeConstraints {

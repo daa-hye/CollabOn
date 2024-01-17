@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 import RxSwift
 
-class Interceptor: RequestInterceptor {
+class TokenErrorInterceptor: RequestInterceptor {
 
     let disposeBag = DisposeBag()
 
