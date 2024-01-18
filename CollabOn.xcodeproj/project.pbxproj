@@ -20,6 +20,7 @@
 		5302FA152B4BF32D001B3F47 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5302FA142B4BF32D001B3F47 /* ErrorResponse.swift */; };
 		5302FA1A2B4C260F001B3F47 /* UserDafaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5302FA192B4C260F001B3F47 /* UserDafaultsManager.swift */; };
 		5302FA1C2B4C2985001B3F47 /* AppUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5302FA1B2B4C2985001B3F47 /* AppUserData.swift */; };
+		53393C832B595AB100917096 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 53393C822B595AB100917096 /* RxGesture */; };
 		533FBA7A2B52C0DF00A1196B /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 533FBA792B52C0DF00A1196B /* KakaoSDK */; };
 		533FBA7C2B52C0DF00A1196B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 533FBA7B2B52C0DF00A1196B /* KakaoSDKAuth */; };
 		533FBA7E2B52C0DF00A1196B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 533FBA7D2B52C0DF00A1196B /* KakaoSDKCommon */; };
@@ -34,8 +35,13 @@
 		533FBA972B53CD8C00A1196B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533FBA962B53CD8C00A1196B /* HomeViewController.swift */; };
 		533FBA992B53D45000A1196B /* Interceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533FBA982B53D45000A1196B /* Interceptor.swift */; };
 		536D6AF62B6CE1F1008BC481 /* UIViewController + Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AF52B6CE1F1008BC481 /* UIViewController + Toast.swift */; };
+		533FBA992B53D45000A1196B /* TokenErrorInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533FBA982B53D45000A1196B /* TokenErrorInterceptor.swift */; };
 		533FBA9B2B54EDFE00A1196B /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533FBA9A2B54EDFE00A1196B /* HomeViewModel.swift */; };
 		533FBA9D2B55038C00A1196B /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533FBA9C2B55038C00A1196B /* TabBarController.swift */; };
+		533FBA9F2B555D8000A1196B /* WorkspaceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533FBA9E2B555D8000A1196B /* WorkspaceRouter.swift */; };
+		533FBAA12B555D8B00A1196B /* WorkspaceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533FBAA02B555D8B00A1196B /* WorkspaceService.swift */; };
+		533FBAA32B555D9500A1196B /* WorkspaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533FBAA22B555D9500A1196B /* WorkspaceModel.swift */; };
+		539046B62B593F700075CE54 /* Extension + UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539046B52B593F700075CE54 /* Extension + UIImage.swift */; };
 		53D7B1FD2B43F638003116D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7B1FC2B43F638003116D7 /* AppDelegate.swift */; };
 		53D7B1FF2B43F638003116D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7B1FE2B43F638003116D7 /* SceneDelegate.swift */; };
 		53D7B2062B43F639003116D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53D7B2052B43F639003116D7 /* Assets.xcassets */; };
@@ -53,6 +59,8 @@
 		53D7B22E2B457B20003116D7 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 53D7B22D2B457B20003116D7 /* Localizable.xcstrings */; };
 		53D7B2302B466A41003116D7 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7B22F2B466A41003116D7 /* SignUpViewModel.swift */; };
 		53D7B2322B466A6D003116D7 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7B2312B466A6D003116D7 /* ViewModelType.swift */; };
+		53E643002B57CE77000CBC1F /* WorkspaceAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E642FF2B57CE77000CBC1F /* WorkspaceAddViewController.swift */; };
+		53E643022B57FE60000CBC1F /* WorkspaceAddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E643012B57FE60000CBC1F /* WorkspaceAddViewModel.swift */; };
 		53F5D8322B4F6BD200809760 /* WorkspaceInitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F5D8312B4F6BD200809760 /* WorkspaceInitialViewController.swift */; };
 		53F5D8342B4FB24D00809760 /* Extension + String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F5D8332B4FB24D00809760 /* Extension + String.swift */; };
 		53F5D84E2B50AF4400809760 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F5D84D2B50AF4400809760 /* LoginViewController.swift */; };
@@ -81,8 +89,13 @@
 		533FBA962B53CD8C00A1196B /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		533FBA982B53D45000A1196B /* Interceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interceptor.swift; sourceTree = "<group>"; };
 		536D6AF52B6CE1F1008BC481 /* UIViewController + Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Toast.swift"; sourceTree = "<group>"; };
+		533FBA982B53D45000A1196B /* TokenErrorInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenErrorInterceptor.swift; sourceTree = "<group>"; };
 		533FBA9A2B54EDFE00A1196B /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		533FBA9C2B55038C00A1196B /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		533FBA9E2B555D8000A1196B /* WorkspaceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceRouter.swift; sourceTree = "<group>"; };
+		533FBAA02B555D8B00A1196B /* WorkspaceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceService.swift; sourceTree = "<group>"; };
+		533FBAA22B555D9500A1196B /* WorkspaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceModel.swift; sourceTree = "<group>"; };
+		539046B52B593F700075CE54 /* Extension + UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + UIImage.swift"; sourceTree = "<group>"; };
 		53D7B1F92B43F638003116D7 /* CollabOn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CollabOn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53D7B1FC2B43F638003116D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		53D7B1FE2B43F638003116D7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -99,6 +112,8 @@
 		53D7B22D2B457B20003116D7 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		53D7B22F2B466A41003116D7 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		53D7B2312B466A6D003116D7 /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
+		53E642FF2B57CE77000CBC1F /* WorkspaceAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAddViewController.swift; sourceTree = "<group>"; };
+		53E643012B57FE60000CBC1F /* WorkspaceAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAddViewModel.swift; sourceTree = "<group>"; };
 		53F5D82F2B4E6FA600809760 /* CollabOn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CollabOn.entitlements; sourceTree = "<group>"; };
 		53F5D8312B4F6BD200809760 /* WorkspaceInitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceInitialViewController.swift; sourceTree = "<group>"; };
 		53F5D8332B4FB24D00809760 /* Extension + String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + String.swift"; sourceTree = "<group>"; };
@@ -120,6 +135,7 @@
 				533FBA812B52C0EC00A1196B /* RxKakaoSDK in Frameworks */,
 				533FBA852B52C0EC00A1196B /* RxKakaoSDKCommon in Frameworks */,
 				533FBA832B52C0EC00A1196B /* RxKakaoSDKAuth in Frameworks */,
+				53393C832B595AB100917096 /* RxGesture in Frameworks */,
 				53D7B2152B43F9B7003116D7 /* SnapKit in Frameworks */,
 				533FBA7C2B52C0DF00A1196B /* KakaoSDKAuth in Frameworks */,
 			);
@@ -142,7 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				5302FA092B4AED54001B3F47 /* NetworkConstants.swift */,
-				533FBA982B53D45000A1196B /* Interceptor.swift */,
+				533FBA982B53D45000A1196B /* TokenErrorInterceptor.swift */,
 				5302FA0F2B4BCA9B001B3F47 /* Common */,
 				5302FA0E2B4BCA0F001B3F47 /* Router */,
 				5302FA0D2B4BC9FE001B3F47 /* Service */,
@@ -156,6 +172,7 @@
 			children = (
 				533FBA912B53940000A1196B /* AuthService.swift */,
 				5302FA0B2B4B75FA001B3F47 /* UserService.swift */,
+				533FBAA02B555D8B00A1196B /* WorkspaceService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -165,6 +182,7 @@
 			children = (
 				533FBA8F2B538CFA00A1196B /* AuthRouter.swift */,
 				5302FA032B4AD9F5001B3F47 /* UserRouter.swift */,
+				533FBA9E2B555D8000A1196B /* WorkspaceRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -186,6 +204,7 @@
 			children = (
 				533FBA932B53955600A1196B /* AuthModel.swift */,
 				5302FA112B4BCE07001B3F47 /* UserModel.swift */,
+				533FBAA22B555D9500A1196B /* WorkspaceModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -284,6 +303,7 @@
 				53D7B2192B44032B003116D7 /* Extension + UIFont.swift */,
 				53F5D8332B4FB24D00809760 /* Extension + String.swift */,
 				536D6AF52B6CE1F1008BC481 /* UIViewController + Toast.swift */,
+				539046B52B593F700075CE54 /* Extension + UIImage.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -301,6 +321,8 @@
 			isa = PBXGroup;
 			children = (
 				53F5D8312B4F6BD200809760 /* WorkspaceInitialViewController.swift */,
+				53E642FF2B57CE77000CBC1F /* WorkspaceAddViewController.swift */,
+				53E643012B57FE60000CBC1F /* WorkspaceAddViewModel.swift */,
 			);
 			path = Workspace;
 			sourceTree = "<group>";
@@ -341,6 +363,7 @@
 				533FBA802B52C0EC00A1196B /* RxKakaoSDK */,
 				533FBA822B52C0EC00A1196B /* RxKakaoSDKAuth */,
 				533FBA842B52C0EC00A1196B /* RxKakaoSDKCommon */,
+				53393C822B595AB100917096 /* RxGesture */,
 			);
 			productName = CollabOn;
 			productReference = 53D7B1F92B43F638003116D7 /* CollabOn.app */;
@@ -377,6 +400,7 @@
 				5302F9F92B4AA464001B3F47 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				533FBA782B52C0DF00A1196B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				533FBA7F2B52C0EC00A1196B /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
+				53393C812B595AB100917096 /* XCRemoteSwiftPackageReference "RxGesture" */,
 			);
 			productRefGroup = 53D7B1FA2B43F638003116D7 /* Products */;
 			projectDirPath = "";
@@ -417,18 +441,24 @@
 				5302FA1A2B4C260F001B3F47 /* UserDafaultsManager.swift in Sources */,
 				53F5D8502B50FE8C00809760 /* LoginViewModel.swift in Sources */,
 				5302FA062B4AE4A5001B3F47 /* Service.swift in Sources */,
+				533FBAA12B555D8B00A1196B /* WorkspaceService.swift in Sources */,
 				5302FA0C2B4B75FA001B3F47 /* UserService.swift in Sources */,
 				53D7B2292B4518EB003116D7 /* SignUpViewController.swift in Sources */,
+				533FBAA32B555D9500A1196B /* WorkspaceModel.swift in Sources */,
 				5302FA042B4AD9F5001B3F47 /* UserRouter.swift in Sources */,
 				533FBA902B538CFA00A1196B /* AuthRouter.swift in Sources */,
 				536D6AF62B6CE1F1008BC481 /* UIViewController + Toast.swift in Sources */,
+				53E643022B57FE60000CBC1F /* WorkspaceAddViewModel.swift in Sources */,
 				533FBA922B53940000A1196B /* AuthService.swift in Sources */,
 				5302F9F62B4A9F45001B3F47 /* SLP.swift in Sources */,
+				533FBA9F2B555D8000A1196B /* WorkspaceRouter.swift in Sources */,
 				533FBA8E2B53805B00A1196B /* SplashViewModel.swift in Sources */,
 				533FBA9B2B54EDFE00A1196B /* HomeViewModel.swift in Sources */,
 				53F5D8522B52080900809760 /* AuthSheetViewModel.swift in Sources */,
+				539046B62B593F700075CE54 /* Extension + UIImage.swift in Sources */,
 				53D7B22B2B451C17003116D7 /* InputTextField.swift in Sources */,
 				53D7B2182B43FC01003116D7 /* BaseViewController.swift in Sources */,
+				53E643002B57CE77000CBC1F /* WorkspaceAddViewController.swift in Sources */,
 				5302FA0A2B4AED54001B3F47 /* NetworkConstants.swift in Sources */,
 				53F5D8322B4F6BD200809760 /* WorkspaceInitialViewController.swift in Sources */,
 				53D7B2112B43F8BE003116D7 /* OnboardingViewController.swift in Sources */,
@@ -439,7 +469,7 @@
 				5302F9EB2B4985F7001B3F47 /* SocialLoginButton.swift in Sources */,
 				53D7B1FF2B43F638003116D7 /* SceneDelegate.swift in Sources */,
 				533FBA9D2B55038C00A1196B /* TabBarController.swift in Sources */,
-				533FBA992B53D45000A1196B /* Interceptor.swift in Sources */,
+				533FBA992B53D45000A1196B /* TokenErrorInterceptor.swift in Sources */,
 				53F5D84E2B50AF4400809760 /* LoginViewController.swift in Sources */,
 				5302FA1C2B4C2985001B3F47 /* AppUserData.swift in Sources */,
 				533FBA942B53955600A1196B /* AuthModel.swift in Sources */,
@@ -677,6 +707,14 @@
 				minimumVersion = 5.8.1;
 			};
 		};
+		53393C812B595AB100917096 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.4;
+			};
+		};
 		533FBA782B52C0DF00A1196B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk.git";
@@ -716,6 +754,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5302F9F92B4AA464001B3F47 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		53393C822B595AB100917096 /* RxGesture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 53393C812B595AB100917096 /* XCRemoteSwiftPackageReference "RxGesture" */;
+			productName = RxGesture;
 		};
 		533FBA792B52C0DF00A1196B /* KakaoSDK */ = {
 			isa = XCSwiftPackageProductDependency;

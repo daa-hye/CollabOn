@@ -17,11 +17,13 @@ class WorkspaceAddViewModel: ViewModelType {
 
     private let name = PublishSubject<String>()
     private let description = PublishSubject<String>()
+    private let image = PublishSubject<Data>()
     private let confirmButtonDidTap = PublishSubject<Void>()
 
     struct Input {
         let name: AnyObserver<String>
         let description: AnyObserver<String>
+        let image: AnyObserver<Data>
         let confirmButtonDidTap: AnyObserver<Void>
     }
 
@@ -34,6 +36,7 @@ class WorkspaceAddViewModel: ViewModelType {
         input = .init(
             name: name.asObserver(),
             description: description.asObserver(),
+            image: image.asObserver(),
             confirmButtonDidTap: confirmButtonDidTap.asObserver())
 
         output = .init()

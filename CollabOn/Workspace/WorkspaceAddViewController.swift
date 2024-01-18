@@ -6,8 +6,10 @@
 //
 
 import UIKit
+import PhotosUI
 import RxSwift
 import RxCocoa
+import RxGesture
 
 class WorkspaceAddViewController: BaseViewController {
 
@@ -43,6 +45,13 @@ class WorkspaceAddViewController: BaseViewController {
 
         descriptionTextField.text
             .bind(to: viewModel.input.description)
+            .disposed(by: disposeBag)
+
+        profileView.rx.tapGesture()
+            .when(.recognized)
+            .subscribe(with: self) { owner, _ in
+                owner.presentPickerView()
+            }
             .disposed(by: disposeBag)
 
         confirmButton.rx.tap
@@ -113,8 +122,10 @@ class WorkspaceAddViewController: BaseViewController {
         backgroundView.backgroundColor = .main
         backgroundView.layer.cornerRadius = 8
 
+
         cameraImage.image = .camera
         profileImage.image = .workspace
+        backgroundView.clipsToBounds = true
 
         nameTextField.setText(label: String(localized: "워크스페이스 이름"),
                               placeHolder: String(localized: "워크스페이스 이름을 입력하세요 (필수)"))
@@ -125,6 +136,19 @@ class WorkspaceAddViewController: BaseViewController {
 }
 
 extension WorkspaceAddViewController {
+
+    private func presentPickerView() {
+        var configuration = PHPickerConfiguration()
+        configuration.selectionLimit = 1
+
+        configuration.filter = .any(of: [.images, .depthEffectPhotos, .livePhotos])
+
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.modalPresentationStyle = .fullScreen
+        picker.delegate = self
+
+        present(picker, animated: true)
+    }
 
     private func setNavItem() {
 
@@ -149,6 +173,38 @@ extension WorkspaceAddViewController {
         dismiss(animated: true)
     }
     
+}
+
+extension WorkspaceAddViewController: PHPickerViewControllerDelegate {
+
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        let itemProvider = results.first?.itemProvider
+        if let itemProvider,
+           itemProvider
+            .hasItemConformingToTypeIdentifier(UTType.image.identifier) {
+            itemProvider
+                .loadDataRepresentation(
+                    forTypeIdentifier: UTType.image.identifier,
+                    completionHandler: { [weak self] data, error in
+                        guard let data,
+                              let image = UIImage(data: data)
+                        else { return }
+
+                        image.resizeImage(toTargetSizeMB: 1) { image in
+                            guard let image = image, let data = image.jpegData(compressionQuality: 1) else { return }
+                            DispatchQueue.main.async {
+                                self?.profileImage.image = image
+                                self?.profileImage.snp.makeConstraints {
+                                    $0.edges.equalToSuperview()
+                                }
+                                self?.viewModel.input.image.onNext(data)
+                                picker.dismiss(animated: true)
+                            }
+                        }
+                    })
+        }
+    }
+
 }
 
 extension WorkspaceAddViewController: InputTextFieldDelegate {

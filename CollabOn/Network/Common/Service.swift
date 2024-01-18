@@ -17,7 +17,7 @@ class Service {
         let configuration = URLSessionConfiguration.af.default
         configuration.timeoutIntervalForRequest = currentEnvironment.resourceTimeOut
         configuration.timeoutIntervalForResource = currentEnvironment.resourceTimeOut
-        let interceptor = Interceptor()
+        let interceptor = TokenErrorInterceptor()
         session = Session(configuration: configuration, interceptor: interceptor)
         return session
     }()
@@ -41,5 +41,9 @@ class Service {
             return .networkError
         }
     }
+
+}
+
+extension Service {
 
 }
