@@ -1,5 +1,5 @@
 //
-//  Interceptor.swift
+//  TokenErrorInterceptor.swift
 //  CollabOn
 //
 //  Created by 박다혜 on 1/14/24.
@@ -14,37 +14,28 @@ class TokenErrorInterceptor: RequestInterceptor {
     let disposeBag = DisposeBag()
 
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
-        guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 400 else {
-            completion(.doNotRetryWithError(error))
-            return
-        }
+        guard let response = request.task?.response as? HTTPURLResponse,
+              response.statusCode == 400 else {
+            return completion(.doNotRetryWithError(error))
+        } 
 
-        if let request = request as? DataRequest, let data = request.data {
-            let decoder = JSONDecoder()
-            guard let errorcode = try? decoder.decode(ErrorResponse.self, from: data).errorCode else {
-                completion(.doNotRetryWithError(error))
-                return
+        if let request = request as? DataRequest,
+           let data = request.data {
+            guard let errorcode = try? JSONDecoder().decode(ErrorResponse.self, from: data).errorCode else {
+                return completion(.doNotRetryWithError(error))
             }
 
             if EndPointError(rawValue: errorcode) != .tokenExpired {
-                completion(.doNotRetryWithError(error))
+                return completion(.doNotRetryWithError(error))
             }
-
         }
 
         AuthService.shared.refreshToken()
-            .asObservable()
-            .materialize()
-            .subscribe(with: self) { owner, event in
-                switch event {
-                case .next:
-                    completion(.retry)
-                case .error:
-                    completion(.doNotRetryWithError(error))
-                default:
-                    break
-                }
-            }
+            .subscribe(with: self, onSuccess: { owner, _ in
+                completion(.retry)
+            }, onFailure: { owner, _ in
+                completion(.doNotRetryWithError(error))
+            })
             .disposed(by: disposeBag)
     }
 
