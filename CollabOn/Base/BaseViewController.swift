@@ -25,4 +25,5 @@ class BaseViewController: UIViewController {
     func setLayout() {}
     func setUIProperties() {}
     func bindRx() {}
+    
 }

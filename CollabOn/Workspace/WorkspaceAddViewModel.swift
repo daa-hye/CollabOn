@@ -40,7 +40,26 @@ class WorkspaceAddViewModel: ViewModelType {
             confirmButtonDidTap: confirmButtonDidTap.asObserver())
 
         output = .init()
-        
+
+        confirmButtonDidTap
+            .withLatestFrom(Observable.combineLatest(name, description, image))
+            .flatMapLatest { (name, description, image) in
+                WorkspaceService.shared.createWorkspace(Workspace(name: name, description: description, image: image))
+                    .asObservable()
+                    .materialize()
+            }
+            .subscribe(with: self) { owner, event in
+                switch event {
+                case .next(let data):
+                    print(data)
+                case .error(let error):
+                    print(error)
+                default:
+                    break
+                }
+            }
+            .disposed(by: disposeBag)
+
     }
 
 }

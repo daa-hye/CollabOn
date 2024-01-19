@@ -62,6 +62,7 @@ final class HomeViewController: BaseViewController {
 
     override func setLayout() {
         navigationController?.navigationBar.isHidden = true
+        tabBarController?.tabBar.isHidden = true
 
         mainImage.snp.makeConstraints {
             $0.center.equalToSuperview()

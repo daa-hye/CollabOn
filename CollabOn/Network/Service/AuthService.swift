@@ -10,11 +10,8 @@ import Alamofire
 import RxSwift
 
 final class AuthService: Service {
- 
     static let shared = AuthService()
-
     private override init() {}
-
 }
 
 extension AuthService {

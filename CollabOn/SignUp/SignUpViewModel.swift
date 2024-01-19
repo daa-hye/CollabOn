@@ -117,7 +117,7 @@ final class SignUpViewModel: ViewModelType {
                         owner.toastMessage.onNext(Toast.etc.message)
                     }
                 default:
-                    owner.toastMessage.onNext(Toast.etc.message)
+                    break
                 }
             }
             .disposed(by: disposeBag)
@@ -142,7 +142,7 @@ final class SignUpViewModel: ViewModelType {
                         owner.toastMessage.onNext(Toast.etc.message)
                     }
                 default:
-                    owner.toastMessage.onNext(Toast.etc.message)
+                    break
                 }
             }
             .disposed(by: self.disposeBag)

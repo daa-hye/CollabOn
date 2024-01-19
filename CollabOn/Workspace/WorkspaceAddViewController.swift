@@ -57,6 +57,7 @@ class WorkspaceAddViewController: BaseViewController {
         confirmButton.rx.tap
             .bind(to: viewModel.input.confirmButtonDidTap)
             .disposed(by: disposeBag)
+
     }
 
     override func configHierarchy() {
@@ -119,6 +120,7 @@ class WorkspaceAddViewController: BaseViewController {
     }
 
     override func setUIProperties() {
+        buttonView.isUserInteractionEnabled = true
         backgroundView.backgroundColor = .main
         backgroundView.layer.cornerRadius = 8
 

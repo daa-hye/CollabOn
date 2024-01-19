@@ -14,6 +14,7 @@ enum AppUserData {
         case profileImage
         case token
         case refreshToken
+        case currentWorkspace
     }
 
     @UserDafaultsManager(key: Key.nickname.rawValue, defaultValue: "")
@@ -27,5 +28,8 @@ enum AppUserData {
 
     @UserDafaultsManager(key: Key.refreshToken.rawValue, defaultValue: "")
     static var refreshToken
+
+    @UserDafaultsManager(key: Key.currentWorkspace.rawValue, defaultValue: 0)
+    static var currentWorkspace
 
 }
