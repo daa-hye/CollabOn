@@ -99,12 +99,6 @@ final class AuthSheetViewModel: ViewModelType {
             }
             .disposed(by: disposeBag)
 
-        toastMessage
-            .subscribe(with: self) { owner, value in
-                print(value)
-            }
-            .disposed(by: disposeBag)
-
     }
 }
 

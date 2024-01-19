@@ -147,12 +147,6 @@ final class SignUpViewModel: ViewModelType {
             }
             .disposed(by: self.disposeBag)
 
-        toastMessage
-            .subscribe(with: self) { owner, value in
-                print(value)
-            }
-            .disposed(by: disposeBag)
-
     }
 
 }

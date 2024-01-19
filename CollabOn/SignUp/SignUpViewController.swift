@@ -110,6 +110,13 @@ final class SignUpViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
 
+        viewModel.output.toastMessage
+            .asDriver(onErrorJustReturn: "")
+            .drive(with: self) { owner, message in
+                owner.showToast(message: message, constraintView: owner.buttonView, offset: 4)
+            }
+            .disposed(by: disposeBag)
+
     }
 
     override func configHierarchy() {
