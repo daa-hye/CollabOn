@@ -8,25 +8,30 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxGesture
 
 final class HomeViewController: BaseViewController {
 
-    let mainImage = UIImageView()
-    let mainLabel = UILabel()
-    let subLabel = UILabel()
-    let createButton = PrimaryButton(title: String(localized: "워크스페이스 생성"))
-    let navigationView = UIView()
-    let divider = UIImageView()
-    let titleLabel = UILabel()
-    let thumbnailView = UIImageView()
-    let profileView = UIImageView()
+    private let mainImage = UIImageView()
+    private let mainLabel = UILabel()
+    private let subLabel = UILabel()
+    private let createButton = PrimaryButton(title: String(localized: "워크스페이스 생성"))
+    private let navigationView = UIView()
+    private let divider = UIImageView()
+    private let titleLabel = UILabel()
+    private let thumbnailView = UIImageView()
+    private let profileView = UIImageView()
+
+    private var sideMenuViewController: WorkspaceListViewController!
+    private var sideMenuDimView = UIView()
+    private lazy var sideMenuWidth: CGFloat = self.view.frame.width * 0.8
 
     private var dataSource: UICollectionViewDiffableDataSource<Int, Channel>! = nil
     private var collectionView: UICollectionView! = nil
 
     private var snapshot = NSDiffableDataSourceSnapshot<Int, Channel>()
 
-    var disposeBag = DisposeBag()
+    let disposeBag = DisposeBag()
 
     private let viewModel = HomeViewModel()
 
@@ -38,17 +43,98 @@ final class HomeViewController: BaseViewController {
     override func bindRx() {
 
         createButton.rx.tap
-            .asDriver()
-            .drive(with: self) { owner, _ in
+            .subscribe(with: self) { owner, _ in
                 let vc = WorkspaceAddViewController()
                 let nav = UINavigationController(rootViewController: vc)
-                self.present(nav, animated: true)
+                owner.present(nav, animated: true)
+            }
+            .disposed(by: disposeBag)
+
+        view.rx.swipeGesture(.right)
+            .when(.recognized)
+            .subscribe(with: self) { owner, _ in
+                owner.sideMenuViewController.isExpanded.accept(true)
+            }
+            .disposed(by: disposeBag)
+
+        sideMenuDimView.rx.tapGesture()
+            .when(.recognized)
+            .subscribe(with: self) { owner, _ in
+                owner.sideMenuViewController.isExpanded.accept(false)
+            }
+            .disposed(by: disposeBag)
+
+        sideMenuViewController.isExpanded
+            .skip(1)
+            .distinctUntilChanged()
+            .subscribe(with: self) { owner, value in
+                UIView.animate(withDuration: 0.5) {
+                    self.sideMenuDimView.alpha = value ? 0.5 : 0.01
+                }
+                owner.animateSideMenu(targetPosition: value ? owner.sideMenuWidth : 0)
+            }
+            .disposed(by: disposeBag)
+
+        sideMenuViewController.view.rx.panGesture().when(.began, .ended, .cancelled)
+            .withLatestFrom(Observable.combineLatest(sideMenuViewController.isExpanded,
+                                                     sideMenuViewController.isDraggable)) { ($0, $1.0, $1.1) }
+            .subscribe { [weak self] (event, isExpanded, isDraggable) in
+                let position = event.translation(in: self?.view).x
+                let velocity = event.velocity(in: self?.view).x
+
+                switch event.state {
+                case .began:
+                    if velocity > 0 , isExpanded {
+                        event.state = .cancelled
+                    }
+                    else if velocity < 0, !isExpanded {
+                        self?.sideMenuViewController.isDraggable.accept(true)
+                    }
+
+                    if isDraggable {
+                        let velocityThreshold: CGFloat = 550
+                        if abs(velocity) > velocityThreshold {
+                            self?.sideMenuViewController.isDraggable.accept(false)
+                            self?.sideMenuViewController.isExpanded.accept(!isExpanded)
+                            return
+                        }
+                        self?.sideMenuViewController.panBaseLocation = 0.0
+                        if isExpanded {
+                            self?.sideMenuViewController.panBaseLocation = self?.sideMenuWidth ?? 0
+                        }
+                    }
+
+                case .changed:
+                    print()
+                    if isDraggable {
+                        let xLocation: CGFloat = (self?.sideMenuViewController.panBaseLocation ?? 0) + position
+                        let percentage = (xLocation * 150 / (self?.sideMenuWidth ?? 0)) / (self?.sideMenuWidth ?? 0)
+
+                        let alpha = percentage >= 0.6 ? 0.6 : percentage
+                        self?.sideMenuDimView.alpha = alpha
+
+                        if xLocation <= self?.sideMenuWidth ?? 0 {
+                            self?.sideMenuViewController.view.snp.makeConstraints {
+                                $0.width.equalTo(xLocation - (self?.sideMenuWidth ?? 0))
+                            }
+                        }
+                    }
+
+                case .ended:
+                    self?.sideMenuViewController.isDraggable.accept(false)
+                    let width = self?.sideMenuViewController.view.frame.width ?? 0 > -((self?.sideMenuWidth ?? 0) * 0.5)
+                    self?.sideMenuViewController.isExpanded.accept(width)
+
+                default:
+                    break
+                }
             }
             .disposed(by: disposeBag)
 
     }
 
     override func configHierarchy() {
+
         view.addSubview(mainImage)
         view.addSubview(navigationView)
         view.addSubview(mainLabel)
@@ -58,11 +144,21 @@ final class HomeViewController: BaseViewController {
         navigationView.addSubview(thumbnailView)
         navigationView.addSubview(profileView)
         navigationView.addSubview(divider)
+
+        sideMenuDimView.backgroundColor = .black
+        sideMenuDimView.alpha = 0
+        view.addSubview(self.sideMenuDimView)
+
+        sideMenuViewController = WorkspaceListViewController()
+        addChild(sideMenuViewController)
+        view.addSubview(sideMenuViewController.view)
+        sideMenuViewController.didMove(toParent: self)
     }
 
     override func setLayout() {
         navigationController?.navigationBar.isHidden = true
         tabBarController?.tabBar.isHidden = true
+        
 
         mainImage.snp.makeConstraints {
             $0.center.equalToSuperview()
@@ -110,7 +206,16 @@ final class HomeViewController: BaseViewController {
 
         createButton.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(24)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(24)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(24)
+        }
+
+        sideMenuViewController.view.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview()
+            $0.width.equalTo(0)
+        }
+
+        sideMenuDimView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 
@@ -143,12 +248,20 @@ final class HomeViewController: BaseViewController {
         profileView.image = .dummy
         profileView.layer.borderColor = UIColor.selected.cgColor
         profileView.clipsToBounds = true
+
     }
 
 }
 
 extension HomeViewController {
 
-    
+    func animateSideMenu(targetPosition: CGFloat) {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .layoutSubviews) { [weak self] in
+            self?.sideMenuViewController.view.snp.updateConstraints {
+                $0.width.equalTo(targetPosition)
+            }
+            self?.view.layoutIfNeeded()
+        }
+    }
 
 }

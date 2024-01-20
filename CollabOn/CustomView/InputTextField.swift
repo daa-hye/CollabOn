@@ -20,7 +20,7 @@ final class InputTextField: UIView {
 
     weak var delegate: InputTextFieldDelegate?
 
-    var isValid = BehaviorSubject(value: true)
+    let isValid = BehaviorSubject(value: true)
 
     var disposeBag = DisposeBag()
 

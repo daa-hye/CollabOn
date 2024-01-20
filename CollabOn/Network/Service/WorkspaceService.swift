@@ -24,7 +24,7 @@ extension WorkspaceService {
                     switch response.result {
                     case .success(let data):
                         observer(.success(data))
-                    case .failure(let failure):
+                    case .failure:
                         guard let statusCode = response.response?.statusCode, let data = response.data else {
                             return observer(.failure(EndPointError.networkError))
                         }

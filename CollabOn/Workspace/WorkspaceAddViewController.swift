@@ -11,18 +11,18 @@ import RxSwift
 import RxCocoa
 import RxGesture
 
-class WorkspaceAddViewController: BaseViewController {
+final class WorkspaceAddViewController: BaseViewController {
 
-    let profileView = UIView()
-    let backgroundView = UIView()
-    let profileImage = UIImageView()
-    let cameraImage = UIImageView()
-    let nameTextField = InputTextField()
-    let descriptionTextField = InputTextField()
-    let buttonView = UIView()
-    let confirmButton = PrimaryButton(title: String(localized: "완료"))
+    private let profileView = UIView()
+    private let backgroundView = UIView()
+    private let profileImage = UIImageView()
+    private let cameraImage = UIImageView()
+    private let nameTextField = InputTextField()
+    private let descriptionTextField = InputTextField()
+    private let buttonView = UIView()
+    private let confirmButton = PrimaryButton(title: String(localized: "완료"))
 
-    let viewModel = WorkspaceAddViewModel()
+    private let viewModel = WorkspaceAddViewModel()
 
     let disposeBag = DisposeBag()
 
@@ -117,6 +117,7 @@ class WorkspaceAddViewController: BaseViewController {
             $0.horizontalEdges.equalToSuperview().inset(24)
             $0.verticalEdges.equalToSuperview().inset(12)
         }
+
     }
 
     override func setUIProperties() {
@@ -174,7 +175,9 @@ extension WorkspaceAddViewController {
     @objc private func closeButtonDidTap() {
         dismiss(animated: true)
     }
-    
+
+
+
 }
 
 extension WorkspaceAddViewController: PHPickerViewControllerDelegate {

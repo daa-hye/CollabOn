@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-class WorkspaceAddViewModel: ViewModelType {
+final class WorkspaceAddViewModel: ViewModelType {
 
     let disposeBag = DisposeBag()
 
