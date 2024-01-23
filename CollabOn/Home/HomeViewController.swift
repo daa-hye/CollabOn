@@ -24,8 +24,9 @@ final class HomeViewController: BaseViewController {
 
     private var sideMenuViewController: WorkspaceListViewController!
     private var sideMenuDimView = UIView()
-    private lazy var sideMenuWidth: CGFloat = self.view.frame.width * 0.8
-
+    private var sideMenuWidth: CGFloat {
+        (view.window?.windowScene?.screen.bounds.width ?? 0) * 0.8
+    }
     private var dataSource: UICollectionViewDiffableDataSource<Int, Channel>! = nil
     private var collectionView: UICollectionView! = nil
 
@@ -38,6 +39,16 @@ final class HomeViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.input.viewDidLoad.onNext(())
+    }
+
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+
+        sideMenuViewController.view.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(-sideMenuWidth)
+            $0.width.equalTo(sideMenuWidth)
+            $0.verticalEdges.equalToSuperview()
+        }
     }
 
     override func bindRx() {
@@ -57,6 +68,13 @@ final class HomeViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
 
+        view.rx.swipeGesture(.left)
+            .when(.recognized)
+            .subscribe(with: self) { owner, _ in
+                owner.sideMenuViewController.isExpanded.accept(false)
+            }
+            .disposed(by: disposeBag)
+
         sideMenuDimView.rx.tapGesture()
             .when(.recognized)
             .subscribe(with: self) { owner, _ in
@@ -71,65 +89,65 @@ final class HomeViewController: BaseViewController {
                 UIView.animate(withDuration: 0.5) {
                     self.sideMenuDimView.alpha = value ? 0.5 : 0.01
                 }
-                owner.animateSideMenu(targetPosition: value ? owner.sideMenuWidth : 0)
+                owner.animateSideMenu(targetPosition: value ? 0 : -owner.sideMenuWidth)
             }
             .disposed(by: disposeBag)
 
-        sideMenuViewController.view.rx.panGesture().when(.began, .ended, .cancelled)
-            .withLatestFrom(Observable.combineLatest(sideMenuViewController.isExpanded,
-                                                     sideMenuViewController.isDraggable)) { ($0, $1.0, $1.1) }
-            .subscribe { [weak self] (event, isExpanded, isDraggable) in
-                let position = event.translation(in: self?.view).x
-                let velocity = event.velocity(in: self?.view).x
-
-                switch event.state {
-                case .began:
-                    if velocity > 0 , isExpanded {
-                        event.state = .cancelled
-                    }
-                    else if velocity < 0, !isExpanded {
-                        self?.sideMenuViewController.isDraggable.accept(true)
-                    }
-
-                    if isDraggable {
-                        let velocityThreshold: CGFloat = 550
-                        if abs(velocity) > velocityThreshold {
-                            self?.sideMenuViewController.isDraggable.accept(false)
-                            self?.sideMenuViewController.isExpanded.accept(!isExpanded)
-                            return
-                        }
-                        self?.sideMenuViewController.panBaseLocation = 0.0
-                        if isExpanded {
-                            self?.sideMenuViewController.panBaseLocation = self?.sideMenuWidth ?? 0
-                        }
-                    }
-
-                case .changed:
-                    print()
-                    if isDraggable {
-                        let xLocation: CGFloat = (self?.sideMenuViewController.panBaseLocation ?? 0) + position
-                        let percentage = (xLocation * 150 / (self?.sideMenuWidth ?? 0)) / (self?.sideMenuWidth ?? 0)
-
-                        let alpha = percentage >= 0.6 ? 0.6 : percentage
-                        self?.sideMenuDimView.alpha = alpha
-
-                        if xLocation <= self?.sideMenuWidth ?? 0 {
-                            self?.sideMenuViewController.view.snp.makeConstraints {
-                                $0.width.equalTo(xLocation - (self?.sideMenuWidth ?? 0))
-                            }
-                        }
-                    }
-
-                case .ended:
-                    self?.sideMenuViewController.isDraggable.accept(false)
-                    let width = self?.sideMenuViewController.view.frame.width ?? 0 > -((self?.sideMenuWidth ?? 0) * 0.5)
-                    self?.sideMenuViewController.isExpanded.accept(width)
-
-                default:
-                    break
-                }
-            }
-            .disposed(by: disposeBag)
+//        view.rx.panGesture().when(.began, .ended, .cancelled)
+//            .withLatestFrom(Observable.combineLatest(sideMenuViewController.isExpanded,
+//                                                     sideMenuViewController.isDraggable)) { ($0, $1.0, $1.1) }
+//            .subscribe { [weak self] (event, isExpanded, isDraggable) in
+//                let position = event.translation(in: self?.view).x
+//                let velocity = event.velocity(in: self?.view).x
+//
+//                switch event.state {
+//                case .began:
+//                    if velocity > 0 , isExpanded {
+//                        event.state = .cancelled
+//                    }
+//                    else if velocity < 0, !isExpanded {
+//                        self?.sideMenuViewController.isDraggable.accept(true)
+//                    }
+//
+//                    if isDraggable {
+//                        let velocityThreshold: CGFloat = 550
+//                        if abs(velocity) > velocityThreshold {
+//                            self?.sideMenuViewController.isDraggable.accept(false)
+//                            self?.sideMenuViewController.isExpanded.accept(!isExpanded)
+//                            return
+//                        }
+//                        self?.sideMenuViewController.panBaseLocation = 0.0
+//                        if isExpanded {
+//                            self?.sideMenuViewController.panBaseLocation = self?.sideMenuWidth ?? 0
+//                        }
+//                    }
+//
+//                case .changed:
+//                    print()
+//                    if isDraggable {
+//                        let xLocation: CGFloat = (self?.sideMenuViewController.panBaseLocation ?? 0) + position
+//                        let percentage = (xLocation * 150 / (self?.sideMenuWidth ?? 0)) / (self?.sideMenuWidth ?? 0)
+//
+//                        let alpha = percentage >= 0.6 ? 0.6 : percentage
+//                        self?.sideMenuDimView.alpha = alpha
+//
+//                        if xLocation <= self?.sideMenuWidth ?? 0 {
+//                            self?.sideMenuViewController.view.snp.makeConstraints {
+//                                $0.width.equalTo(xLocation - (self?.sideMenuWidth ?? 0))
+//                            }
+//                        }
+//                    }
+//
+//                case .ended:
+//                    self?.sideMenuViewController.isDraggable.accept(false)
+//                    let width = self?.sideMenuViewController.view.frame.width ?? 0 > -((self?.sideMenuWidth ?? 0) * 0.5)
+//                    self?.sideMenuViewController.isExpanded.accept(width)
+//
+//                default:
+//                    break
+//                }
+//            }
+//            .disposed(by: disposeBag)
 
     }
 
@@ -209,11 +227,6 @@ final class HomeViewController: BaseViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(24)
         }
 
-        sideMenuViewController.view.snp.makeConstraints {
-            $0.verticalEdges.equalToSuperview()
-            $0.width.equalTo(0)
-        }
-
         sideMenuDimView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -258,7 +271,7 @@ extension HomeViewController {
     func animateSideMenu(targetPosition: CGFloat) {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .layoutSubviews) { [weak self] in
             self?.sideMenuViewController.view.snp.updateConstraints {
-                $0.width.equalTo(targetPosition)
+                $0.leading.equalToSuperview().offset(targetPosition)
             }
             self?.view.layoutIfNeeded()
         }
