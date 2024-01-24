@@ -14,31 +14,47 @@ struct EmailLogin: Encodable {
 }
 
 struct EmailLoginResponse: Decodable {
+    let userId: Int
     let nickname: String
     let accessToken: String
     let refreshToken: String
+
+    enum CodingKeys: String, CodingKey {
+        case userId = "user_id"
+        case nickname
+        case accessToken
+        case refreshToken
+    }
 }
 
-struct AppleJoin: Decodable {
+struct AppleJoin: Encodable {
     let idToken: String
     let nickname: String
     let deviceToken: String?
 }
 
-struct AppleLogin: Decodable {
+struct AppleLogin: Encodable {
     let idToken: String
     let deviceToken: String?
 }
 
-struct KakaoLogin: Decodable {
+struct KakaoLogin: Encodable {
     let oauthToken: String
     let deviceToken: String?
 }
 
 struct LoginResponse: Decodable {
+    let userId: Int
     let nickname: String
     let profileImage: String?
     let token: Token
+
+    enum CodingKeys: String, CodingKey {
+        case userId = "user_id"
+        case nickname
+        case profileImage
+        case token
+    }
 }
 
 struct Join: Encodable {

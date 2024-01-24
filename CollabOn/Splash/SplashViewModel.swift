@@ -40,7 +40,6 @@ final class SplashViewModel: ViewModelType {
         viewDidLoad
             .delay(.seconds(3), scheduler: MainScheduler.instance)
             .flatMapLatest { _ -> Observable<Event<Bool>> in
-                print(AppUserData.token)
                 if AppUserData.token.isEmpty {
                     self.isLoggedIn.onNext(false)
                     return Observable.never()

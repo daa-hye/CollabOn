@@ -43,4 +43,13 @@ extension String {
         return String(formatted)
     }
 
+    func dateFormat() -> String {
+        let inputDateFormatter = DateFormatter()
+        inputDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        guard let date = inputDateFormatter.date(from: self) else { return self }
+        let outputDateFormatter = DateFormatter()
+        outputDateFormatter.dateFormat = "yy. MM. dd"
+        return outputDateFormatter.string(from: date)
+    }
+
 }

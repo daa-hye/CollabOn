@@ -10,12 +10,16 @@ import Foundation
 enum AppUserData {
 
     enum Key: String {
+        case userId
         case nickname
         case profileImage
         case token
         case refreshToken
         case currentWorkspace
     }
+
+    @UserDafaultsManager(key: Key.userId.rawValue, defaultValue: 0)
+    static var userId
 
     @UserDafaultsManager(key: Key.nickname.rawValue, defaultValue: "")
     static var nickname

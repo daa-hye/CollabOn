@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct WorkspaceResponse: Decodable {
+struct WorkspaceResponse: Decodable, Equatable {
     let workspaceId: Int
     let name: String
     let description: String
-    let thumbnail: String
+    let thumbnail: URL?
     let ownerId: Int
     let createdAt: String
 
@@ -23,13 +23,29 @@ struct WorkspaceResponse: Decodable {
         case ownerId = "owner_id"
         case createdAt
     }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.workspaceId = try container.decode(Int.self, forKey: .workspaceId)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.description = try container.decode(String.self, forKey: .description)
+        self.ownerId = try container.decode(Int.self, forKey: .ownerId)
+        self.createdAt = try container.decode(String.self, forKey: .createdAt)
+
+        let imagePath = try container.decode(String.self, forKey: .thumbnail)
+        if let url = URL(string: "\(SLP.baseURL)/v1\(imagePath)") {
+            self.thumbnail = url
+        } else {
+            self.thumbnail = nil
+        }
+    }
 }
 
 struct WorkspaceDetail: Decodable, Hashable {
     let workspaceId: Int
     let name: String
     let description: String
-    let thumbnail: String
+    let thumbnail: URL?
     let ownerId: Int
     let createdAt: String
     let channels: [Channel]
@@ -45,6 +61,36 @@ struct WorkspaceDetail: Decodable, Hashable {
         case channels
         case workspaceMembers
     }
+
+    init() {
+        self.workspaceId = 0
+        self.name = ""
+        self.description = ""
+        self.thumbnail = nil
+        self.ownerId = 0
+        self.createdAt = ""
+        self.channels = []
+        self.workspaceMembers = []
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.workspaceId = try container.decode(Int.self, forKey: .workspaceId)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.description = try container.decode(String.self, forKey: .description)
+        self.ownerId = try container.decode(Int.self, forKey: .ownerId)
+        self.createdAt = try container.decode(String.self, forKey: .createdAt)
+        self.channels = try container.decode([Channel].self, forKey: .channels)
+        self.workspaceMembers = try container.decode([Member].self, forKey: .workspaceMembers)
+
+        let imagePath = try container.decode(String.self, forKey: .thumbnail)
+        if let url = URL(string: "\(SLP.baseURL)/v1\(imagePath)") {
+            self.thumbnail = url
+        } else {
+            self.thumbnail = nil
+        }
+    }
+
 }
 
 struct Channel: Decodable, Hashable {
@@ -65,6 +111,7 @@ struct Channel: Decodable, Hashable {
         case ownerId = "owner_id"
         case createdAt
     }
+    
 }
 
 struct Member: Decodable, Hashable {

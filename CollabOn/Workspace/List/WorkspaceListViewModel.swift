@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import RxDataSources
 
 class WorkspaceListViewModel: ViewModelType {
 
@@ -16,13 +17,14 @@ class WorkspaceListViewModel: ViewModelType {
     let output: Output
 
     private let isExpanded = PublishSubject<Bool>()
+    private let workspaces = PublishSubject<[WorkspaceResponse]>()
 
     struct Input {
         let isExpanded: AnyObserver<Bool>
     }
 
     struct Output {
-
+        let workspaces: Observable<[WorkspaceResponse]>
     }
 
     init() {
@@ -30,6 +32,7 @@ class WorkspaceListViewModel: ViewModelType {
             isExpanded: isExpanded.asObserver()
         )
         output = .init(
+            workspaces: workspaces.observe(on: MainScheduler.instance)
         )
 
         isExpanded
@@ -38,8 +41,8 @@ class WorkspaceListViewModel: ViewModelType {
                 WorkspaceService.shared.getWorkspace()
                     .catchAndReturn([])
             }
-            .subscribe(with: self) { onwer, response in
-
+            .subscribe(with: self) { owner, response in
+                owner.workspaces.onNext(response)
             }
             .disposed(by: disposeBag)
     }

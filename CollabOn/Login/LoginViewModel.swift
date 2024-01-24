@@ -64,7 +64,6 @@ final class LoginViewModel: ViewModelType {
             .subscribe(with: self) { owner, event in
                 switch event {
                 case .next:
-                    print("로그인성공")
                     owner.loginSucceeded.onNext(())
                 case .error(let error):
                     switch error {

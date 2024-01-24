@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 final class WorkspaceListViewController: BaseViewController {
 
@@ -19,6 +20,14 @@ final class WorkspaceListViewController: BaseViewController {
     let mainLabel = UILabel()
     let subLabel = UILabel()
     let sideCreateButton = PrimaryButton(title: String(localized: "워크스페이스 생성"))
+    let addView = UIView()
+    let addImage = UIImageView()
+    let addLabel = UILabel()
+    let helpView = UIView()
+    let helpImage = UIImageView()
+    let helpLabel = UILabel()
+
+    let listTableView = UITableView()
 
     let disposeBag = DisposeBag()
 
@@ -26,11 +35,16 @@ final class WorkspaceListViewController: BaseViewController {
 
     override func bindRx() {
 
-        isExpanded
-            .map{ !$0 }
+        viewModel.output.workspaces
+            .bind(to: listTableView.rx.items(cellIdentifier: WorkspaceListTableViewCell.className, cellType: WorkspaceListTableViewCell.self)) { (row, element, cell) in
+                cell.setData(element)
+                cell.selectionStyle = .none
+            }
+            .disposed(by: disposeBag)
+
+        viewModel.output.workspaces
+            .map { $0.count == 0 }
             .subscribe(with: self) { owner, value in
-                owner.topView.rx.isHidden.onNext(value)
-                owner.titlelabel.rx.isHidden.onNext(value)
                 owner.mainLabel.rx.isHidden.onNext(value)
                 owner.subLabel.rx.isHidden.onNext(value)
                 owner.sideCreateButton.rx.isHidden.onNext(value)
@@ -64,6 +78,15 @@ final class WorkspaceListViewController: BaseViewController {
         view.addSubview(mainLabel)
         view.addSubview(subLabel)
         view.addSubview(sideCreateButton)
+        view.addSubview(addView)
+        view.addSubview(addImage)
+        view.addSubview(addLabel)
+        view.addSubview(helpView)
+        helpView.addSubview(helpImage)
+        helpView.addSubview(helpLabel)
+        addView.addSubview(addImage)
+        addView.addSubview(addLabel)
+        view.addSubview(listTableView)
     }
 
     override func setLayout() {
@@ -91,6 +114,47 @@ final class WorkspaceListViewController: BaseViewController {
             $0.top.equalTo(subLabel.snp.bottom).offset(19)
             $0.horizontalEdges.equalToSuperview().inset(24)
         }
+
+        helpView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(12)
+            $0.height.equalTo(41)
+        }
+
+        helpImage.snp.makeConstraints {
+            $0.size.equalTo(18)
+            $0.leading.equalToSuperview().offset(16)
+            $0.centerY.equalToSuperview()
+        }
+
+        helpLabel.snp.makeConstraints {
+            $0.leading.equalTo(helpImage.snp.trailing).offset(16)
+            $0.centerY.equalToSuperview()
+        }
+
+        addView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalTo(helpView.snp.top)
+            $0.height.equalTo(41)
+        }
+
+        addImage.snp.makeConstraints {
+            $0.size.equalTo(18)
+            $0.leading.equalToSuperview().offset(16)
+            $0.centerY.equalToSuperview()
+        }
+
+        addLabel.snp.makeConstraints {
+            $0.leading.equalTo(addImage.snp.trailing).offset(16)
+            $0.centerY.equalToSuperview()
+        }
+
+        listTableView.snp.makeConstraints {
+            $0.top.equalTo(topView.snp.bottom)
+            $0.horizontalEdges.equalToSuperview().inset(6)
+            $0.bottom.equalTo(addView.snp.top)
+        }
+
     }
 
     override func setUIProperties() {
@@ -109,6 +173,31 @@ final class WorkspaceListViewController: BaseViewController {
         subLabel.textAlignment = .center
         subLabel.numberOfLines = 3
 
+        addLabel.text = String(localized: "워크스페이스 추가")
+        addLabel.font = .body
+        addLabel.textColor = .textSecondary
+
+        addImage.image = .plus
+        addImage.tintColor = .textSecondary
+
+        helpLabel.text = String(localized: "도움말")
+        helpLabel.font = .body
+        helpLabel.textColor = .textSecondary
+
+        helpImage.image = .help
+        helpImage.tintColor = .textSecondary
+
+        listTableView.register(WorkspaceListTableViewCell.self, forCellReuseIdentifier: WorkspaceListTableViewCell.className)
+        listTableView.rowHeight = 72
+        listTableView.separatorStyle = .none
     }
 
+}
+
+extension WorkspaceListViewController: WorkspaceListTableViewCellDelegate {
+
+    func settingButtonDidTap() {
+        // 액션시트 작업
+    }
+    
 }

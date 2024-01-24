@@ -41,16 +41,6 @@ final class HomeViewController: BaseViewController {
         viewModel.input.viewDidLoad.onNext(())
     }
 
-    override func viewIsAppearing(_ animated: Bool) {
-        super.viewIsAppearing(animated)
-
-        sideMenuViewController.view.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(-sideMenuWidth)
-            $0.width.equalTo(sideMenuWidth)
-            $0.verticalEdges.equalToSuperview()
-        }
-    }
-
     override func bindRx() {
 
         createButton.rx.tap
@@ -230,6 +220,12 @@ final class HomeViewController: BaseViewController {
         sideMenuDimView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+
+        sideMenuViewController.view.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(-317)
+            $0.width.equalTo(317)
+            $0.verticalEdges.equalToSuperview()
+        }
     }
 
     override func setUIProperties() {
@@ -272,6 +268,8 @@ extension HomeViewController {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .layoutSubviews) { [weak self] in
             self?.sideMenuViewController.view.snp.updateConstraints {
                 $0.leading.equalToSuperview().offset(targetPosition)
+                $0.width.equalTo(self?.sideMenuWidth ?? 0)
+                $0.verticalEdges.equalToSuperview()
             }
             self?.view.layoutIfNeeded()
         }

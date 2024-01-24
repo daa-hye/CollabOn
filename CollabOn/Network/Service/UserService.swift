@@ -75,6 +75,7 @@ extension UserService {
                     switch response.result {
                     case .success(let data):
                         if let result = self.handleResponse(data, type: EmailLoginResponse.self) {
+                            AppUserData.userId = result.userId
                             AppUserData.nickname = result.nickname
                             AppUserData.token = result.accessToken
                             AppUserData.refreshToken = result.refreshToken
@@ -103,6 +104,7 @@ extension UserService {
                     switch response.result {
                     case .success(let data):
                         if let result = self.handleResponse(data, type: LoginResponse.self) {
+                            AppUserData.userId = result.userId
                             AppUserData.nickname = result.nickname
                             AppUserData.profileImage = result.profileImage ?? ""
                             AppUserData.token = result.token.accessToken
@@ -132,6 +134,7 @@ extension UserService {
                     switch response.result {
                     case .success(let data):
                         if let result = self.handleResponse(data, type: LoginResponse.self) {
+                            AppUserData.userId = result.userId
                             AppUserData.nickname = result.nickname
                             AppUserData.profileImage = result.profileImage ?? ""
                             AppUserData.token = result.token.accessToken
@@ -161,6 +164,7 @@ extension UserService {
                     switch response.result {
                     case .success(let data):
                         if let result = self.handleResponse(data, type: LoginResponse.self) {
+                            AppUserData.userId = result.userId
                             AppUserData.nickname = result.nickname
                             AppUserData.profileImage = result.profileImage ?? ""
                             AppUserData.token = result.token.accessToken
@@ -191,7 +195,6 @@ extension UserService {
                     switch response.result {
                     case .success(let data):
                         if let result = self.handleResponse(data, type: MyInfo.self) {
-                            AppUserData.nickname = result.nickname
                             AppUserData.profileImage = result.profileImage ?? ""
                             observer(.success(true))
                         }
