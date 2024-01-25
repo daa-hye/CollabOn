@@ -38,6 +38,7 @@ final class WorkspaceListViewController: BaseViewController {
         viewModel.output.workspaces
             .bind(to: listTableView.rx.items(cellIdentifier: WorkspaceListTableViewCell.className, cellType: WorkspaceListTableViewCell.self)) { (row, element, cell) in
                 cell.setData(element)
+                cell.delegate = self
                 cell.selectionStyle = .none
             }
             .disposed(by: disposeBag)

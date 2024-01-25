@@ -34,32 +34,32 @@ final class HomeViewModel: ViewModelType {
 
         output = .init()
 
-//        viewDidLoad
-//            .flatMapLatest { _ in
-//                WorkspaceService.shared.getWorkspace()
-//                    .catchAndReturn([])
-//            }
-//            .map { $0.first ?? nil }
-//            .flatMapLatest { value -> Single<WorkspaceDetail> in
-//                guard let value = value else { return Single.just(WorkspaceDetail()) }
-//
-//                if AppUserData.currentWorkspace != 0 {
-//                    return WorkspaceService.shared.getWorkspace(AppUserData.currentWorkspace)
-//                        .catchAndReturn(Single.just(WorkspaceDetail()))
-//                }
-//                else {
-//                    return WorkspaceService.shared.getWorkspace(value.workspaceId)
-//                        .catchAndReturn(Single.just(WorkspaceDetail()))
-//                }
-//            }
-//            .subscribe(with: self) { owner, value in
-//                if value.workspaceId == 0 {
-//                    owner.workspace.onNext(nil)
-//                } else {
-//                    owner.workspace.onNext(value)
-//                }
-//            }
-//            .disposed(by: disposeBag)
+        viewDidLoad
+            .flatMapLatest { _ in
+                WorkspaceService.shared.getWorkspace()
+                    .catchAndReturn([])
+            }
+            .map { $0.first ?? nil }
+            .flatMapLatest { value in
+                guard let value = value else { return Single.just(WorkspaceDetail()) }
+
+                if AppUserData.currentWorkspace != 0 {
+                    return WorkspaceService.shared.getWorkspace(AppUserData.currentWorkspace)
+                        .catchAndReturn(WorkspaceDetail())
+                }
+                else {
+                    return WorkspaceService.shared.getWorkspace(value.workspaceId)
+                        .catchAndReturn(WorkspaceDetail())
+                }
+            }
+            .subscribe(with: self) { owner, value in
+                if value.workspaceId == 0 {
+                    owner.workspace.onNext(nil)
+                } else {
+                    owner.workspace.onNext(value)
+                }
+            }
+            .disposed(by: disposeBag)
     }
 
 }

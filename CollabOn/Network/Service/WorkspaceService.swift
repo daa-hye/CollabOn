@@ -86,4 +86,70 @@ extension WorkspaceService {
         }
     }
 
+    func editWorkspace(_ id: Int, _ data: Workspace) -> Single<WorkspaceResponse> {
+        Single.create { observer in
+            let request = self.AFManager.upload(multipartFormData: WorkspaceRouter.editWorkspace(id: id, model: data).multipart, with: WorkspaceRouter.editWorkspace(id: id, model: data))
+                .validate(statusCode: 200...300)
+                .responseDecodable(of: WorkspaceResponse.self) { response in
+                    switch response.result {
+                    case .success(let data):
+                        observer(.success(data))
+                    case .failure:
+                        guard let statusCode = response.response?.statusCode, let data = response.data else {
+                            return observer(.failure(EndPointError.networkError))
+                        }
+                        let error = self.handleError(statusCode: statusCode, data)
+                        observer(.failure(error))
+                    }
+                }
+            return Disposables.create {
+                request.cancel()
+            }
+        }
+    }
+
+    func deleteWorkspace(_ id: Int) -> Single<Void> {
+        Single.create { observer in
+            let request = self.AFManager.request(WorkspaceRouter.deleteWorkspace(id: id))
+                .validate(statusCode: 200...300)
+                .response { response in
+                    switch response.result {
+                    case .success(let success):
+                        observer(.success(()))
+                    case .failure(let failure):
+                        guard let statusCode = response.response?.statusCode, let data = response.data else {
+                            return observer(.failure(EndPointError.networkError))
+                        }
+                        let error = self.handleError(statusCode: statusCode, data)
+                        observer(.failure(error))
+                    }
+                }
+            return Disposables.create {
+                request.cancel()
+            }
+        }
+    }
+
+    func addWorkspaceMember(_ id: Int, _ data: Email) -> Single<Void> {
+        Single.create { observer in
+            let request = self.AFManager.request(WorkspaceRouter.addWorkspaceMember(id: id, model: data))
+                .validate(statusCode: 200...300)
+                .response { response in
+                    switch response.result {
+                    case .success(let success):
+                        observer(.success(()))
+                    case .failure(let failure):
+                        guard let statusCode = response.response?.statusCode, let data = response.data else {
+                            return observer(.failure(EndPointError.networkError))
+                        }
+                        let error = self.handleError(statusCode: statusCode, data)
+                        observer(.failure(error))
+                    }
+                }
+            return Disposables.create {
+                request.cancel()
+            }
+        }
+    }
+
 }

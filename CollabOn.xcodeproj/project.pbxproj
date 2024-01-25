@@ -184,10 +184,10 @@
 		5302FA0D2B4BC9FE001B3F47 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				536D6AD92B60DBDB008BC481 /* ImageService.swift */,
 				533FBA912B53940000A1196B /* AuthService.swift */,
 				5302FA0B2B4B75FA001B3F47 /* UserService.swift */,
 				533FBAA02B555D8B00A1196B /* WorkspaceService.swift */,
-				536D6AD92B60DBDB008BC481 /* ImageService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
