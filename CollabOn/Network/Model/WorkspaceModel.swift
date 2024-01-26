@@ -97,7 +97,7 @@ struct Channel: Decodable, Hashable {
     let workspaceId: Int
     let channelId: Int
     let name: String
-    let description: String
+    let description: String?
     let ownerId: Int
     let `private`: Int
     let createdAt: String
@@ -119,6 +119,13 @@ struct Member: Decodable, Hashable {
     let email: String
     let nickname: String
     let profileImage: String?
+
+    enum CodingKeys: String, CodingKey {
+        case userId = "user_id"
+        case email
+        case nickname
+        case profileImage
+    }
 }
 
 struct Workspace: Encodable {

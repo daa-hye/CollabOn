@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import RxRelay
 
 final class HomeViewModel: ViewModelType {
 
@@ -15,15 +16,18 @@ final class HomeViewModel: ViewModelType {
     let input: Input
     let output: Output
 
+    private let service = WorkspaceManager()
+
     private let viewDidLoad = PublishSubject<Void>()
-    private let workspace = BehaviorSubject<WorkspaceDetail?>(value: nil)
+    private let workspace = ReplayRelay<WorkspaceDetail?>.create(bufferSize: 1)
+
 
     struct Input {
         let viewDidLoad: AnyObserver<Void>
     }
 
     struct Output {
-
+        let workspace: Observable<WorkspaceDetail?>
     }
 
     init() {
@@ -32,34 +36,17 @@ final class HomeViewModel: ViewModelType {
             viewDidLoad: viewDidLoad.asObserver()
         )
 
-        output = .init()
+        output = .init(workspace: workspace.asObservable())
 
         viewDidLoad
-            .flatMapLatest { _ in
-                WorkspaceService.shared.getWorkspace()
-                    .catchAndReturn([])
+            .withUnretained(self)
+            .flatMapLatest { `self`, _ -> Single<WorkspaceDetail?> in
+                self.service.getCurrentWorkspace()
             }
-            .map { $0.first ?? nil }
-            .flatMapLatest { value in
-                guard let value = value else { return Single.just(WorkspaceDetail()) }
-
-                if AppUserData.currentWorkspace != 0 {
-                    return WorkspaceService.shared.getWorkspace(AppUserData.currentWorkspace)
-                        .catchAndReturn(WorkspaceDetail())
-                }
-                else {
-                    return WorkspaceService.shared.getWorkspace(value.workspaceId)
-                        .catchAndReturn(WorkspaceDetail())
-                }
-            }
-            .subscribe(with: self) { owner, value in
-                if value.workspaceId == 0 {
-                    owner.workspace.onNext(nil)
-                } else {
-                    owner.workspace.onNext(value)
-                }
+            .subscribe(with: self) { owner, detail in
+                owner.workspace.accept(detail)
             }
             .disposed(by: disposeBag)
-    }
 
+    }
 }

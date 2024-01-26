@@ -14,7 +14,6 @@ import RxGesture
 final class WorkspaceAddViewController: BaseViewController {
 
     private let profileView = UIView()
-    private let backgroundView = UIView()
     private let profileImage = UIImageView()
     private let cameraImage = UIImageView()
     private let nameTextField = InputTextField()
@@ -62,9 +61,8 @@ final class WorkspaceAddViewController: BaseViewController {
 
     override func configHierarchy() {
         view.addSubview(profileView)
-        profileView.addSubview(backgroundView)
+        profileView.addSubview(profileImage)
         profileView.addSubview(cameraImage)
-        backgroundView.addSubview(profileImage)
         view.addSubview(nameTextField)
         view.addSubview(descriptionTextField)
         view.addSubview(buttonView)
@@ -80,25 +78,18 @@ final class WorkspaceAddViewController: BaseViewController {
             $0.height.equalTo(75)
         }
 
-        backgroundView.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
-            $0.size.equalTo(70)
-        }
-
         cameraImage.snp.makeConstraints {
             $0.bottom.trailing.equalToSuperview()
             $0.size.equalTo(24)
         }
 
         profileImage.snp.makeConstraints {
-            $0.width.equalTo(48)
-            $0.height.equalTo(60)
-            $0.bottom.equalToSuperview()
-            $0.centerX.equalToSuperview()
+            $0.top.leading.equalToSuperview()
+            $0.size.equalTo(70)
         }
 
         nameTextField.snp.makeConstraints {
-            $0.top.equalTo(backgroundView.snp.bottom).offset(16)
+            $0.top.equalTo(profileImage.snp.bottom).offset(16)
             $0.horizontalEdges.equalToSuperview().inset(24)
         }
 
@@ -122,13 +113,11 @@ final class WorkspaceAddViewController: BaseViewController {
 
     override func setUIProperties() {
         buttonView.isUserInteractionEnabled = true
-        backgroundView.backgroundColor = .main
-        backgroundView.layer.cornerRadius = 8
-
 
         cameraImage.image = .camera
         profileImage.image = .workspace
-        backgroundView.clipsToBounds = true
+        profileImage.layer.cornerRadius = 0
+        profileImage.clipsToBounds = true
 
         nameTextField.setText(label: String(localized: "워크스페이스 이름"),
                               placeHolder: String(localized: "워크스페이스 이름을 입력하세요 (필수)"))

@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxGesture
+import Kingfisher
 
 final class HomeViewController: BaseViewController {
 
@@ -139,6 +140,21 @@ final class HomeViewController: BaseViewController {
 //            }
 //            .disposed(by: disposeBag)
 
+        viewModel.output.workspace
+            .subscribe(with: self) { owner, value in
+                if value == nil {
+                    owner.titleLabel.text = String(localized: "No Workspace")
+                    owner.thumbnailView.image = .workspace
+                } else {
+                    owner.mainImage.isHidden = true
+                    owner.mainLabel.isHidden = true
+                    owner.subLabel.isHidden = true
+                    owner.createButton.isHidden = true
+                    owner.titleLabel.text = value?.name
+                    owner.thumbnailView.kf.setImage(with: value?.thumbnail, options: [.requestModifier(ImageService.shared.getImage())])
+                }
+            }
+            .disposed(by: disposeBag)
     }
 
     override func configHierarchy() {
@@ -246,10 +262,8 @@ final class HomeViewController: BaseViewController {
 
         titleLabel.font = .title1
         titleLabel.textAlignment = .left
-        titleLabel.text = String(localized: "No Workspace")
 
         thumbnailView.layer.cornerRadius = 8
-        thumbnailView.image = .dummy
         thumbnailView.clipsToBounds = true
 
         profileView.layer.cornerRadius = 16

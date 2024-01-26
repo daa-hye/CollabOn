@@ -47,6 +47,8 @@ extension WorkspaceService {
                     case .success(let data):
                         if let result = self.handleResponse(data, type: [WorkspaceResponse].self) {
                             observer(.success(result))
+                        } else {
+                            observer(.failure(EndPointError.undefinedError))
                         }
                     case .failure:
                         guard let statusCode = response.response?.statusCode, let data = response.data else {
@@ -71,6 +73,8 @@ extension WorkspaceService {
                     case .success(let data):
                         if let result = self.handleResponse(data, type: WorkspaceDetail.self) {
                             observer(.success(result))
+                        } else {
+                            observer(.failure(EndPointError.undefinedError))
                         }
                     case .failure:
                         guard let statusCode = response.response?.statusCode, let data = response.data else {
