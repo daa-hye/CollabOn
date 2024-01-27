@@ -12,16 +12,16 @@ import Kingfisher
 
 final class WorkspaceListTableViewCell: UITableViewCell {
 
-    private var backView = UIView()
-    private var thumbnailImageView = UIImageView()
-    private var contentStackView = UIStackView()
-    private var titleLabel = UILabel()
-    private var createdDateLabel = UILabel()
-    private var settingButton = UIButton()
+    private let backView = UIView()
+    private let thumbnailImageView = UIImageView()
+    private let contentStackView = UIStackView()
+    private let titleLabel = UILabel()
+    private let createdDateLabel = UILabel()
+    private let settingButton = UIButton()
 
     weak var delegate: WorkspaceListTableViewCellDelegate?
 
-    let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,7 +29,11 @@ final class WorkspaceListTableViewCell: UITableViewCell {
         configHierarchy()
         setLayout()
         setUIProperties()
-        bindRx()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = .init()
     }
 
     required init?(coder: NSCoder) {
@@ -88,7 +92,6 @@ final class WorkspaceListTableViewCell: UITableViewCell {
     }
 
     func setUIProperties() {
-        backView.backgroundColor = .clear
         backView.layer.cornerRadius = 8
 
         thumbnailImageView.image = .dummy

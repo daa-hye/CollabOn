@@ -8,26 +8,25 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import RxDataSources
 
 final class WorkspaceListViewController: BaseViewController {
 
     let isExpanded = BehaviorRelay(value: false)
-    let isDraggable = BehaviorRelay(value: false)
+//    let isDraggable = BehaviorRelay(value: false)
 
-    let topView = UIView()
-    let titlelabel = UILabel()
-    let mainLabel = UILabel()
-    let subLabel = UILabel()
-    let sideCreateButton = PrimaryButton(title: String(localized: "워크스페이스 생성"))
-    let addView = UIView()
-    let addImage = UIImageView()
-    let addLabel = UILabel()
-    let helpView = UIView()
-    let helpImage = UIImageView()
-    let helpLabel = UILabel()
+    private let topView = UIView()
+    private let titlelabel = UILabel()
+    private let mainLabel = UILabel()
+    private let subLabel = UILabel()
+    private let sideCreateButton = PrimaryButton(title: String(localized: "워크스페이스 생성"))
+    private let addView = UIView()
+    private let addImage = UIImageView()
+    private let addLabel = UILabel()
+    private let helpView = UIView()
+    private let helpImage = UIImageView()
+    private let helpLabel = UILabel()
 
-    let listTableView = UITableView()
+    private let listTableView = UITableView()
 
     let disposeBag = DisposeBag()
 
@@ -36,10 +35,21 @@ final class WorkspaceListViewController: BaseViewController {
     override func bindRx() {
 
         viewModel.output.workspaces
-            .bind(to: listTableView.rx.items(cellIdentifier: WorkspaceListTableViewCell.className, cellType: WorkspaceListTableViewCell.self)) { (row, element, cell) in
+            .bind(to: listTableView.rx.items(cellIdentifier: WorkspaceListTableViewCell.className, cellType: WorkspaceListTableViewCell.self)) {  (row, element, cell) in
                 cell.setData(element)
                 cell.delegate = self
                 cell.selectionStyle = .none
+            }
+            .disposed(by: disposeBag)
+
+        listTableView.rx.willDisplayCell
+            .take(1)
+            .withLatestFrom(viewModel.output.selectedIndexPath) { ($0, $1) }
+            .compactMap { (event, indexPath) in
+                return event.indexPath == indexPath ? event : nil
+            }
+            .subscribe { event in
+                event.cell.setSelected(true, animated: true)
             }
             .disposed(by: disposeBag)
 
@@ -198,7 +208,8 @@ final class WorkspaceListViewController: BaseViewController {
 extension WorkspaceListViewController: WorkspaceListTableViewCellDelegate {
 
     func settingButtonDidTap() {
-        // 액션시트 작업
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let cancel = UIAlertAction(title: String(localized: "취소"), style: .cancel, handler: nil)
     }
     
 }

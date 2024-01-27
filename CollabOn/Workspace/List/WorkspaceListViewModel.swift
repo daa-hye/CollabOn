@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import RxRelay
 
 class WorkspaceListViewModel: ViewModelType {
 
@@ -16,28 +17,29 @@ class WorkspaceListViewModel: ViewModelType {
     let output: Output
 
     private let isExpanded = PublishSubject<Bool>()
-    private let workspaceOwnerId = PublishSubject<Int>()
-    private let workspaces = PublishSubject<[WorkspaceResponse]>()
-    private let isOwner = PublishSubject<Bool>()
+    private let workspaces = BehaviorRelay<[WorkspaceResponse]>.init(value: [])
+    private let currentWorkspace = ReplayRelay<WorkspaceDetail>.create(bufferSize: 1)
+    private let selectedIndexPath = ReplayRelay<IndexPath>.create(bufferSize: 1)
 
     struct Input {
         let isExpanded: AnyObserver<Bool>
-        let workspaceOwnerId: AnyObserver<Int>
     }
 
     struct Output {
         let workspaces: Observable<[WorkspaceResponse]>
-        let isOwner: Observable<Bool>
+        let currentWorkspace: Observable<WorkspaceDetail>
+        let selectedIndexPath: Observable<IndexPath>
     }
 
     init() {
+
         input = .init(
-            isExpanded: isExpanded.asObserver(), 
-            workspaceOwnerId: workspaceOwnerId.asObserver()
+            isExpanded: isExpanded.asObserver()
         )
         output = .init(
             workspaces: workspaces.observe(on: MainScheduler.instance), 
-            isOwner: isOwner.observe(on: MainScheduler.instance)
+            currentWorkspace: currentWorkspace.observe(on: MainScheduler.instance),
+            selectedIndexPath: selectedIndexPath.observe(on: MainScheduler.instance)
         )
 
         isExpanded
@@ -47,14 +49,28 @@ class WorkspaceListViewModel: ViewModelType {
                     .catchAndReturn([])
             }
             .subscribe(with: self) { owner, response in
-                owner.workspaces.onNext(response)
+                owner.workspaces.accept(response)
             }
             .disposed(by: disposeBag)
 
-        workspaceOwnerId
-            .map { $0 == AppUserData.userId }
-            .bind(to: isOwner)
+        WorkspaceManager.shared.currentWorkspace
+            .compactMap { $0 }
+            .bind(to: currentWorkspace)
             .disposed(by: disposeBag)
+
+        Observable.combineLatest(workspaces, currentWorkspace)
+            .map { ($0.0, $0.1.workspaceId) }
+            .flatMap { (list, currentWorkspace) -> Observable<IndexPath> in
+                for (index, item) in list.enumerated() {
+                    if item.workspaceId == currentWorkspace {
+                        return Observable.just(IndexPath(row: index, section: 0))
+                    }
+                }
+                return Observable.empty()
+            }
+            .bind(to: selectedIndexPath)
+            .disposed(by: disposeBag)
+
     }
 
 }

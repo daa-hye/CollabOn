@@ -9,8 +9,13 @@ import Foundation
 import RxSwift
 import RxRelay
 
-class WorkspaceManager {
-    var currentWorkspace: WorkspaceDetail?
+final class WorkspaceManager {
+
+    static let shared = WorkspaceManager()
+
+    private init() {}
+
+    var currentWorkspace = ReplayRelay<WorkspaceDetail?>.create(bufferSize: 1)
 
     // 업데이트, 추가, 수정, 삭제
     // 갱신 정보 전달
@@ -28,6 +33,8 @@ class WorkspaceManager {
             .flatMap { [weak self] id -> Single<WorkspaceDetail?> in
                 guard let self else { return .never() }
                 return self.getWorkspace(id)
+            }.do { [weak self] value in
+                self?.currentWorkspace.accept(value)
             }
     }
 }
@@ -48,11 +55,10 @@ extension WorkspaceManager {
             return WorkspaceService.shared.getWorkspace(workspaceId)
                 .map { Optional($0) }
                 .catch { _ in
-                    _getWorkspace()
+                    return _getWorkspace()
                 }
         } else {
             return _getWorkspace()
-
         }
     }
 }
