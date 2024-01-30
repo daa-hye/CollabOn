@@ -30,26 +30,42 @@ final class WorkspaceListViewController: BaseViewController {
 
     let disposeBag = DisposeBag()
 
-    private let viewModel = WorkspaceListViewModel()
+    private let viewModel: HomeViewModel
+    weak var delegate: WorkspaceListTableViewCellDelegate?
 
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func bindRx() {
 
         viewModel.output.workspaces
-            .bind(to: listTableView.rx.items(cellIdentifier: WorkspaceListTableViewCell.className, cellType: WorkspaceListTableViewCell.self)) {  (row, element, cell) in
+            .bind(to: listTableView.rx.items(cellIdentifier: WorkspaceListTableViewCell.className, cellType: WorkspaceListTableViewCell.self)) { [weak self] (row, element, cell) in
                 cell.setData(element)
-                cell.delegate = self
+                cell.delegate = self?.delegate
                 cell.selectionStyle = .none
             }
             .disposed(by: disposeBag)
 
         listTableView.rx.willDisplayCell
-            .take(1)
             .withLatestFrom(viewModel.output.selectedIndexPath) { ($0, $1) }
             .compactMap { (event, indexPath) in
                 return event.indexPath == indexPath ? event : nil
             }
             .subscribe { event in
                 event.cell.setSelected(true, animated: true)
+            }
+            .disposed(by: disposeBag)
+
+        listTableView.rx.modelSelected(WorkspaceResponse.self)
+            .subscribe(with: self) { owner, workspace in
+                owner.viewModel.input.selectedWorkspace.onNext(workspace)
+                owner.isExpanded.accept(false)
             }
             .disposed(by: disposeBag)
 
@@ -203,13 +219,4 @@ final class WorkspaceListViewController: BaseViewController {
         listTableView.separatorStyle = .none
     }
 
-}
-
-extension WorkspaceListViewController: WorkspaceListTableViewCellDelegate {
-
-    func settingButtonDidTap() {
-        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let cancel = UIAlertAction(title: String(localized: "취소"), style: .cancel, handler: nil)
-    }
-    
 }

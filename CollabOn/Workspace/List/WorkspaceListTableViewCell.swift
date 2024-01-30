@@ -29,6 +29,7 @@ final class WorkspaceListTableViewCell: UITableViewCell {
         configHierarchy()
         setLayout()
         setUIProperties()
+        bindRx()
     }
 
     override func prepareForReuse() {

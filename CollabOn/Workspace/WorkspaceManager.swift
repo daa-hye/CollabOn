@@ -20,23 +20,32 @@ final class WorkspaceManager {
     // 업데이트, 추가, 수정, 삭제
     // 갱신 정보 전달
 
-    func update() {
-
-    }
-
-    func getCurrentWorkspace() -> Single<WorkspaceDetail?> {
+    func fetchCurrentWorkspace() {
         // TODO: `WorkspaceService.shared.getWorkspace()` 함수 workspaces로 네이밍 변경하기
-        WorkspaceService.shared.getWorkspace()
+        _ = WorkspaceService.shared.getWorkspace()
             .map { response -> Int? in
                 response.isEmpty ? nil : response.first!.workspaceId
             }
-            .flatMap { [weak self] id -> Single<WorkspaceDetail?> in
-                guard let self else { return .never() }
+            .flatMap { id -> Single<WorkspaceDetail?> in
                 return self.getWorkspace(id)
-            }.do { [weak self] value in
-                self?.currentWorkspace.accept(value)
+            }
+            .subscribe {
+                self.currentWorkspace.accept($0)
             }
     }
+
+    func fetchCurrentWorkspace(id: Int?) {
+        guard let id = id else { return self.currentWorkspace.accept(nil) }
+        _ = WorkspaceService.shared.getWorkspace(id)
+            .map { Optional($0) }
+            .catch { _ in
+                Single<WorkspaceDetail?>.just(nil)
+            }
+            .subscribe {
+                self.currentWorkspace.accept($0)
+            }
+    }
+
 }
 
 extension WorkspaceManager {

@@ -17,7 +17,7 @@ class WorkspaceListViewModel: ViewModelType {
     let output: Output
 
     private let isExpanded = PublishSubject<Bool>()
-    private let workspaces = BehaviorRelay<[WorkspaceResponse]>.init(value: [])
+    private let workspaces = BehaviorRelay<[WorkspaceResponse]>(value: [])
     private let currentWorkspace = ReplayRelay<WorkspaceDetail>.create(bufferSize: 1)
     private let selectedIndexPath = ReplayRelay<IndexPath>.create(bufferSize: 1)
 
@@ -36,6 +36,7 @@ class WorkspaceListViewModel: ViewModelType {
         input = .init(
             isExpanded: isExpanded.asObserver()
         )
+
         output = .init(
             workspaces: workspaces.observe(on: MainScheduler.instance), 
             currentWorkspace: currentWorkspace.observe(on: MainScheduler.instance),
