@@ -63,9 +63,11 @@ final class WorkspaceListViewController: BaseViewController {
             .disposed(by: disposeBag)
 
         listTableView.rx.modelSelected(WorkspaceResponse.self)
-            .subscribe(with: self) { owner, workspace in
-                owner.viewModel.input.selectedWorkspace.onNext(workspace)
-                owner.isExpanded.accept(false)
+            .withLatestFrom(viewModel.output.selectedIndexPath) { ($0, $1) }
+            .subscribe { [weak self] workspace, indexPath in
+                self?.listTableView.deselectRow(at: indexPath, animated: true)
+                self?.viewModel.input.selectedWorkspace.onNext(workspace)
+                self?.isExpanded.accept(false)
             }
             .disposed(by: disposeBag)
 

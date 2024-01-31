@@ -21,7 +21,7 @@ final class WorkspaceListTableViewCell: UITableViewCell {
 
     weak var delegate: WorkspaceListTableViewCellDelegate?
 
-    private var disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,12 +29,11 @@ final class WorkspaceListTableViewCell: UITableViewCell {
         configHierarchy()
         setLayout()
         setUIProperties()
-        bindRx()
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        disposeBag = .init()
+        disposeBag = DisposeBag()
     }
 
     required init?(coder: NSCoder) {
@@ -50,7 +49,7 @@ final class WorkspaceListTableViewCell: UITableViewCell {
 
     func bindRx() {
         settingButton.rx.tap
-            .subscribe(with: self) { owner, _ in
+            .bind(with: self) { owner, _ in
                 owner.delegate?.settingButtonDidTap()
             }
             .disposed(by: disposeBag)
@@ -113,6 +112,7 @@ final class WorkspaceListTableViewCell: UITableViewCell {
     }
 
     func setData(_ data: WorkspaceResponse) {
+        bindRx()
         thumbnailImageView.kf.setImage(with: data.thumbnail, options: [.requestModifier(ImageService.shared.getImage())])
         titleLabel.text = data.name
         createdDateLabel.text = data.createdAt.dateFormat()
