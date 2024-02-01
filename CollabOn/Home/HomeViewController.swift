@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxGesture
+import RxDataSources
 import Kingfisher
 
 final class HomeViewController: BaseViewController {
@@ -28,10 +29,9 @@ final class HomeViewController: BaseViewController {
     private var sideMenuWidth: CGFloat {
         (view.window?.windowScene?.screen.bounds.width ?? 0) * 0.8
     }
-    private var dataSource: UICollectionViewDiffableDataSource<Int, Channel>! = nil
+    
+    private var dataSource: RxCollectionViewSectionedReloadDataSource<HomeViewSection>?
     private var collectionView: UICollectionView! = nil
-
-    private var snapshot = NSDiffableDataSourceSnapshot<Int, Channel>()
 
     let disposeBag = DisposeBag()
 
@@ -40,6 +40,7 @@ final class HomeViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.input.viewDidLoad.onNext(())
+        setDatasource()
     }
 
     override func bindRx() {
@@ -140,7 +141,7 @@ final class HomeViewController: BaseViewController {
 //            }
 //            .disposed(by: disposeBag)
 
-        viewModel.output.workspace
+        viewModel.output.currentWorkspace
             .subscribe(with: self) { owner, value in
                 if value == nil {
                     owner.titleLabel.text = String(localized: "No Workspace")
@@ -173,7 +174,8 @@ final class HomeViewController: BaseViewController {
         sideMenuDimView.alpha = 0
         view.addSubview(self.sideMenuDimView)
 
-        sideMenuViewController = WorkspaceListViewController()
+        sideMenuViewController = WorkspaceListViewController(viewModel: viewModel)
+        sideMenuViewController.delegate = self
         addChild(sideMenuViewController)
         view.addSubview(sideMenuViewController.view)
         sideMenuViewController.didMove(toParent: self)
@@ -278,6 +280,21 @@ final class HomeViewController: BaseViewController {
 
 extension HomeViewController {
 
+    func setDatasource() {
+        dataSource = RxCollectionViewSectionedReloadDataSource<HomeViewSection> { dataSource, collectionView, indexPath, item in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCollectoinViewCell.className, for: indexPath) as? HomeCollectoinViewCell else { fatalError() }
+
+            switch item {
+            case .channelItem(let data):
+                cell.setData(channel: data)
+            case .dmsItem(let data):
+                cell.setData(dms: data)
+            }
+
+            return cell
+        }
+    }
+
     func animateSideMenu(targetPosition: CGFloat) {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .layoutSubviews) { [weak self] in
             self?.sideMenuViewController.view.snp.updateConstraints {
@@ -287,6 +304,66 @@ extension HomeViewController {
             }
             self?.view.layoutIfNeeded()
         }
+    }
+
+}
+
+extension HomeViewController: WorkspaceListTableViewCellDelegate {
+
+    func settingButtonDidTap() {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let cancel = UIAlertAction(title: String(localized: "취소"), style: .cancel, handler: nil)
+
+        viewModel.output.isAdmin
+            .subscribe(with: self) { owner, value in
+                if value {
+                    let edit = UIAlertAction(title: String(localized: "워크스페이스 편집"), style: .default) { _ in
+
+                    }
+                    let leave = UIAlertAction(title: String(localized: "워크스페이스 나가기"), style: .default) { [weak self] _ in
+                        self?.showAlert(
+                            mainTitle: String(localized: "워크스페이스 나가기"),
+                            subTitle: String(localized: "회원님은 워크스페이스 관리자입니다. 워크스페이스 관리자를 다른 멤버로 변경한 후 나갈 수 있습니다."),
+                            buttonType: .confirm,
+                            isTwoButtonType: false
+                        ) {
+
+                        }
+                    }
+                    let changeAdmin = UIAlertAction(title: String(localized: "워크스페이스 관리자 변경"), style: .default, handler: nil)
+                    let delete = UIAlertAction(title: String(localized: "워크스페이스 삭제"), style: .destructive) { [weak self] _ in
+                        self?.showAlert(
+                            mainTitle: String(localized: "워크스페이스 삭제"),
+                            subTitle: String(localized: "정말 이 워크스페이스를 삭제하시겠습니까? 삭제 시 채널/멤버/채팅 등 워크스페이스 내의 모든 정보가 삭제되며 복구할 수 없습니다."),
+                            buttonType: .delete,
+                            isTwoButtonType: true
+                        ) {
+
+                        }
+                    }
+                    actionSheet.addAction(edit)
+                    actionSheet.addAction(leave)
+                    actionSheet.addAction(changeAdmin)
+                    actionSheet.addAction(delete)
+                } else {
+                    let leave = UIAlertAction(title: String(localized: "워크스페이스 나가기"), style: .default) { [weak self] _ in
+                        self?.showAlert(
+                            mainTitle: String(localized: "워크스페이스 나가기"),
+                            subTitle: String(localized: "정말 이 워크스페이스를 떠나시겠습니까?"),
+                            buttonType: .leave,
+                            isTwoButtonType: true
+                        ) { [weak self] in
+                            self?.viewModel.input.leaveButtonDidTap.onNext(())
+                            self?.sideMenuViewController.isExpanded.accept(false)
+                        }
+                    }
+                    actionSheet.addAction(leave)
+                }
+            }
+            .disposed(by: disposeBag)
+
+        actionSheet.addAction(cancel)
+        present(actionSheet, animated: true)
     }
 
 }

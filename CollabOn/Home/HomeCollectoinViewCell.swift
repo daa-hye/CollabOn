@@ -17,6 +17,7 @@ final class HomeCollectoinViewCell: UICollectionViewCell {
 
     init(_ section: HomeViewSection) {
         self.section = section
+        super.init(frame: .zero)
 
         configHierarchy()
         setLayout()

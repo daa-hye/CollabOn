@@ -65,7 +65,7 @@ final class WorkspaceListViewController: BaseViewController {
         listTableView.rx.modelSelected(WorkspaceResponse.self)
             .withLatestFrom(viewModel.output.selectedIndexPath) { ($0, $1) }
             .subscribe { [weak self] workspace, indexPath in
-                self?.listTableView.deselectRow(at: indexPath, animated: true)
+                self?.listTableView.allowsMultipleSelection = false
                 self?.viewModel.input.selectedWorkspace.onNext(workspace)
                 self?.isExpanded.accept(false)
             }
