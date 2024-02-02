@@ -1,8 +1,8 @@
 //
-//  WorkspaceAddViewController.swift
+//  WorkspaceEditViewController.swift
 //  CollabOn
 //
-//  Created by 박다혜 on 1/17/24.
+//  Created by 박다혜 on 2/2/24.
 //
 
 import UIKit
@@ -10,8 +10,9 @@ import PhotosUI
 import RxSwift
 import RxCocoa
 import RxGesture
+import Kingfisher
 
-final class WorkspaceAddViewController: BaseViewController {
+final class WorkspaceEditViewController: BaseViewController {
 
     private let profileView = UIView()
     private let profileImage = UIImageView()
@@ -19,12 +20,39 @@ final class WorkspaceAddViewController: BaseViewController {
     private let nameTextField = InputTextField()
     private let descriptionTextField = InputTextField()
     private let buttonView = UIView()
-    private let confirmButton = PrimaryButton(title: String(localized: "완료"))
+    private let confirmButton = PrimaryButton(title: String(localized: "저장"))
 
-    private let viewModel = WorkspaceAddViewModel()
+    private let viewModel: WorkspaceEditViewModel
 
     let disposeBag = DisposeBag()
 
+    init(viewModel: WorkspaceEditViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+
+        viewModel.output.name
+            .subscribe(with: self) { owner, name in
+                owner.nameTextField.setText(text: name)
+            }
+            .disposed(by: disposeBag)
+
+        viewModel.output.description
+            .subscribe(with: self) { owner, description in
+                owner.descriptionTextField.setText(text: description)
+            }
+            .disposed(by: disposeBag)
+
+        viewModel.output.image
+            .subscribe(with: self) { owner, url in
+                owner.profileImage.kf.setImage(with: url, options: [.requestModifier(ImageService.shared.getImage())])
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavItem()
@@ -115,7 +143,6 @@ final class WorkspaceAddViewController: BaseViewController {
         buttonView.isUserInteractionEnabled = true
 
         cameraImage.image = .camera
-        profileImage.image = .workspace
         profileImage.layer.cornerRadius = 0
         profileImage.clipsToBounds = true
 
@@ -127,7 +154,7 @@ final class WorkspaceAddViewController: BaseViewController {
 
 }
 
-extension WorkspaceAddViewController {
+extension WorkspaceEditViewController {
 
     private func presentPickerView() {
         var configuration = PHPickerConfiguration()
@@ -149,7 +176,7 @@ extension WorkspaceAddViewController {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        self.title = String(localized: "워크스페이스 생성")
+        self.title = String(localized: "워크스페이스 편집")
 
         let closeButton = UIBarButtonItem(
             image: .close,
@@ -169,7 +196,7 @@ extension WorkspaceAddViewController {
 
 }
 
-extension WorkspaceAddViewController: PHPickerViewControllerDelegate {
+extension WorkspaceEditViewController: PHPickerViewControllerDelegate {
 
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         let itemProvider = results.first?.itemProvider
@@ -201,7 +228,7 @@ extension WorkspaceAddViewController: PHPickerViewControllerDelegate {
 
 }
 
-extension WorkspaceAddViewController: InputTextFieldDelegate {
+extension WorkspaceEditViewController: InputTextFieldDelegate {
 
     func setTextLimit(_ textField: InputTextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == nameTextField {

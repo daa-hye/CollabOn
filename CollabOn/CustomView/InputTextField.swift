@@ -103,6 +103,10 @@ final class InputTextField: UIView {
         textField.attributedPlaceholder = attributedString
     }
 
+    func setText(text: String) {
+        self.textField.text = text
+    }
+
     func setKeyboardType(_ type: UIKeyboardType) {
         textField.keyboardType = type
     }

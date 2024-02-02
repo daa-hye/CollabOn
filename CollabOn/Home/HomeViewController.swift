@@ -314,29 +314,39 @@ extension HomeViewController: WorkspaceListTableViewCellDelegate {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let cancel = UIAlertAction(title: String(localized: "취소"), style: .cancel, handler: nil)
 
+        let edit = UIAlertAction(title: String(localized: "워크스페이스 편집"), style: .default) { [weak self] _ in
+
+            _ = self?.viewModel.output.currentWorkspace
+                .compactMap { $0 }
+                .subscribe { [weak self] workspace in
+                    let vc = WorkspaceEditViewController(viewModel: WorkspaceEditViewModel(workspace: workspace))
+                    let nav = UINavigationController(rootViewController: vc)
+                    self?.present(nav, animated: true)
+                }
+
+        }
+        let changeAdmin = UIAlertAction(title: String(localized: "워크스페이스 관리자 변경"), style: .default, handler: nil)
+        let delete = UIAlertAction(title: String(localized: "워크스페이스 삭제"), style: .destructive) { [weak self] _ in
+            self?.showAlert(
+                mainTitle: String(localized: "워크스페이스 삭제"),
+                subTitle: String(localized: "정말 이 워크스페이스를 삭제하시겠습니까? 삭제 시 채널/멤버/채팅 등 워크스페이스 내의 모든 정보가 삭제되며 복구할 수 없습니다."),
+                buttonType: .delete,
+                isTwoButtonType: true
+            ) {
+
+            }
+        }
+
         viewModel.output.isAdmin
             .subscribe(with: self) { owner, value in
                 if value {
-                    let edit = UIAlertAction(title: String(localized: "워크스페이스 편집"), style: .default) { _ in
 
-                    }
                     let leave = UIAlertAction(title: String(localized: "워크스페이스 나가기"), style: .default) { [weak self] _ in
                         self?.showAlert(
                             mainTitle: String(localized: "워크스페이스 나가기"),
                             subTitle: String(localized: "회원님은 워크스페이스 관리자입니다. 워크스페이스 관리자를 다른 멤버로 변경한 후 나갈 수 있습니다."),
                             buttonType: .confirm,
                             isTwoButtonType: false
-                        ) {
-
-                        }
-                    }
-                    let changeAdmin = UIAlertAction(title: String(localized: "워크스페이스 관리자 변경"), style: .default, handler: nil)
-                    let delete = UIAlertAction(title: String(localized: "워크스페이스 삭제"), style: .destructive) { [weak self] _ in
-                        self?.showAlert(
-                            mainTitle: String(localized: "워크스페이스 삭제"),
-                            subTitle: String(localized: "정말 이 워크스페이스를 삭제하시겠습니까? 삭제 시 채널/멤버/채팅 등 워크스페이스 내의 모든 정보가 삭제되며 복구할 수 없습니다."),
-                            buttonType: .delete,
-                            isTwoButtonType: true
                         ) {
 
                         }

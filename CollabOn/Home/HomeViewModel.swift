@@ -20,7 +20,6 @@ final class HomeViewModel: ViewModelType {
     private let viewDidLoad = PublishSubject<Void>()
     private let isExpanded = PublishSubject<Bool>()
     private let selectedWorkspace = PublishSubject<WorkspaceResponse>()
-    private let editButtonDidTap = PublishSubject<Void>()
     private let leaveButtonDidTap = PublishSubject<Void>()
     private let changeAdminButtonDidTap = PublishSubject<Void>()
     private let deleteButtonDidTap = PublishSubject<Void>()
@@ -51,7 +50,7 @@ final class HomeViewModel: ViewModelType {
         input = .init(
             viewDidLoad: viewDidLoad.asObserver(),
             isExpanded: isExpanded.asObserver(),
-            selectedWorkspace: selectedWorkspace.asObserver(), 
+            selectedWorkspace: selectedWorkspace.asObserver(),
             leaveButtonDidTap: leaveButtonDidTap.asObserver()
         )
 
