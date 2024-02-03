@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import RxRelay
 
 final class WorkspaceEditViewModel: ViewModelType {
 
@@ -20,19 +21,21 @@ final class WorkspaceEditViewModel: ViewModelType {
     private let name = PublishSubject<String>()
     private let description = PublishSubject<String>()
     private let image = PublishSubject<Data>()
-    private let confirmButtonDidTap = PublishSubject<Void>()
+    private let saveButtonDidTap = PublishSubject<Void>()
+    private let isSuccess = PublishRelay<Bool>()
 
     struct Input {
         let name: AnyObserver<String>
         let description: AnyObserver<String>
         let image: AnyObserver<Data>
-        let confirmButtonDidTap: AnyObserver<Void>
+        let saveButtonDidTap: AnyObserver<Void>
     }
 
     struct Output {
         let name: Observable<String>
         let description: Observable<String>
         let image: Observable<URL>
+        let isSuccess: Observable<Bool>
     }
 
     init(workspace: WorkspaceDetail) {
@@ -43,27 +46,29 @@ final class WorkspaceEditViewModel: ViewModelType {
             name: name.asObserver(),
             description: description.asObserver(),
             image: image.asObserver(),
-            confirmButtonDidTap: confirmButtonDidTap.asObserver())
+            saveButtonDidTap: saveButtonDidTap.asObserver())
 
         output = .init(
             name: BehaviorSubject(value: workspace.name),
             description: BehaviorSubject(value: workspace.description),
-            image: BehaviorSubject(value: workspace.thumbnail!)
+            image: BehaviorSubject(value: workspace.thumbnail!), 
+            isSuccess: isSuccess.observe(on: MainScheduler.instance)
         )
 
-        confirmButtonDidTap
+        saveButtonDidTap
             .withLatestFrom(Observable.combineLatest(name, description, image))
             .flatMapLatest { (name, description, image) in
-                WorkspaceService.shared.createWorkspace(Workspace(name: name, description: description, image: image))
+                WorkspaceService.shared.editWorkspace(workspace.workspaceId, Workspace(name: name, description: description, image: image))
                     .asObservable()
                     .materialize()
             }
             .subscribe(with: self) { owner, event in
                 switch event {
                 case .next(let data):
-                    print(data)
+                    owner.isSuccess.accept(true)
+                    WorkspaceManager.shared.fetchCurrentWorkspace(id: data.workspaceId)
                 case .error(let error):
-                    print(error)
+                    owner.isSuccess.accept(false)
                 default:
                     break
                 }

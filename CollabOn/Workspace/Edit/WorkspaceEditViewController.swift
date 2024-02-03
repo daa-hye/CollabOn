@@ -20,7 +20,7 @@ final class WorkspaceEditViewController: BaseViewController {
     private let nameTextField = InputTextField()
     private let descriptionTextField = InputTextField()
     private let buttonView = UIView()
-    private let confirmButton = PrimaryButton(title: String(localized: "저장"))
+    private let saveButton = PrimaryButton(title: String(localized: "저장"))
 
     private let viewModel: WorkspaceEditViewModel
 
@@ -47,6 +47,7 @@ final class WorkspaceEditViewController: BaseViewController {
                 owner.profileImage.kf.setImage(with: url, options: [.requestModifier(ImageService.shared.getImage())])
             }
             .disposed(by: disposeBag)
+
     }
     
     required init?(coder: NSCoder) {
@@ -63,7 +64,7 @@ final class WorkspaceEditViewController: BaseViewController {
         nameTextField.isEmpty
             .map { !$0 }
             .asDriver(onErrorJustReturn: false)
-            .drive(confirmButton.rx.isEnabled)
+            .drive(saveButton.rx.isEnabled)
             .disposed(by: disposeBag)
 
         nameTextField.text
@@ -81,8 +82,17 @@ final class WorkspaceEditViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
 
-        confirmButton.rx.tap
-            .bind(to: viewModel.input.confirmButtonDidTap)
+        saveButton.rx.tap
+            .bind(to: viewModel.input.saveButtonDidTap)
+            .disposed(by: disposeBag)
+
+        viewModel.output.isSuccess
+            .subscribe(with: self) { owner, value in
+                guard let rootView = self.presentingViewController else { return }
+                owner.dismiss(animated: false) {
+                    rootView.showToast(message: String(localized: "워크스페이스가 편집되었습니다"), offset: 24)
+                }
+            }
             .disposed(by: disposeBag)
 
     }
@@ -94,7 +104,7 @@ final class WorkspaceEditViewController: BaseViewController {
         view.addSubview(nameTextField)
         view.addSubview(descriptionTextField)
         view.addSubview(buttonView)
-        buttonView.addSubview(confirmButton)
+        buttonView.addSubview(saveButton)
     }
 
     override func setLayout() {
@@ -132,7 +142,7 @@ final class WorkspaceEditViewController: BaseViewController {
             $0.height.equalTo(68)
         }
 
-        confirmButton.snp.makeConstraints {
+        saveButton.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(24)
             $0.verticalEdges.equalToSuperview().inset(12)
         }
@@ -143,7 +153,7 @@ final class WorkspaceEditViewController: BaseViewController {
         buttonView.isUserInteractionEnabled = true
 
         cameraImage.image = .camera
-        profileImage.layer.cornerRadius = 0
+        profileImage.layer.cornerRadius = 8
         profileImage.clipsToBounds = true
 
         nameTextField.setText(label: String(localized: "워크스페이스 이름"),

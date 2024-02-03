@@ -382,10 +382,10 @@
 		53F5D8302B4F6B9C00809760 /* Workspace */ = {
 			isa = PBXGroup;
 			children = (
+				536D6ACB2B5F4DFF008BC481 /* Add */,
 				536D6AF02B6CAE75008BC481 /* Edit */,
 				53F5D8312B4F6BD200809760 /* WorkspaceInitialViewController.swift */,
 				536D6ADE2B639CD5008BC481 /* WorkspaceManager.swift */,
-				536D6ACB2B5F4DFF008BC481 /* Add */,
 				536D6ACC2B5F4E2A008BC481 /* List */,
 			);
 			path = Workspace;

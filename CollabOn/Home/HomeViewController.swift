@@ -317,6 +317,7 @@ extension HomeViewController: WorkspaceListTableViewCellDelegate {
         let edit = UIAlertAction(title: String(localized: "워크스페이스 편집"), style: .default) { [weak self] _ in
 
             _ = self?.viewModel.output.currentWorkspace
+                .take(1)
                 .compactMap { $0 }
                 .subscribe { [weak self] workspace in
                     let vc = WorkspaceEditViewController(viewModel: WorkspaceEditViewModel(workspace: workspace))
@@ -325,7 +326,9 @@ extension HomeViewController: WorkspaceListTableViewCellDelegate {
                 }
 
         }
+
         let changeAdmin = UIAlertAction(title: String(localized: "워크스페이스 관리자 변경"), style: .default, handler: nil)
+
         let delete = UIAlertAction(title: String(localized: "워크스페이스 삭제"), style: .destructive) { [weak self] _ in
             self?.showAlert(
                 mainTitle: String(localized: "워크스페이스 삭제"),
@@ -340,7 +343,6 @@ extension HomeViewController: WorkspaceListTableViewCellDelegate {
         viewModel.output.isAdmin
             .subscribe(with: self) { owner, value in
                 if value {
-
                     let leave = UIAlertAction(title: String(localized: "워크스페이스 나가기"), style: .default) { [weak self] _ in
                         self?.showAlert(
                             mainTitle: String(localized: "워크스페이스 나가기"),

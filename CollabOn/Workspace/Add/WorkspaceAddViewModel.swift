@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import RxRelay
 
 final class WorkspaceAddViewModel: ViewModelType {
 
@@ -19,6 +20,7 @@ final class WorkspaceAddViewModel: ViewModelType {
     private let description = PublishSubject<String>()
     private let image = PublishSubject<Data>()
     private let confirmButtonDidTap = PublishSubject<Void>()
+    private let isSuccess = PublishRelay<Bool>()
 
     struct Input {
         let name: AnyObserver<String>
@@ -28,7 +30,7 @@ final class WorkspaceAddViewModel: ViewModelType {
     }
 
     struct Output {
-        
+        let isSuccess: Observable<Bool>
     }
 
     init() {
@@ -39,7 +41,9 @@ final class WorkspaceAddViewModel: ViewModelType {
             image: image.asObserver(),
             confirmButtonDidTap: confirmButtonDidTap.asObserver())
 
-        output = .init()
+        output = .init(
+            isSuccess: isSuccess.observe(on: MainScheduler.instance)
+        )
 
         confirmButtonDidTap
             .withLatestFrom(Observable.combineLatest(name, description, image))

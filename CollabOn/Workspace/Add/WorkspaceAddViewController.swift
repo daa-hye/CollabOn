@@ -57,6 +57,12 @@ final class WorkspaceAddViewController: BaseViewController {
             .bind(to: viewModel.input.confirmButtonDidTap)
             .disposed(by: disposeBag)
 
+        viewModel.output.isSuccess
+            .subscribe(with: self) { owner, value in
+                owner.dismiss(animated: true)
+            }
+            .disposed(by: disposeBag)
+
     }
 
     override func configHierarchy() {
@@ -116,7 +122,7 @@ final class WorkspaceAddViewController: BaseViewController {
 
         cameraImage.image = .camera
         profileImage.image = .workspace
-        profileImage.layer.cornerRadius = 0
+        profileImage.layer.cornerRadius = 8
         profileImage.clipsToBounds = true
 
         nameTextField.setText(label: String(localized: "워크스페이스 이름"),
