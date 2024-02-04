@@ -336,7 +336,8 @@ extension HomeViewController: WorkspaceListTableViewCellDelegate {
                 buttonType: .delete,
                 isTwoButtonType: true
             ) {
-
+                self?.viewModel.input.deleteButtonDidTap.onNext(())
+                self?.sideMenuViewController.isExpanded.accept(false)
             }
         }
 

@@ -35,6 +35,7 @@ final class HomeViewModel: ViewModelType {
         let isExpanded: AnyObserver<Bool>
         let selectedWorkspace: AnyObserver<WorkspaceResponse>
         let leaveButtonDidTap: AnyObserver<Void>
+        let deleteButtonDidTap: AnyObserver<Void>
     }
 
     struct Output {
@@ -51,7 +52,8 @@ final class HomeViewModel: ViewModelType {
             viewDidLoad: viewDidLoad.asObserver(),
             isExpanded: isExpanded.asObserver(),
             selectedWorkspace: selectedWorkspace.asObserver(),
-            leaveButtonDidTap: leaveButtonDidTap.asObserver()
+            leaveButtonDidTap: leaveButtonDidTap.asObserver(), 
+            deleteButtonDidTap: deleteButtonDidTap.asObserver()
         )
 
         output = .init(
@@ -118,6 +120,16 @@ final class HomeViewModel: ViewModelType {
             }
             .subscribe(with: self) { owner, workspace in
                 WorkspaceManager.shared.fetchCurrentWorkspace(id: workspace?.workspaceId ?? nil)
+            }
+            .disposed(by: disposeBag)
+
+        deleteButtonDidTap
+            .withLatestFrom(currentWorkspace)
+            .compactMap { $0 }
+            .subscribe(with: self) { owner, workspace in
+                _ = WorkspaceService.shared.deleteWorkspace(workspace.workspaceId)
+                    .catchAndReturn(())
+                WorkspaceManager.shared.fetchCurrentWorkspace()
             }
             .disposed(by: disposeBag)
 
