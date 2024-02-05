@@ -90,7 +90,7 @@ final class WorkspaceEditViewController: BaseViewController {
             .subscribe(with: self) { owner, value in
                 guard let rootView = self.presentingViewController else { return }
                 owner.dismiss(animated: false) {
-                    rootView.showToast(message: String(localized: "워크스페이스가 편집되었습니다"), offset: 24)
+                    rootView.showToast(message: String(localized: "워크스페이스가 편집되었습니다"), offset: -24)
                 }
             }
             .disposed(by: disposeBag)

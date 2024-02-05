@@ -33,8 +33,6 @@
 		533FBA922B53940000A1196B /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533FBA912B53940000A1196B /* AuthService.swift */; };
 		533FBA942B53955600A1196B /* AuthModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533FBA932B53955600A1196B /* AuthModel.swift */; };
 		533FBA972B53CD8C00A1196B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533FBA962B53CD8C00A1196B /* HomeViewController.swift */; };
-		533FBA992B53D45000A1196B /* Interceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533FBA982B53D45000A1196B /* Interceptor.swift */; };
-		536D6AF62B6CE1F1008BC481 /* UIViewController + Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AF52B6CE1F1008BC481 /* UIViewController + Toast.swift */; };
 		533FBA992B53D45000A1196B /* TokenErrorInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533FBA982B53D45000A1196B /* TokenErrorInterceptor.swift */; };
 		533FBA9B2B54EDFE00A1196B /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533FBA9A2B54EDFE00A1196B /* HomeViewModel.swift */; };
 		533FBA9D2B55038C00A1196B /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533FBA9C2B55038C00A1196B /* TabBarController.swift */; };
@@ -55,6 +53,7 @@
 		536D6AEF2B6B385C008BC481 /* UIViewcontroller + Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AEE2B6B385C008BC481 /* UIViewcontroller + Alert.swift */; };
 		536D6AF22B6CAE8C008BC481 /* WorkspaceEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AF12B6CAE8C008BC481 /* WorkspaceEditViewController.swift */; };
 		536D6AF42B6CAFA9008BC481 /* WorkspaceEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AF32B6CAFA9008BC481 /* WorkspaceEditViewModel.swift */; };
+		536D6AF62B6CE1F1008BC481 /* UIViewController + Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AF52B6CE1F1008BC481 /* UIViewController + Toast.swift */; };
 		539046B62B593F700075CE54 /* Extension + UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539046B52B593F700075CE54 /* Extension + UIImage.swift */; };
 		53D7B1FD2B43F638003116D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7B1FC2B43F638003116D7 /* AppDelegate.swift */; };
 		53D7B1FF2B43F638003116D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7B1FE2B43F638003116D7 /* SceneDelegate.swift */; };
@@ -101,8 +100,6 @@
 		533FBA912B53940000A1196B /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		533FBA932B53955600A1196B /* AuthModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModel.swift; sourceTree = "<group>"; };
 		533FBA962B53CD8C00A1196B /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		533FBA982B53D45000A1196B /* Interceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interceptor.swift; sourceTree = "<group>"; };
-		536D6AF52B6CE1F1008BC481 /* UIViewController + Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Toast.swift"; sourceTree = "<group>"; };
 		533FBA982B53D45000A1196B /* TokenErrorInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenErrorInterceptor.swift; sourceTree = "<group>"; };
 		533FBA9A2B54EDFE00A1196B /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		533FBA9C2B55038C00A1196B /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -121,6 +118,7 @@
 		536D6AEE2B6B385C008BC481 /* UIViewcontroller + Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewcontroller + Alert.swift"; sourceTree = "<group>"; };
 		536D6AF12B6CAE8C008BC481 /* WorkspaceEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceEditViewController.swift; sourceTree = "<group>"; };
 		536D6AF32B6CAFA9008BC481 /* WorkspaceEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceEditViewModel.swift; sourceTree = "<group>"; };
+		536D6AF52B6CE1F1008BC481 /* UIViewController + Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Toast.swift"; sourceTree = "<group>"; };
 		539046B52B593F700075CE54 /* Extension + UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + UIImage.swift"; sourceTree = "<group>"; };
 		53D7B1F92B43F638003116D7 /* CollabOn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CollabOn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53D7B1FC2B43F638003116D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -384,9 +382,9 @@
 			children = (
 				536D6ACB2B5F4DFF008BC481 /* Add */,
 				536D6AF02B6CAE75008BC481 /* Edit */,
+				536D6ACC2B5F4E2A008BC481 /* List */,
 				53F5D8312B4F6BD200809760 /* WorkspaceInitialViewController.swift */,
 				536D6ADE2B639CD5008BC481 /* WorkspaceManager.swift */,
-				536D6ACC2B5F4E2A008BC481 /* List */,
 			);
 			path = Workspace;
 			sourceTree = "<group>";

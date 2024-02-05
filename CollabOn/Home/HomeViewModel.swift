@@ -93,7 +93,6 @@ final class HomeViewModel: ViewModelType {
             .disposed(by: disposeBag)
 
         WorkspaceManager.shared.currentWorkspace
-            .compactMap { $0 }
             .bind(to: currentWorkspace)
             .disposed(by: disposeBag)
 

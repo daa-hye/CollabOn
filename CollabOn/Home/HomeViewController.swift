@@ -151,8 +151,9 @@ final class HomeViewController: BaseViewController {
                     owner.mainLabel.isHidden = true
                     owner.subLabel.isHidden = true
                     owner.createButton.isHidden = true
-                    owner.titleLabel.text = value?.name
+                    owner.titleLabel.text = value?.name ?? String(localized: "No Workspace")
                     owner.thumbnailView.kf.setImage(with: value?.thumbnail, options: [.requestModifier(ImageService.shared.getImage())])
+                    owner.sideMenuViewController.isExpanded.accept(false)
                 }
             }
             .disposed(by: disposeBag)

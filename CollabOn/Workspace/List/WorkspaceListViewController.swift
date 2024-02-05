@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxGesture
 
 final class WorkspaceListViewController: BaseViewController {
 
@@ -72,7 +73,7 @@ final class WorkspaceListViewController: BaseViewController {
             .disposed(by: disposeBag)
 
         viewModel.output.workspaces
-            .map { $0.count == 0 }
+            .map { $0.count != 0 }
             .subscribe(with: self) { owner, value in
                 owner.mainLabel.rx.isHidden.onNext(value)
                 owner.subLabel.rx.isHidden.onNext(value)
@@ -93,6 +94,15 @@ final class WorkspaceListViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
 
+        addView.rx.tapGesture()
+            .when(.recognized)
+            .subscribe(with: self) { owner, _ in
+                let vc = WorkspaceAddViewController()
+                let nav = UINavigationController(rootViewController: vc)
+                owner.present(nav, animated: true)
+            }
+            .disposed(by: disposeBag)
+
     }
 
     override func viewDidLoad() {
@@ -103,6 +113,7 @@ final class WorkspaceListViewController: BaseViewController {
 
     override func configHierarchy() {
         view.addSubview(topView)
+        view.addSubview(listTableView)
         topView.addSubview(titlelabel)
         view.addSubview(mainLabel)
         view.addSubview(subLabel)
@@ -115,7 +126,6 @@ final class WorkspaceListViewController: BaseViewController {
         helpView.addSubview(helpLabel)
         addView.addSubview(addImage)
         addView.addSubview(addLabel)
-        view.addSubview(listTableView)
     }
 
     override func setLayout() {

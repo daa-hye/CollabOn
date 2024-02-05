@@ -55,9 +55,10 @@ final class WorkspaceAddViewModel: ViewModelType {
             .subscribe(with: self) { owner, event in
                 switch event {
                 case .next(let data):
-                    print(data)
+                    owner.isSuccess.accept(true)
+                    WorkspaceManager.shared.fetchCurrentWorkspace(id: data.workspaceId)
                 case .error(let error):
-                    print(error)
+                    owner.isSuccess.accept(false)
                 default:
                     break
                 }
