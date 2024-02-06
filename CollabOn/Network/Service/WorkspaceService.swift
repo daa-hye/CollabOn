@@ -68,14 +68,10 @@ extension WorkspaceService {
         Single.create { observer in
             let request = self.AFManager.request(WorkspaceRouter.getWorkspaceById(id: id))
                 .validate(statusCode: 200...300)
-                .responseData { response in
+                .responseDecodable(of: WorkspaceDetail.self) { response in
                     switch response.result {
-                    case .success(let data):
-                        if let result = self.handleResponse(data, type: WorkspaceDetail.self) {
-                            observer(.success(result))
-                        } else {
-                            observer(.failure(EndPointError.undefinedError))
-                        }
+                    case .success(let value):
+                        observer(.success(value))
                     case .failure:
                         guard let statusCode = response.response?.statusCode, let data = response.data else {
                             return observer(.failure(EndPointError.networkError))
@@ -156,14 +152,58 @@ extension WorkspaceService {
         }
     }
 
+    func getAllMembers(_ id: Int) -> Single<[Member]> {
+        Single.create { observer in
+            let request = self.AFManager.request(WorkspaceRouter.getAllMembers(id: id))
+                .validate(statusCode: 200...300)
+                .responseDecodable(of: [Member].self) { response in
+                    switch response.result {
+                    case .success(let value):
+                        observer(.success(value))
+                    case .failure:
+                        guard let statusCode = response.response?.statusCode, let data = response.data else {
+                            return observer(.failure(EndPointError.networkError))
+                        }
+                        let error = self.handleError(statusCode: statusCode, data)
+                        observer(.failure(error))
+                    }
+                }
+            return Disposables.create {
+                request.cancel()
+            }
+        }
+    }
+
     func leaveWorkspace(_ id: Int) -> Single<WorkspaceResponse?> {
         Single.create { observer in
             let request = self.AFManager.request(WorkspaceRouter.leaveWorkspace(id: id))
                 .validate(statusCode: 200...300)
                 .responseDecodable(of: [WorkspaceResponse].self) { response in
                     switch response.result {
-                    case .success(let data):
-                        observer(.success(data.first ?? nil))
+                    case .success(let value):
+                        observer(.success(value.first ?? nil))
+                    case .failure:
+                        guard let statusCode = response.response?.statusCode, let data = response.data else {
+                            return observer(.failure(EndPointError.networkError))
+                        }
+                        let error = self.handleError(statusCode: statusCode, data)
+                        observer(.failure(error))
+                    }
+                }
+            return Disposables.create {
+                request.cancel()
+            }
+        }
+    }
+
+    func changeWorkspaceAdmin(id: Int, userId: Int) -> Single<WorkspaceResponse> {
+        Single.create { observer in
+            let request = self.AFManager.request(WorkspaceRouter.changeWorkspaceAdmin(id: id, userId: userId))
+                .validate(statusCode: 200...300)
+                .responseDecodable(of: WorkspaceResponse.self) { response in
+                    switch response.result {
+                    case .success(let value):
+                        observer(.success(value))
                     case .failure:
                         guard let statusCode = response.response?.statusCode, let data = response.data else {
                             return observer(.failure(EndPointError.networkError))

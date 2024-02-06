@@ -23,7 +23,8 @@ extension UIViewController {
         let buttonStackView = UIStackView()
 
         view.addSubview(dimView)
-        
+        view.bringSubviewToFront(dimView)
+
         mainLabel.text = mainTitle
         subLabel.text = subTitle
         confirmButton = PrimaryButton(title: buttonType.title)
@@ -83,12 +84,12 @@ extension UIViewController {
         titleStackView.spacing = 8
 
         _ = cancelButton.rx.tap
-            .subscribe { _ in
+            .bind { _ in
                 dimView.removeFromSuperview()
             }
 
         _ = confirmButton.rx.tap
-            .subscribe { _ in
+            .bind { _ in
                 dimView.removeFromSuperview()
                 confirm?()
             }

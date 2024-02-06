@@ -118,13 +118,27 @@ struct Member: Decodable, Hashable {
     let userId: Int
     let email: String
     let nickname: String
-    let profileImage: String?
+    let profileImage: URL?
 
     enum CodingKeys: String, CodingKey {
         case userId = "user_id"
         case email
         case nickname
         case profileImage
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.userId = try container.decode(Int.self, forKey: .userId)
+        self.email = try container.decode(String.self, forKey: .email)
+        self.nickname = try container.decode(String.self, forKey: .nickname)
+
+        let imagePath  = try container.decode(String?.self, forKey: .profileImage)
+        if let imagePath = imagePath, let url = URL(string: "\(SLP.baseURL)/v1\(imagePath)") {
+            self.profileImage = url
+        } else {
+            self.profileImage = nil
+        }
     }
 }
 

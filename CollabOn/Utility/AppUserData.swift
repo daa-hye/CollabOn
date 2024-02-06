@@ -33,7 +33,7 @@ enum AppUserData {
     @UserDafaultsManager(key: Key.refreshToken.rawValue, defaultValue: "")
     static var refreshToken
 
-    @UserDafaultsManager<Int?>(key: Key.currentWorkspace.rawValue, defaultValue: 0)
+    @UserDafaultsManager(key: Key.currentWorkspace.rawValue, defaultValue: 0)
     static var currentWorkspace
 
 }

@@ -54,6 +54,9 @@
 		536D6AF22B6CAE8C008BC481 /* WorkspaceEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AF12B6CAE8C008BC481 /* WorkspaceEditViewController.swift */; };
 		536D6AF42B6CAFA9008BC481 /* WorkspaceEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AF32B6CAFA9008BC481 /* WorkspaceEditViewModel.swift */; };
 		536D6AF62B6CE1F1008BC481 /* UIViewController + Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AF52B6CE1F1008BC481 /* UIViewController + Toast.swift */; };
+		536D6AF92B70F303008BC481 /* WorkspaceChangeAdminViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AF82B70F303008BC481 /* WorkspaceChangeAdminViewController.swift */; };
+		536D6AFB2B70F3F0008BC481 /* WorkspaceChangeAdminViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AFA2B70F3F0008BC481 /* WorkspaceChangeAdminViewModel.swift */; };
+		536D6AFF2B71130E008BC481 /* MemberListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AFE2B71130E008BC481 /* MemberListTableViewCell.swift */; };
 		539046B62B593F700075CE54 /* Extension + UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539046B52B593F700075CE54 /* Extension + UIImage.swift */; };
 		53D7B1FD2B43F638003116D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7B1FC2B43F638003116D7 /* AppDelegate.swift */; };
 		53D7B1FF2B43F638003116D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D7B1FE2B43F638003116D7 /* SceneDelegate.swift */; };
@@ -119,6 +122,9 @@
 		536D6AF12B6CAE8C008BC481 /* WorkspaceEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceEditViewController.swift; sourceTree = "<group>"; };
 		536D6AF32B6CAFA9008BC481 /* WorkspaceEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceEditViewModel.swift; sourceTree = "<group>"; };
 		536D6AF52B6CE1F1008BC481 /* UIViewController + Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Toast.swift"; sourceTree = "<group>"; };
+		536D6AF82B70F303008BC481 /* WorkspaceChangeAdminViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceChangeAdminViewController.swift; sourceTree = "<group>"; };
+		536D6AFA2B70F3F0008BC481 /* WorkspaceChangeAdminViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceChangeAdminViewModel.swift; sourceTree = "<group>"; };
+		536D6AFE2B71130E008BC481 /* MemberListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberListTableViewCell.swift; sourceTree = "<group>"; };
 		539046B52B593F700075CE54 /* Extension + UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + UIImage.swift"; sourceTree = "<group>"; };
 		53D7B1F92B43F638003116D7 /* CollabOn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CollabOn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53D7B1FC2B43F638003116D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -296,6 +302,16 @@
 			path = Edit;
 			sourceTree = "<group>";
 		};
+		536D6AF72B70F28C008BC481 /* Admin */ = {
+			isa = PBXGroup;
+			children = (
+				536D6AF82B70F303008BC481 /* WorkspaceChangeAdminViewController.swift */,
+				536D6AFA2B70F3F0008BC481 /* WorkspaceChangeAdminViewModel.swift */,
+				536D6AFE2B71130E008BC481 /* MemberListTableViewCell.swift */,
+			);
+			path = Admin;
+			sourceTree = "<group>";
+		};
 		53D7B1F02B43F638003116D7 = {
 			isa = PBXGroup;
 			children = (
@@ -380,6 +396,7 @@
 		53F5D8302B4F6B9C00809760 /* Workspace */ = {
 			isa = PBXGroup;
 			children = (
+				536D6AF72B70F28C008BC481 /* Admin */,
 				536D6ACB2B5F4DFF008BC481 /* Add */,
 				536D6AF02B6CAE75008BC481 /* Edit */,
 				536D6ACC2B5F4E2A008BC481 /* List */,
@@ -513,8 +530,10 @@
 				5302FA0C2B4B75FA001B3F47 /* UserService.swift in Sources */,
 				536D6AE12B64F9BE008BC481 /* DmsModel.swift in Sources */,
 				536D6ACA2B5AB0E8008BC481 /* WorkspaceListViewController.swift in Sources */,
+				536D6AFB2B70F3F0008BC481 /* WorkspaceChangeAdminViewModel.swift in Sources */,
 				53D7B2292B4518EB003116D7 /* SignUpViewController.swift in Sources */,
 				533FBAA32B555D9500A1196B /* WorkspaceModel.swift in Sources */,
+				536D6AF92B70F303008BC481 /* WorkspaceChangeAdminViewController.swift in Sources */,
 				536D6ADA2B60DBDB008BC481 /* ImageService.swift in Sources */,
 				5302FA042B4AD9F5001B3F47 /* UserRouter.swift in Sources */,
 				536D6AE32B64FE20008BC481 /* HomeCollectoinViewCell.swift in Sources */,
@@ -523,6 +542,7 @@
 				533FBA902B538CFA00A1196B /* AuthRouter.swift in Sources */,
 				536D6AF62B6CE1F1008BC481 /* UIViewController + Toast.swift in Sources */,
 				53E643022B57FE60000CBC1F /* WorkspaceAddViewModel.swift in Sources */,
+				536D6AFF2B71130E008BC481 /* MemberListTableViewCell.swift in Sources */,
 				533FBA922B53940000A1196B /* AuthService.swift in Sources */,
 				5302F9F62B4A9F45001B3F47 /* SLP.swift in Sources */,
 				533FBA9F2B555D8000A1196B /* WorkspaceRouter.swift in Sources */,

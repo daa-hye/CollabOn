@@ -328,7 +328,11 @@ extension HomeViewController: WorkspaceListTableViewCellDelegate {
 
         }
 
-        let changeAdmin = UIAlertAction(title: String(localized: "워크스페이스 관리자 변경"), style: .default, handler: nil)
+        let changeAdmin = UIAlertAction(title: String(localized: "워크스페이스 관리자 변경"), style: .default) { [weak self] _ in
+            let vc = WorkspaceChangeAdminViewController()
+            let nav = UINavigationController(rootViewController: vc)
+            self?.present(nav, animated: true)
+        }
 
         let delete = UIAlertAction(title: String(localized: "워크스페이스 삭제"), style: .destructive) { [weak self] _ in
             self?.showAlert(

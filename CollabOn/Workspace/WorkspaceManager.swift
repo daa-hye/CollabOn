@@ -13,12 +13,15 @@ final class WorkspaceManager {
 
     static let shared = WorkspaceManager()
 
-    private init() {}
+    private init() {
+        _ = currentWorkspace
+            .compactMap { $0?.workspaceId }
+            .subscribe { value in
+                AppUserData.currentWorkspace = value
+            }
+    }
 
     var currentWorkspace = ReplayRelay<WorkspaceDetail?>.create(bufferSize: 1)
-
-    // 업데이트, 추가, 수정, 삭제
-    // 갱신 정보 전달
 
     func fetchCurrentWorkspace() {
         // TODO: `WorkspaceService.shared.getWorkspace()` 함수 workspaces로 네이밍 변경하기
@@ -60,7 +63,8 @@ extension WorkspaceManager {
                 }
         }
 
-        if let workspaceId = AppUserData.currentWorkspace {
+        let workspaceId = AppUserData.currentWorkspace
+        if workspaceId != 0 {
             return WorkspaceService.shared.getWorkspace(workspaceId)
                 .map { Optional($0) }
                 .catch { _ in

@@ -80,7 +80,7 @@ final class WorkspaceListTableViewCell: UITableViewCell {
         contentStackView.snp.makeConstraints {
             $0.leading.equalTo(thumbnailImageView.snp.trailing).offset(8)
             $0.centerY.equalToSuperview()
-            $0.width.equalTo(192)
+            $0.trailing.equalToSuperview().inset(50)
             $0.height.equalTo(36)
         }
 
