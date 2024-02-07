@@ -38,7 +38,7 @@ extension WorkspaceService {
         }
     }
 
-    func getWorkspace() -> Single<[WorkspaceResponse]> {
+    func getWorkspaces() -> Single<[WorkspaceResponse]> {
         Single.create { observer in
             let request = self.AFManager.request(WorkspaceRouter.getAllWorkspaces)
                 .validate(statusCode: 200...300)

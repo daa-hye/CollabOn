@@ -24,8 +24,7 @@ final class WorkspaceManager {
     var currentWorkspace = ReplayRelay<WorkspaceDetail?>.create(bufferSize: 1)
 
     func fetchCurrentWorkspace() {
-        // TODO: `WorkspaceService.shared.getWorkspace()` 함수 workspaces로 네이밍 변경하기
-        _ = WorkspaceService.shared.getWorkspace()
+        _ = WorkspaceService.shared.getWorkspaces()
             .map { response -> Int? in
                 response.isEmpty ? nil : response.first!.workspaceId
             }

@@ -58,7 +58,7 @@ final class WorkspaceAddViewController: BaseViewController {
             .disposed(by: disposeBag)
 
         viewModel.output.isSuccess
-            .subscribe(with: self) { owner, value in
+            .bind(with: self) { owner, value in
                 owner.dismiss(animated: true)
             }
             .disposed(by: disposeBag)

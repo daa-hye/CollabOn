@@ -46,7 +46,7 @@ class WorkspaceListViewModel: ViewModelType {
         isExpanded
             .filter { $0 }
             .flatMapLatest { _ in
-                WorkspaceService.shared.getWorkspace()
+                WorkspaceService.shared.getWorkspaces()
                     .catchAndReturn([])
             }
             .subscribe(with: self) { owner, response in

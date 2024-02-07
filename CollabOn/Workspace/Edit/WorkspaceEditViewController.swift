@@ -31,19 +31,19 @@ final class WorkspaceEditViewController: BaseViewController {
         super.init(nibName: nil, bundle: nil)
 
         viewModel.output.name
-            .subscribe(with: self) { owner, name in
+            .bind(with: self) { owner, name in
                 owner.nameTextField.setText(text: name)
             }
             .disposed(by: disposeBag)
 
         viewModel.output.description
-            .subscribe(with: self) { owner, description in
+            .bind(with: self) { owner, description in
                 owner.descriptionTextField.setText(text: description)
             }
             .disposed(by: disposeBag)
 
         viewModel.output.image
-            .subscribe(with: self) { owner, url in
+            .bind(with: self) { owner, url in
                 owner.profileImage.kf.setImage(with: url, options: [.requestModifier(ImageService.shared.getImage())])
             }
             .disposed(by: disposeBag)
@@ -87,7 +87,7 @@ final class WorkspaceEditViewController: BaseViewController {
             .disposed(by: disposeBag)
 
         viewModel.output.isSuccess
-            .subscribe(with: self) { owner, value in
+            .bind(with: self) { owner, value in
                 guard let rootView = self.presentingViewController else { return }
                 owner.dismiss(animated: false) {
                     rootView.showToast(message: String(localized: "워크스페이스가 편집되었습니다"), offset: -24)

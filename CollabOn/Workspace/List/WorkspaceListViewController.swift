@@ -58,14 +58,14 @@ final class WorkspaceListViewController: BaseViewController {
             .compactMap { (event, indexPath) in
                 return event.indexPath == indexPath ? event : nil
             }
-            .subscribe { event in
+            .bind { event in
                 event.cell.setSelected(true, animated: true)
             }
             .disposed(by: disposeBag)
 
         listTableView.rx.modelSelected(WorkspaceResponse.self)
             .withLatestFrom(viewModel.output.selectedIndexPath) { ($0, $1) }
-            .subscribe { [weak self] workspace, indexPath in
+            .bind { [weak self] workspace, indexPath in
                 self?.listTableView.allowsMultipleSelection = false
                 self?.viewModel.input.selectedWorkspace.onNext(workspace)
                 self?.isExpanded.accept(false)
@@ -74,7 +74,7 @@ final class WorkspaceListViewController: BaseViewController {
 
         viewModel.output.workspaces
             .map { $0.count != 0 }
-            .subscribe(with: self) { owner, value in
+            .bind(with: self) { owner, value in
                 owner.mainLabel.rx.isHidden.onNext(value)
                 owner.subLabel.rx.isHidden.onNext(value)
                 owner.sideCreateButton.rx.isHidden.onNext(value)
@@ -87,7 +87,7 @@ final class WorkspaceListViewController: BaseViewController {
             .disposed(by: disposeBag)
 
         sideCreateButton.rx.tap
-            .subscribe(with: self) { owner, _ in
+            .bind(with: self) { owner, _ in
                 let vc = WorkspaceAddViewController()
                 let nav = UINavigationController(rootViewController: vc)
                 owner.present(nav, animated: true)
@@ -96,7 +96,7 @@ final class WorkspaceListViewController: BaseViewController {
 
         addView.rx.tapGesture()
             .when(.recognized)
-            .subscribe(with: self) { owner, _ in
+            .bind(with: self) { owner, _ in
                 let vc = WorkspaceAddViewController()
                 let nav = UINavigationController(rootViewController: vc)
                 owner.present(nav, animated: true)

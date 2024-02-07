@@ -51,7 +51,7 @@ final class WorkspaceChangeAdminViewController: BaseViewController {
                 owner.showAlert(mainTitle: String(localized: "\(member.nickname) 님을 관리자로 지정하시겠습니까?"),
                                 subTitle: String(localized: """
                                                     워크스페이스 관리자는 다음과 같은 권한이 있습니다.
-                                                    
+
                                                      · 워크스페이스 이름 또는 설명 변경
                                                      · 워크스페이스 삭제
                                                      · 워크스페이스 멤버 초대
