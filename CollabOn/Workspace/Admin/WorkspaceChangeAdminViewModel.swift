@@ -42,8 +42,15 @@ final class WorkspaceChangeAdminViewModel: ViewModelType {
         viewDidLoad
             .withLatestFrom(WorkspaceManager.shared.currentWorkspace)
             .compactMap { $0 }
-            .flatMapLatest {
-                WorkspaceService.shared.getAllMembers($0.workspaceId)
+            .flatMapLatest { workspace in
+                WorkspaceService.shared.getAllMembers(workspace.workspaceId)
+                    .map{ member in
+                        var exceptAdmin = member
+                        exceptAdmin.removeAll { member in
+                            member.userId == workspace.ownerId
+                        }
+                        return exceptAdmin
+                    }
                     .catchAndReturn([])
             }
             .bind(to: members)

@@ -271,7 +271,7 @@ final class HomeViewController: BaseViewController {
 
         profileView.layer.cornerRadius = 16
         profileView.layer.borderWidth = 2
-        profileView.image = .dummy
+        profileView.image = .noProfile
         profileView.layer.borderColor = UIColor.selected.cgColor
         profileView.clipsToBounds = true
 

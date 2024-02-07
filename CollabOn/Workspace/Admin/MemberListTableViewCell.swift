@@ -18,6 +18,9 @@ final class MemberListTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
+        configHierarchy()
+        setLayout()
+        setUIProperties()
     }
     
     required init?(coder: NSCoder) {
@@ -48,7 +51,7 @@ final class MemberListTableViewCell: UITableViewCell {
 
     func setUIProperties() {
 
-        thumbnailImageView.image = .dummy
+        thumbnailImageView.image = .noProfile
         thumbnailImageView.layer.cornerRadius = 8
         thumbnailImageView.clipsToBounds = true
 
@@ -64,7 +67,9 @@ final class MemberListTableViewCell: UITableViewCell {
     }
 
     func setData(_ data: Member) {
-        thumbnailImageView.kf.setImage(with: data.profileImage, options: [.requestModifier(ImageService.shared.getImage())])
+        if let image = data.profileImage {
+            thumbnailImageView.kf.setImage(with: image, options: [.requestModifier(ImageService.shared.getImage())])
+        }
         nameLabel.text = data.nickname
         mailLabel.text = data.email
     }
