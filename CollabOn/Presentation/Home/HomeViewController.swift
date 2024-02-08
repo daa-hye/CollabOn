@@ -146,6 +146,7 @@ final class HomeViewController: BaseViewController {
                 if value == nil {
                     owner.titleLabel.text = String(localized: "No Workspace")
                     owner.thumbnailView.image = .workspace
+                    owner.tabBarController?.tabBar.isHidden = true
                 } else {
                     owner.mainImage.isHidden = true
                     owner.mainLabel.isHidden = true
@@ -154,6 +155,7 @@ final class HomeViewController: BaseViewController {
                     owner.titleLabel.text = value?.name ?? String(localized: "No Workspace")
                     owner.thumbnailView.kf.setImage(with: value?.thumbnail, options: [.requestModifier(ImageService.shared.getImage())])
                     owner.sideMenuViewController.isExpanded.accept(false)
+                    owner.tabBarController?.tabBar.isHidden = false
                 }
             }
             .disposed(by: disposeBag)
@@ -184,8 +186,6 @@ final class HomeViewController: BaseViewController {
 
     override func setLayout() {
         navigationController?.navigationBar.isHidden = true
-        tabBarController?.tabBar.isHidden = true
-        
 
         mainImage.snp.makeConstraints {
             $0.center.equalToSuperview()

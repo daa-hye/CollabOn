@@ -16,13 +16,35 @@ final class TabBarController: UITabBarController {
         tabBar.tintColor = .black
 
         let homeView = {
-            let view = UINavigationController(rootViewController: HomeViewController())
+            let view = HomeViewController()
             view.tabBarItem.image = .home
             view.tabBarItem.title = String(localized: "홈")
             return view
         }()
 
-        setViewControllers([homeView], animated: true)
+        let dmView = {
+            let view = DirectMessageViewController()
+            view.tabBarItem.image = .message
+            view.tabBarItem.title = String(localized: "DM")
+            return view
+        }()
+
+        let searchView = {
+            let view = SearchViewController()
+            view.tabBarItem.image = .profile
+            view.tabBarItem.title = String(localized: "검색")
+            return view
+        }()
+
+        let settingView = {
+            let view = SettingViewController()
+            view.tabBarItem.image = .setting
+            view.tabBarItem.title = String(localized: "설정")
+            return view
+        }()
+
+        let tabs: [UIViewController] = [homeView, dmView, searchView, settingView]
+        setViewControllers(tabs.map{ UINavigationController(rootViewController: $0) }, animated: true)
 
     }
 
