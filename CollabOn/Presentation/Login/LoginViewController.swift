@@ -29,8 +29,7 @@ final class LoginViewController: BaseViewController {
 
         Observable.combineLatest(emailTextField.isEmpty, passwordTextField.isEmpty)
             .map { !$0 && !$1 }
-            .asDriver(onErrorJustReturn: false)
-            .drive(loginButton.rx.isEnabled)
+            .bind(to: loginButton.rx.isEnabled)
             .disposed(by: disposeBag)
 
         emailTextField.text
@@ -54,19 +53,17 @@ final class LoginViewController: BaseViewController {
             .disposed(by: disposeBag)
 
         viewModel.output.loginSucceeded
-            .asDriver(onErrorJustReturn: ())
-            .drive(onNext: {
+            .bind {
                 let vc = WorkspaceInitialViewController()
                 let nav = UINavigationController(rootViewController: vc)
                 let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
                 guard let sceneDelegate else { return }
                 sceneDelegate.window?.rootViewController = nav
-            })
+            }
             .disposed(by: disposeBag)
 
         viewModel.output.toastMessage
-            .asDriver(onErrorJustReturn: "")
-            .drive(with: self) { owner, message in
+            .bind(with: self) { owner, message in
                 owner.showToast(message: message, constraintView: owner.buttonView, offset: 4)
             }
             .disposed(by: disposeBag)

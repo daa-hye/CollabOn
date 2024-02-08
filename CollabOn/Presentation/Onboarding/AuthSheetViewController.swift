@@ -28,7 +28,7 @@ final class AuthSheetViewController: BaseViewController {
     override func bindRx() {
 
         appleLoginButton.rx.tap
-            .subscribe(onNext: {
+            .bind {
                 let appleIDProvider = ASAuthorizationAppleIDProvider()
                 let request = appleIDProvider.createRequest()
                 request.requestedScopes = [.email, .fullName]
@@ -37,7 +37,7 @@ final class AuthSheetViewController: BaseViewController {
                 controller.delegate = self
                 controller.presentationContextProvider = self
                 controller.performRequests()
-            })
+            }
             .disposed(by: disposeBag)
 
         kakaoLoginButton.rx.tap
@@ -45,25 +45,23 @@ final class AuthSheetViewController: BaseViewController {
             .disposed(by: disposeBag)
 
         emailLoginButton.rx.tap
-            .subscribe(with: self, onNext: { owner, _ in
+            .bind(with: self) { owner, _ in
                 owner.emailLoginButtonDidTap()
-            })
+            }
             .disposed(by: disposeBag)
 
         viewModel.output.loginSucceeded
-            .asDriver(onErrorJustReturn: ())
-            .drive(onNext: {
+            .bind {
                 let vc = WorkspaceInitialViewController()
                 let nav = UINavigationController(rootViewController: vc)
                 let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
                 guard let sceneDelegate else { return }
                 sceneDelegate.window?.rootViewController = nav
-            })
+            }
             .disposed(by: disposeBag)
 
         viewModel.output.toastMessage
-            .asDriver(onErrorJustReturn: "")
-            .drive(with: self) { owner, message in
+            .bind(with: self) { owner, message in
                 owner.showToast(message: message, offset: -24)
             }
             .disposed(by: disposeBag)

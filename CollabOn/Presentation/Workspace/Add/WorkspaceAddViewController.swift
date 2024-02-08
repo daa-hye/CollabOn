@@ -48,7 +48,7 @@ final class WorkspaceAddViewController: BaseViewController {
 
         profileView.rx.tapGesture()
             .when(.recognized)
-            .subscribe(with: self) { owner, _ in
+            .bind(with: self) { owner, _ in
                 owner.presentPickerView()
             }
             .disposed(by: disposeBag)

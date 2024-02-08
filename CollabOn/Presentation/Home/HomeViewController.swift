@@ -46,7 +46,7 @@ final class HomeViewController: BaseViewController {
     override func bindRx() {
 
         createButton.rx.tap
-            .subscribe(with: self) { owner, _ in
+            .bind(with: self) { owner, _ in
                 let vc = WorkspaceAddViewController()
                 let nav = UINavigationController(rootViewController: vc)
                 owner.present(nav, animated: true)
@@ -55,21 +55,21 @@ final class HomeViewController: BaseViewController {
 
         view.rx.swipeGesture(.right)
             .when(.recognized)
-            .subscribe(with: self) { owner, _ in
+            .bind(with: self) { owner, _ in
                 owner.sideMenuViewController.isExpanded.accept(true)
             }
             .disposed(by: disposeBag)
 
         view.rx.swipeGesture(.left)
             .when(.recognized)
-            .subscribe(with: self) { owner, _ in
+            .bind(with: self) { owner, _ in
                 owner.sideMenuViewController.isExpanded.accept(false)
             }
             .disposed(by: disposeBag)
 
         sideMenuDimView.rx.tapGesture()
             .when(.recognized)
-            .subscribe(with: self) { owner, _ in
+            .bind(with: self) { owner, _ in
                 owner.sideMenuViewController.isExpanded.accept(false)
             }
             .disposed(by: disposeBag)
@@ -77,7 +77,7 @@ final class HomeViewController: BaseViewController {
         sideMenuViewController.isExpanded
             .skip(1)
             .distinctUntilChanged()
-            .subscribe(with: self) { owner, value in
+            .bind(with: self) { owner, value in
                 UIView.animate(withDuration: 0.5) {
                     self.sideMenuDimView.alpha = value ? 0.5 : 0.01
                 }
@@ -142,7 +142,7 @@ final class HomeViewController: BaseViewController {
 //            .disposed(by: disposeBag)
 
         viewModel.output.currentWorkspace
-            .subscribe(with: self) { owner, value in
+            .bind(with: self) { owner, value in
                 if value == nil {
                     owner.titleLabel.text = String(localized: "No Workspace")
                     owner.thumbnailView.image = .workspace
@@ -320,7 +320,7 @@ extension HomeViewController: WorkspaceListTableViewCellDelegate {
             _ = self?.viewModel.output.currentWorkspace
                 .take(1)
                 .compactMap { $0 }
-                .subscribe { [weak self] workspace in
+                .bind { [weak self] workspace in
                     let vc = WorkspaceEditViewController(viewModel: WorkspaceEditViewModel(workspace: workspace))
                     let nav = UINavigationController(rootViewController: vc)
                     self?.present(nav, animated: true)
@@ -347,7 +347,7 @@ extension HomeViewController: WorkspaceListTableViewCellDelegate {
         }
 
         viewModel.output.isAdmin
-            .subscribe(with: self) { owner, value in
+            .bind(with: self) { owner, value in
                 if value {
                     let leave = UIAlertAction(title: String(localized: "워크스페이스 나가기"), style: .default) { [weak self] _ in
                         self?.showAlert(

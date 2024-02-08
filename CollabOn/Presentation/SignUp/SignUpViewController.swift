@@ -36,9 +36,8 @@ final class SignUpViewController: BaseViewController {
     override func bindRx() {
 
         emailTextField.isEmpty
-            .asDriver(onErrorJustReturn: true)
             .map { !$0 }
-            .drive(emailCheckButton.rx.isEnabled)
+            .bind(to: emailCheckButton.rx.isEnabled)
             .disposed(by: disposeBag)
 
         emailCheckButton.rx.tap
@@ -51,8 +50,7 @@ final class SignUpViewController: BaseViewController {
 
         Observable.combineLatest(emailTextField.isEmpty, nicknameTextField.isEmpty, passwordTextField.isEmpty, checkPasswordTextField.isEmpty)
             .map { !$0 && !$1 && !$2 && !$3 }
-            .asDriver(onErrorJustReturn: true)
-            .drive(signUpButton.rx.isEnabled)
+            .bind(to: signUpButton.rx.isEnabled)
             .disposed(by: disposeBag)
 
         emailTextField.text
@@ -100,19 +98,17 @@ final class SignUpViewController: BaseViewController {
             .disposed(by: disposeBag)
 
         viewModel.output.signUpSucceeded
-            .asDriver(onErrorJustReturn: ())
-            .drive(onNext: {
+            .bind {
                 let vc = WorkspaceInitialViewController()
                 let nav = UINavigationController(rootViewController: vc)
                 let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
                 guard let sceneDelegate else { return }
                 sceneDelegate.window?.rootViewController = nav
-            })
+            }
             .disposed(by: disposeBag)
 
         viewModel.output.toastMessage
-            .asDriver(onErrorJustReturn: "")
-            .drive(with: self) { owner, message in
+            .bind(with: self) { owner, message in
                 owner.showToast(message: message, constraintView: owner.buttonView, offset: 4)
             }
             .disposed(by: disposeBag)

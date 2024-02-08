@@ -28,8 +28,7 @@ final class SplashViewController: BaseViewController {
     override func bindRx() {
 
         viewModel.output.isLoggedIn
-            .asDriver(onErrorJustReturn: false)
-            .drive(with: self) { owner, value in
+            .bind(with: self) { owner, value in
                 if value {
                     let vc = TabBarController()
                     let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
