@@ -95,6 +95,12 @@ final class WorkspaceEditViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
 
+        viewModel.output.toastMessage
+            .bind(with: self) { owner, message in
+                owner.showToast(message: message, offset: -24)
+            }
+            .disposed(by: disposeBag)
+
     }
 
     override func configHierarchy() {

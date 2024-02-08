@@ -20,7 +20,9 @@ final class WorkspaceAddViewModel: ViewModelType {
     private let description = PublishSubject<String>()
     private let image = PublishSubject<Data>()
     private let confirmButtonDidTap = PublishSubject<Void>()
+    
     private let isSuccess = PublishRelay<Bool>()
+    private let toastMessage = PublishRelay<String>()
 
     struct Input {
         let name: AnyObserver<String>
@@ -31,6 +33,7 @@ final class WorkspaceAddViewModel: ViewModelType {
 
     struct Output {
         let isSuccess: Observable<Bool>
+        let toastMessage: Observable<String>
     }
 
     init() {
@@ -42,7 +45,8 @@ final class WorkspaceAddViewModel: ViewModelType {
             confirmButtonDidTap: confirmButtonDidTap.asObserver())
 
         output = .init(
-            isSuccess: isSuccess.observe(on: MainScheduler.instance)
+            isSuccess: isSuccess.observe(on: MainScheduler.instance), 
+            toastMessage: toastMessage.observe(on: MainScheduler.instance)
         )
 
         confirmButtonDidTap
@@ -59,6 +63,14 @@ final class WorkspaceAddViewModel: ViewModelType {
                     WorkspaceManager.shared.fetchCurrentWorkspace(id: data.workspaceId)
                 case .error(let error):
                     owner.isSuccess.accept(false)
+                    switch error {
+                    case EndPointError.duplicateData:
+                        owner.toastMessage.accept(Toast.workspaceNameDuplicated.message)
+                    case EndPointError.insufficientCoins:
+                        owner.toastMessage.accept(Toast.notEnoughCoins.message)
+                    default:
+                        owner.toastMessage.accept(Toast.etc.message)
+                    }
                 default:
                     break
                 }
@@ -68,3 +80,25 @@ final class WorkspaceAddViewModel: ViewModelType {
     }
 
 }
+
+extension WorkspaceAddViewModel {
+
+    private enum Toast: Int {
+        case workspaceNameDuplicated
+        case notEnoughCoins
+        case etc
+
+        var message: String {
+            switch self {
+            case .workspaceNameDuplicated:
+                String(localized: "이미 같은 이름의 워크스페이스가 있어요.")
+            case .notEnoughCoins:
+                String(localized: "새싹 코인이 부족해요.")
+            case .etc:
+                String(localized: "에러가 발생했어요. 잠시 후 다시 시도해주세요.")
+            }
+        }
+    }
+
+}
+
