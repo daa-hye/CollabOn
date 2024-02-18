@@ -16,9 +16,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
-                window = UIWindow(windowScene: scene)
-                window?.rootViewController = SplashViewController()
-                window?.makeKeyAndVisible()
+        UserManager.shared.fetchUser()
+        window = UIWindow(windowScene: scene)
+        window?.rootViewController = SplashViewController()
+        window?.makeKeyAndVisible()
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

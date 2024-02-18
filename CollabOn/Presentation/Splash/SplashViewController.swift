@@ -21,8 +21,6 @@ final class SplashViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel.input.viewDidLoad.onNext(())
-
     }
 
     override func bindRx() {

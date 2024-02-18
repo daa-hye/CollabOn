@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 final class WorkspaceInitialViewController: BaseViewController {
 
@@ -14,9 +15,20 @@ final class WorkspaceInitialViewController: BaseViewController {
     private let subLabel = UILabel()
     private let createButton = PrimaryButton(title: String(localized: "워크스페이스 생성"))
 
+    private let viewModel = WorkspaceInitialViewModel()
+
+    private let disposeBag = DisposeBag()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavItem()
+    }
+
+    override func bindRx() {
+        viewModel.output.nickname
+            .map { "\($0)" + String(localized: "님의 조직을 위해 새로운 새싹톡 워크스페이스를 \n시작할 준비가 완료되었어요!") }
+            .bind(to: subLabel.rx.text)
+            .disposed(by: disposeBag)
     }
 
     override func configHierarchy() {
@@ -59,7 +71,6 @@ final class WorkspaceInitialViewController: BaseViewController {
         mainLabel.font = .title1
         mainLabel.textAlignment = .center
 
-        subLabel.text = String(localized: "님의 조직을 위해 새로운 새싹톡 워크스페이스를 \n시작할 준비가 완료되었어요!")
         subLabel.font = .body
         subLabel.textAlignment = .center
         subLabel.numberOfLines = 2

@@ -187,7 +187,7 @@ extension UserService {
         }
     }
 
-    func getUserLoginData() -> Single<Bool> {
+    func getUserLoginData() -> Single<MyInfo?> {
         Single.create { observer in
             let request = self.AFManager.request(UserRouter.getMyProfile)
                 .validate(statusCode: 200..<300)
@@ -196,7 +196,7 @@ extension UserService {
                     case .success(let data):
                         if let result = self.handleResponse(data, type: MyInfo.self) {
                             AppUserData.profileImage = result.profileImage ?? ""
-                            observer(.success(true))
+                            observer(.success(result))
                         }
                     case .failure:
                         guard let statusCode = response.response?.statusCode, let data = response.data else {

@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import RxRelay
 
 final class SplashViewModel: ViewModelType {
 
@@ -15,12 +16,10 @@ final class SplashViewModel: ViewModelType {
     let input: Input
     let output: Output
 
-    private let viewDidLoad = PublishSubject<Void>()
-
-    private let isLoggedIn = PublishSubject<Bool>()
+    private let isLoggedIn = PublishRelay<Bool>()
 
     struct Input {
-        let viewDidLoad: AnyObserver<Void>
+
     }
 
     struct Output {
@@ -29,34 +28,19 @@ final class SplashViewModel: ViewModelType {
 
     init() {
 
-        input = .init(
-            viewDidLoad: viewDidLoad.asObserver()
-        )
+        input = .init()
 
         output = .init(
             isLoggedIn: isLoggedIn.observe(on: MainScheduler.instance)
         )
 
-        viewDidLoad
-            .delay(.seconds(0), scheduler: MainScheduler.instance)
-            .flatMapLatest { _ -> Observable<Event<Bool>> in
-                if AppUserData.token.isEmpty {
-                    self.isLoggedIn.onNext(false)
-                    return Observable.never()
+        UserManager.shared.userInfo
+            .delay(.seconds(2), scheduler: MainScheduler.instance)
+            .bind(with: self) { owner, info in
+                if info != nil {
+                    owner.isLoggedIn.accept(true)
                 } else {
-                    return UserService.shared.getUserLoginData()
-                        .asObservable()
-                        .materialize()
-                }
-            }
-            .subscribe(with: self) { owner, event in
-                switch event {
-                case .next(let value):
-                    owner.isLoggedIn.onNext(value)
-                case .error:
-                    owner.isLoggedIn.onNext(false)
-                default:
-                    break
+                    owner.isLoggedIn.accept(false)
                 }
             }
             .disposed(by: disposeBag)

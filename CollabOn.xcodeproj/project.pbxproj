@@ -57,6 +57,8 @@
 		536D6AF92B70F303008BC481 /* WorkspaceChangeAdminViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AF82B70F303008BC481 /* WorkspaceChangeAdminViewController.swift */; };
 		536D6AFB2B70F3F0008BC481 /* WorkspaceChangeAdminViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AFA2B70F3F0008BC481 /* WorkspaceChangeAdminViewModel.swift */; };
 		536D6AFF2B71130E008BC481 /* MemberListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AFE2B71130E008BC481 /* MemberListTableViewCell.swift */; };
+		536DE8782B8192F500616E7B /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536DE8772B8192F500616E7B /* UserManager.swift */; };
+		536DE87B2B81A49800616E7B /* WorkspaceInitialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536DE87A2B81A49800616E7B /* WorkspaceInitialViewModel.swift */; };
 		539046B62B593F700075CE54 /* UIImage + Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539046B52B593F700075CE54 /* UIImage + Resize.swift */; };
 		53BC61472B74764900EDE938 /* DirectMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BC61462B74764900EDE938 /* DirectMessageViewController.swift */; };
 		53BC614D2B74793200EDE938 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BC614C2B74793200EDE938 /* SearchViewController.swift */; };
@@ -128,6 +130,8 @@
 		536D6AF82B70F303008BC481 /* WorkspaceChangeAdminViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceChangeAdminViewController.swift; sourceTree = "<group>"; };
 		536D6AFA2B70F3F0008BC481 /* WorkspaceChangeAdminViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceChangeAdminViewModel.swift; sourceTree = "<group>"; };
 		536D6AFE2B71130E008BC481 /* MemberListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberListTableViewCell.swift; sourceTree = "<group>"; };
+		536DE8772B8192F500616E7B /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		536DE87A2B81A49800616E7B /* WorkspaceInitialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceInitialViewModel.swift; sourceTree = "<group>"; };
 		539046B52B593F700075CE54 /* UIImage + Resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + Resize.swift"; sourceTree = "<group>"; };
 		53BC61462B74764900EDE938 /* DirectMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectMessageViewController.swift; sourceTree = "<group>"; };
 		53BC614C2B74793200EDE938 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -318,6 +322,15 @@
 			path = Admin;
 			sourceTree = "<group>";
 		};
+		536DE8792B81A44F00616E7B /* Initial */ = {
+			isa = PBXGroup;
+			children = (
+				53F5D8312B4F6BD200809760 /* WorkspaceInitialViewController.swift */,
+				536DE87A2B81A49800616E7B /* WorkspaceInitialViewModel.swift */,
+			);
+			path = Initial;
+			sourceTree = "<group>";
+		};
 		53BC61412B74744700EDE938 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -437,11 +450,11 @@
 		53F5D8302B4F6B9C00809760 /* Workspace */ = {
 			isa = PBXGroup;
 			children = (
+				536DE8792B81A44F00616E7B /* Initial */,
 				536D6AF72B70F28C008BC481 /* Admin */,
 				536D6ACB2B5F4DFF008BC481 /* Add */,
 				536D6AF02B6CAE75008BC481 /* Edit */,
 				536D6ACC2B5F4E2A008BC481 /* List */,
-				53F5D8312B4F6BD200809760 /* WorkspaceInitialViewController.swift */,
 				536D6ADE2B639CD5008BC481 /* WorkspaceManager.swift */,
 			);
 			path = Workspace;
@@ -452,6 +465,7 @@
 			children = (
 				53F5D84D2B50AF4400809760 /* LoginViewController.swift */,
 				53F5D84F2B50FE8C00809760 /* LoginViewModel.swift */,
+				536DE8772B8192F500616E7B /* UserManager.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -562,6 +576,7 @@
 				53BC61472B74764900EDE938 /* DirectMessageViewController.swift in Sources */,
 				5302FA122B4BCE07001B3F47 /* UserModel.swift in Sources */,
 				536D6AE72B68AC32008BC481 /* CancelButton.swift in Sources */,
+				536DE8782B8192F500616E7B /* UserManager.swift in Sources */,
 				5302F9FD2B4AAF04001B3F47 /* HeaderType.swift in Sources */,
 				53D7B1FD2B43F638003116D7 /* AppDelegate.swift in Sources */,
 				53D7B2302B466A41003116D7 /* SignUpViewModel.swift in Sources */,
@@ -615,6 +630,7 @@
 				536D6ADF2B639CD5008BC481 /* WorkspaceManager.swift in Sources */,
 				5302FA1C2B4C2985001B3F47 /* AppUserData.swift in Sources */,
 				533FBA942B53955600A1196B /* AuthModel.swift in Sources */,
+				536DE87B2B81A49800616E7B /* WorkspaceInitialViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

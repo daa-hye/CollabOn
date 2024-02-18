@@ -64,6 +64,7 @@ final class LoginViewModel: ViewModelType {
             .subscribe(with: self) { owner, event in
                 switch event {
                 case .next:
+                    UserManager.shared.fetchUser()
                     owner.loginSucceeded.onNext(())
                 case .error(let error):
                     switch error {
