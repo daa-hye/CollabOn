@@ -79,7 +79,7 @@ final class HomeCollectoinViewCell: UICollectionViewCell {
         badgeLabel.clipsToBounds = true
     }
 
-    func setData(channel: Channel) {
+    func setData(channel: ChannelResponse) {
 
     }
 

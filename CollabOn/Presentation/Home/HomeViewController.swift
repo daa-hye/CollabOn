@@ -32,7 +32,7 @@ final class HomeViewController: BaseViewController {
     }
     
     private var dataSource: RxCollectionViewSectionedReloadDataSource<HomeViewSection>?
-    private var collectionView: UICollectionView! = nil
+    private var collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
 
     let disposeBag = DisposeBag()
 
@@ -176,6 +176,7 @@ final class HomeViewController: BaseViewController {
 
     override func configHierarchy() {
 
+        view.addSubview(collectionView)
         view.addSubview(mainImage)
         view.addSubview(navigationView)
         view.addSubview(mainLabel)
@@ -247,13 +248,13 @@ final class HomeViewController: BaseViewController {
 
         createButton.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(24)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(24)
+            $0.top.equalTo(view.safeAreaLayoutGuide).inset(-10)
         }
 
         newMessageButton.snp.makeConstraints {
             $0.size.equalTo(54)
             $0.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(74)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
         }
 
         sideMenuDimView.snp.makeConstraints {

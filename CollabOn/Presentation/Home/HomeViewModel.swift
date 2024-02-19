@@ -218,7 +218,7 @@ extension HomeViewSection {
 }
 
 enum HomeViewSectionItem {
-    case channelItem(data: Channel)
+    case channelItem(data: ChannelResponse)
     case dmsItem(data: DmsResponse)
 }
 

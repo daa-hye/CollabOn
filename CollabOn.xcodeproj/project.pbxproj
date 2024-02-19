@@ -59,6 +59,9 @@
 		536D6AFF2B71130E008BC481 /* MemberListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536D6AFE2B71130E008BC481 /* MemberListTableViewCell.swift */; };
 		536DE8782B8192F500616E7B /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536DE8772B8192F500616E7B /* UserManager.swift */; };
 		536DE87B2B81A49800616E7B /* WorkspaceInitialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536DE87A2B81A49800616E7B /* WorkspaceInitialViewModel.swift */; };
+		536DE87D2B82FB8000616E7B /* ChannelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536DE87C2B82FB8000616E7B /* ChannelModel.swift */; };
+		536DE87F2B830B1E00616E7B /* ChannelRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536DE87E2B830B1E00616E7B /* ChannelRouter.swift */; };
+		536DE8812B830F5000616E7B /* ChannelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536DE8802B830F5000616E7B /* ChannelService.swift */; };
 		539046B62B593F700075CE54 /* UIImage + Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539046B52B593F700075CE54 /* UIImage + Resize.swift */; };
 		53BC61472B74764900EDE938 /* DirectMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BC61462B74764900EDE938 /* DirectMessageViewController.swift */; };
 		53BC614D2B74793200EDE938 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BC614C2B74793200EDE938 /* SearchViewController.swift */; };
@@ -132,6 +135,9 @@
 		536D6AFE2B71130E008BC481 /* MemberListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberListTableViewCell.swift; sourceTree = "<group>"; };
 		536DE8772B8192F500616E7B /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		536DE87A2B81A49800616E7B /* WorkspaceInitialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceInitialViewModel.swift; sourceTree = "<group>"; };
+		536DE87C2B82FB8000616E7B /* ChannelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelModel.swift; sourceTree = "<group>"; };
+		536DE87E2B830B1E00616E7B /* ChannelRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelRouter.swift; sourceTree = "<group>"; };
+		536DE8802B830F5000616E7B /* ChannelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelService.swift; sourceTree = "<group>"; };
 		539046B52B593F700075CE54 /* UIImage + Resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + Resize.swift"; sourceTree = "<group>"; };
 		53BC61462B74764900EDE938 /* DirectMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectMessageViewController.swift; sourceTree = "<group>"; };
 		53BC614C2B74793200EDE938 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -217,6 +223,7 @@
 				533FBA912B53940000A1196B /* AuthService.swift */,
 				5302FA0B2B4B75FA001B3F47 /* UserService.swift */,
 				533FBAA02B555D8B00A1196B /* WorkspaceService.swift */,
+				536DE8802B830F5000616E7B /* ChannelService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -227,6 +234,7 @@
 				533FBA8F2B538CFA00A1196B /* AuthRouter.swift */,
 				5302FA032B4AD9F5001B3F47 /* UserRouter.swift */,
 				533FBA9E2B555D8000A1196B /* WorkspaceRouter.swift */,
+				536DE87E2B830B1E00616E7B /* ChannelRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -249,6 +257,7 @@
 				533FBA932B53955600A1196B /* AuthModel.swift */,
 				5302FA112B4BCE07001B3F47 /* UserModel.swift */,
 				533FBAA22B555D9500A1196B /* WorkspaceModel.swift */,
+				536DE87C2B82FB8000616E7B /* ChannelModel.swift */,
 				536D6AE02B64F9BE008BC481 /* DmsModel.swift */,
 			);
 			path = Model;
@@ -587,10 +596,12 @@
 				533FBAA12B555D8B00A1196B /* WorkspaceService.swift in Sources */,
 				5302FA0C2B4B75FA001B3F47 /* UserService.swift in Sources */,
 				536D6AE12B64F9BE008BC481 /* DmsModel.swift in Sources */,
+				536DE87F2B830B1E00616E7B /* ChannelRouter.swift in Sources */,
 				536D6ACA2B5AB0E8008BC481 /* WorkspaceListViewController.swift in Sources */,
 				536D6AFB2B70F3F0008BC481 /* WorkspaceChangeAdminViewModel.swift in Sources */,
 				53D7B2292B4518EB003116D7 /* SignUpViewController.swift in Sources */,
 				533FBAA32B555D9500A1196B /* WorkspaceModel.swift in Sources */,
+				536DE8812B830F5000616E7B /* ChannelService.swift in Sources */,
 				536D6AF92B70F303008BC481 /* WorkspaceChangeAdminViewController.swift in Sources */,
 				536D6ADA2B60DBDB008BC481 /* ImageService.swift in Sources */,
 				5302FA042B4AD9F5001B3F47 /* UserRouter.swift in Sources */,
@@ -624,6 +635,7 @@
 				53D7B1FF2B43F638003116D7 /* SceneDelegate.swift in Sources */,
 				536D6AEF2B6B385C008BC481 /* UIViewcontroller + Alert.swift in Sources */,
 				533FBA9D2B55038C00A1196B /* TabBarController.swift in Sources */,
+				536DE87D2B82FB8000616E7B /* ChannelModel.swift in Sources */,
 				533FBA992B53D45000A1196B /* TokenErrorInterceptor.swift in Sources */,
 				53BC614F2B74793A00EDE938 /* SettingViewController.swift in Sources */,
 				53F5D84E2B50AF4400809760 /* LoginViewController.swift in Sources */,
