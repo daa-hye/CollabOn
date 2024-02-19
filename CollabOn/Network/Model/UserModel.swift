@@ -77,9 +77,36 @@ struct Token: Decodable, Hashable {
 struct MyInfo: Decodable {
     let email: String
     let nickname: String
-    let profileImage: String?
+    let profileImage: URL?
     let phone: String?
     let vendor: String?
     let sesacCoin: Int
     let createdAt: String
+
+    enum CodingKeys: CodingKey {
+        case email
+        case nickname
+        case profileImage
+        case phone
+        case vendor
+        case sesacCoin
+        case createdAt
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.email = try container.decode(String.self, forKey: .email)
+        self.nickname = try container.decode(String.self, forKey: .nickname)
+        self.phone = try container.decodeIfPresent(String.self, forKey: .phone)
+        self.vendor = try container.decodeIfPresent(String.self, forKey: .vendor)
+        self.sesacCoin = try container.decode(Int.self, forKey: .sesacCoin)
+        self.createdAt = try container.decode(String.self, forKey: .createdAt)
+
+        if let imagePath = try container.decodeIfPresent(String.self, forKey: .profileImage) {
+            let url = URL(string: "\(SLP.baseURL)/v1\(imagePath)")
+            self.profileImage = url
+        } else {
+            self.profileImage = nil
+        }
+    }
 }

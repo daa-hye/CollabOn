@@ -27,6 +27,7 @@ final class HomeViewModel: ViewModelType {
     private let workspaces = BehaviorRelay<[WorkspaceResponse]>(value: [])
     private let currentWorkspace = ReplayRelay<WorkspaceDetail?>.create(bufferSize: 1)
     private let selectedIndexPath = ReplayRelay<IndexPath>.create(bufferSize: 1)
+    private let profile = ReplayRelay<URL>.create(bufferSize: 1)
     private let sections = BehaviorRelay<[HomeViewSection]>.init(value: [])
     private let isAdmin = BehaviorRelay<Bool>(value: false)
 
@@ -42,6 +43,7 @@ final class HomeViewModel: ViewModelType {
         let workspaces: Observable<[WorkspaceResponse]>
         let sections: Observable<[HomeViewSection]>
         let isAdmin: Observable<Bool>
+        let profile: Observable<URL>
         let currentWorkspace: Observable<WorkspaceDetail?>
         let selectedIndexPath: Observable<IndexPath>
     }
@@ -59,7 +61,8 @@ final class HomeViewModel: ViewModelType {
         output = .init(
             workspaces: workspaces.observe(on: MainScheduler.instance),
             sections: sections.asObservable(),
-            isAdmin: isAdmin.observe(on: MainScheduler.instance),
+            isAdmin: isAdmin.observe(on: MainScheduler.instance), 
+            profile: profile.observe(on: MainScheduler.instance),
             currentWorkspace: currentWorkspace.observe(on: MainScheduler.instance),
             selectedIndexPath: selectedIndexPath.observe(on: MainScheduler.instance)
         )
@@ -90,6 +93,11 @@ final class HomeViewModel: ViewModelType {
             .subscribe(with: self) { owner, response in
                 owner.workspaces.accept(response)
             }
+            .disposed(by: disposeBag)
+
+        UserManager.shared.userInfo
+            .compactMap { $0?.profileImage }
+            .bind(to: profile)
             .disposed(by: disposeBag)
 
         WorkspaceManager.shared.currentWorkspace

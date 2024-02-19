@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RxRelay
 
-class WorkspaceInitialViewModel: ViewModelType {
+final class WorkspaceInitialViewModel: ViewModelType {
 
     let input: Input
     let output: Output

@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RxRelay
 
-class UserManager {
+final class UserManager {
 
     static let shared = UserManager()
 

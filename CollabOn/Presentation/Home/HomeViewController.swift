@@ -23,6 +23,7 @@ final class HomeViewController: BaseViewController {
     private let titleLabel = UILabel()
     private let thumbnailView = UIImageView()
     private let profileView = UIImageView()
+    private let newMessageButton = UIImageView()
 
     private var sideMenuViewController: WorkspaceListViewController!
     private var sideMenuDimView = UIView()
@@ -82,6 +83,12 @@ final class HomeViewController: BaseViewController {
                     self.sideMenuDimView.alpha = value ? 0.5 : 0.01
                 }
                 owner.animateSideMenu(targetPosition: value ? 0 : -owner.sideMenuWidth)
+            }
+            .disposed(by: disposeBag)
+
+        viewModel.output.profile
+            .bind(with: self) { owner, url in
+                owner.profileView.kf.setImage(with: url, options: [.requestModifier(ImageService.shared.getImage())])
             }
             .disposed(by: disposeBag)
 
@@ -147,6 +154,11 @@ final class HomeViewController: BaseViewController {
                     owner.titleLabel.text = String(localized: "No Workspace")
                     owner.thumbnailView.image = .workspace
                     owner.tabBarController?.tabBar.isHidden = true
+                    owner.newMessageButton.isHidden = true
+                    owner.mainImage.isHidden = false
+                    owner.mainLabel.isHidden = false
+                    owner.subLabel.isHidden = false
+                    owner.createButton.isHidden = false
                 } else {
                     owner.mainImage.isHidden = true
                     owner.mainLabel.isHidden = true
@@ -156,6 +168,7 @@ final class HomeViewController: BaseViewController {
                     owner.thumbnailView.kf.setImage(with: value?.thumbnail, options: [.requestModifier(ImageService.shared.getImage())])
                     owner.sideMenuViewController.isExpanded.accept(false)
                     owner.tabBarController?.tabBar.isHidden = false
+                    owner.newMessageButton.isHidden = false
                 }
             }
             .disposed(by: disposeBag)
@@ -168,6 +181,7 @@ final class HomeViewController: BaseViewController {
         view.addSubview(mainLabel)
         view.addSubview(subLabel)
         view.addSubview(createButton)
+        view.addSubview(newMessageButton)
         navigationView.addSubview(titleLabel)
         navigationView.addSubview(thumbnailView)
         navigationView.addSubview(profileView)
@@ -236,6 +250,12 @@ final class HomeViewController: BaseViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(24)
         }
 
+        newMessageButton.snp.makeConstraints {
+            $0.size.equalTo(54)
+            $0.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(74)
+        }
+
         sideMenuDimView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -265,6 +285,8 @@ final class HomeViewController: BaseViewController {
 
         titleLabel.font = .title1
         titleLabel.textAlignment = .left
+
+        newMessageButton.image = .newMessage
 
         thumbnailView.layer.cornerRadius = 8
         thumbnailView.clipsToBounds = true
