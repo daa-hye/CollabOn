@@ -195,7 +195,6 @@ extension UserService {
                     switch response.result {
                     case .success(let data):
                         if let result = self.handleResponse(data, type: MyInfo.self) {
-                            AppUserData.profileImage = result.profileImage ?? ""
                             observer(.success(result))
                         }
                     case .failure:

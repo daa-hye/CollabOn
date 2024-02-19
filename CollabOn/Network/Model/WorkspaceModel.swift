@@ -48,7 +48,7 @@ struct WorkspaceDetail: Decodable, Hashable {
     let thumbnail: URL?
     let ownerId: Int
     let createdAt: String
-    let channels: [Channel]
+    let channels: [ChannelResponse]
     let workspaceMembers: [Member]
 
     enum CodingKeys: String, CodingKey {
@@ -80,7 +80,7 @@ struct WorkspaceDetail: Decodable, Hashable {
         self.description = try container.decode(String.self, forKey: .description)
         self.ownerId = try container.decode(Int.self, forKey: .ownerId)
         self.createdAt = try container.decode(String.self, forKey: .createdAt)
-        self.channels = try container.decode([Channel].self, forKey: .channels)
+        self.channels = try container.decode([ChannelResponse].self, forKey: .channels)
         self.workspaceMembers = try container.decode([Member].self, forKey: .workspaceMembers)
 
         let imagePath = try container.decode(String.self, forKey: .thumbnail)
@@ -91,55 +91,6 @@ struct WorkspaceDetail: Decodable, Hashable {
         }
     }
 
-}
-
-struct Channel: Decodable, Hashable {
-    let workspaceId: Int
-    let channelId: Int
-    let name: String
-    let description: String?
-    let ownerId: Int
-    let `private`: Int
-    let createdAt: String
-
-    enum CodingKeys: String, CodingKey {
-        case workspaceId = "workspace_id"
-        case channelId = "channel_id"
-        case name
-        case description
-        case `private`
-        case ownerId = "owner_id"
-        case createdAt
-    }
-    
-}
-
-struct Member: Decodable, Hashable {
-    let userId: Int
-    let email: String
-    let nickname: String
-    let profileImage: URL?
-
-    enum CodingKeys: String, CodingKey {
-        case userId = "user_id"
-        case email
-        case nickname
-        case profileImage
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.userId = try container.decode(Int.self, forKey: .userId)
-        self.email = try container.decode(String.self, forKey: .email)
-        self.nickname = try container.decode(String.self, forKey: .nickname)
-
-        let imagePath  = try container.decode(String?.self, forKey: .profileImage)
-        if let imagePath = imagePath, let url = URL(string: "\(SLP.baseURL)/v1\(imagePath)") {
-            self.profileImage = url
-        } else {
-            self.profileImage = nil
-        }
-    }
 }
 
 struct Workspace: Encodable {
