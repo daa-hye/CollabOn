@@ -40,7 +40,6 @@ final class HomeViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.input.viewDidLoad.onNext(())
         setDatasource()
     }
 
@@ -213,6 +212,12 @@ final class HomeViewController: BaseViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.top).offset(58)
         }
 
+        collectionView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+            $0.top.equalTo(navigationView.snp.bottom)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+
         divider.snp.makeConstraints {
             $0.bottom.horizontalEdges.equalToSuperview()
             $0.height.equalTo(1)
@@ -248,7 +253,7 @@ final class HomeViewController: BaseViewController {
 
         createButton.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(24)
-            $0.top.equalTo(view.safeAreaLayoutGuide).inset(-10)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(-34)
         }
 
         newMessageButton.snp.makeConstraints {
@@ -298,15 +303,35 @@ final class HomeViewController: BaseViewController {
         profileView.layer.borderColor = UIColor.selected.cgColor
         profileView.clipsToBounds = true
 
+        collectionView.collectionViewLayout = createLayout()
+        collectionView.register(HomeCollectoinViewCell.self, forCellWithReuseIdentifier: HomeCollectoinViewCell.className)
+
     }
 
 }
 
 extension HomeViewController {
 
+    private enum sectionHeaderFooter: String {
+        case header
+        case footer
+    }
+
     func setDatasource() {
+
+        let headerRegistration = UICollectionView.SupplementaryRegistration<HomeCollectoinViewCell>(elementKind: sectionHeaderFooter.header.rawValue) { supplementaryView, elementKind, indexPath in
+            supplementaryView.setHeader(indexPath.section)
+        }
+
+        let footerRegistration = UICollectionView.SupplementaryRegistration<HomeCollectoinViewCell>(elementKind: sectionHeaderFooter.footer.rawValue) { supplementaryView, elementKind, indexPath in
+            supplementaryView.setFooter(indexPath.section)
+            supplementaryView.delegate = self
+        }
+
         dataSource = RxCollectionViewSectionedReloadDataSource<HomeViewSection> { dataSource, collectionView, indexPath, item in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCollectoinViewCell.className, for: indexPath) as? HomeCollectoinViewCell else { fatalError() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCollectoinViewCell.className, for: indexPath) as? HomeCollectoinViewCell else {
+                return UICollectionViewCell()
+            }
 
             switch item {
             case .channelItem(let data):
@@ -315,8 +340,54 @@ extension HomeViewController {
                 cell.setData(dms: data)
             }
 
+            cell.backgroundConfiguration = UIBackgroundConfiguration.clear()
+
             return cell
+
+        } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
+            let supplementaryView = collectionView.dequeueConfiguredReusableSupplementary(using: kind == sectionHeaderFooter.header.rawValue ? headerRegistration : footerRegistration, for: indexPath)
+            let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .header)
+
+            if kind == sectionHeaderFooter.header.rawValue && indexPath.section < 2 {
+                supplementaryView.accessories = [.outlineDisclosure(options: disclosureOptions)]
+                supplementaryView.tintColor = .black
+            }
+
+            supplementaryView.backgroundConfiguration = UIBackgroundConfiguration.clear()
+
+            return supplementaryView
         }
+
+        viewModel.output.sections
+            .bind(to: collectionView.rx.items(dataSource: dataSource!))
+            .disposed(by: disposeBag)
+    }
+
+    func createLayout() -> UICollectionViewLayout {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                             heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                              heightDimension: .absolute(56))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 5
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                     heightDimension: .estimated(56))
+
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                     heightDimension: .estimated(41))
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: sectionHeaderFooter.header.rawValue, alignment: .top)
+        let sectionFooter = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: footerSize, elementKind: sectionHeaderFooter.footer.rawValue, alignment: .bottom)
+        section.boundarySupplementaryItems = [sectionHeader, sectionFooter]
+
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
     }
 
     func animateSideMenu(targetPosition: CGFloat) {
@@ -328,6 +399,22 @@ extension HomeViewController {
             }
             self?.view.layoutIfNeeded()
         }
+    }
+
+}
+
+extension HomeViewController: FooterClickDelegate {
+
+    func addChannel() {
+        print("addChannel")
+    }
+
+    func addMessage() {
+        print("addMessage")
+    }
+
+    func addMember() {
+        print("addMember")
     }
 
 }
@@ -406,5 +493,13 @@ extension HomeViewController: WorkspaceListTableViewCellDelegate {
         actionSheet.addAction(cancel)
         present(actionSheet, animated: true)
     }
+
+}
+
+protocol FooterClickDelegate {
+
+    func addChannel()
+    func addMessage()
+    func addMember()
 
 }

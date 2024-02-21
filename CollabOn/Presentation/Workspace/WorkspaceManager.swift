@@ -29,6 +29,9 @@ final class WorkspaceManager {
                 response.isEmpty ? nil : response.first!.workspaceId
             }
             .flatMap { id -> Single<WorkspaceDetail?> in
+                if let id = id {
+                    AppUserData.currentWorkspace = id
+                }
                 return self.getWorkspace(id)
             }
             .subscribe {
@@ -37,7 +40,11 @@ final class WorkspaceManager {
     }
 
     func fetchCurrentWorkspace(id: Int?) {
-        guard let id = id else { return self.currentWorkspace.accept(nil) }
+        guard let id = id else {
+            AppUserData.currentWorkspace = 0
+            return self.currentWorkspace.accept(nil)
+        }
+        AppUserData.currentWorkspace = id
         _ = WorkspaceService.shared.getWorkspace(id)
             .map { Optional($0) }
             .catch { _ in

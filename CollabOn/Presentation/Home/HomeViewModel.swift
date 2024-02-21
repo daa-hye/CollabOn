@@ -17,7 +17,6 @@ final class HomeViewModel: ViewModelType {
     let input: Input
     let output: Output
 
-    private let viewDidLoad = PublishSubject<Void>()
     private let isExpanded = PublishSubject<Bool>()
     private let selectedWorkspace = PublishSubject<WorkspaceResponse>()
     private let leaveButtonDidTap = PublishSubject<Void>()
@@ -32,7 +31,6 @@ final class HomeViewModel: ViewModelType {
     private let isAdmin = BehaviorRelay<Bool>(value: false)
 
     struct Input {
-        let viewDidLoad: AnyObserver<Void>
         let isExpanded: AnyObserver<Bool>
         let selectedWorkspace: AnyObserver<WorkspaceResponse>
         let leaveButtonDidTap: AnyObserver<Void>
@@ -51,7 +49,6 @@ final class HomeViewModel: ViewModelType {
     init() {
 
         input = .init(
-            viewDidLoad: viewDidLoad.asObserver(),
             isExpanded: isExpanded.asObserver(),
             selectedWorkspace: selectedWorkspace.asObserver(),
             leaveButtonDidTap: leaveButtonDidTap.asObserver(), 
@@ -60,18 +57,14 @@ final class HomeViewModel: ViewModelType {
 
         output = .init(
             workspaces: workspaces.observe(on: MainScheduler.instance),
-            sections: sections.asObservable(),
+            sections: sections.observe(on: MainScheduler.instance),
             isAdmin: isAdmin.observe(on: MainScheduler.instance), 
             profile: profile.observe(on: MainScheduler.instance),
             currentWorkspace: currentWorkspace.observe(on: MainScheduler.instance),
             selectedIndexPath: selectedIndexPath.observe(on: MainScheduler.instance)
         )
 
-        viewDidLoad
-            .subscribe { _ in
-                WorkspaceManager.shared.fetchCurrentWorkspace()
-            }
-            .disposed(by: disposeBag)
+        WorkspaceManager.shared.fetchCurrentWorkspace()
 
         selectedWorkspace
             .subscribe(with: self) { owner, workspace in
@@ -137,6 +130,25 @@ final class HomeViewModel: ViewModelType {
                 _ = WorkspaceService.shared.deleteWorkspace(workspace.workspaceId)
                     .catchAndReturn(())
                 WorkspaceManager.shared.fetchCurrentWorkspace()
+            }
+            .disposed(by: disposeBag)
+
+        currentWorkspace
+            .compactMap { $0?.workspaceId }
+            .flatMapLatest { id in
+                ChannelService.shared.getMyChannels(id: id)
+            }
+            .map { channels in
+                var items: [HomeViewSectionItem] = []
+                for channel in channels {
+                    items.append(HomeViewSectionItem.channelItem(data: channel))
+                }
+                return [HomeViewSection.channel(items: items),
+                        HomeViewSection.dms(items: []),
+                        HomeViewSection.add]
+            }
+            .bind(with: self) { owner, value in
+                owner.sections.accept(value)
             }
             .disposed(by: disposeBag)
 

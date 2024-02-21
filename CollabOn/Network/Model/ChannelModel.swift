@@ -32,7 +32,7 @@ struct ChannelDetail: Decodable {
     let workspaceId: Int
     let channelId: Int
     let name: String
-    let description: String
+    let description: String?
     let ownerId: Int
     let `private`: Int
     let createdAt: String
@@ -80,7 +80,7 @@ struct Member: Decodable, Hashable {
 
 struct Channel: Encodable {
     let name: String
-    let description: String
+    let description: String?
 }
 
 struct Chats: Encodable {
