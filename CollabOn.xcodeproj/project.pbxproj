@@ -63,6 +63,8 @@
 		536DE87F2B830B1E00616E7B /* ChannelRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536DE87E2B830B1E00616E7B /* ChannelRouter.swift */; };
 		536DE8812B830F5000616E7B /* ChannelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536DE8802B830F5000616E7B /* ChannelService.swift */; };
 		539046B62B593F700075CE54 /* UIImage + Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539046B52B593F700075CE54 /* UIImage + Resize.swift */; };
+		53A361242B86FDE2009E8882 /* ChannelChattingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A361232B86FDE2009E8882 /* ChannelChattingViewController.swift */; };
+		53A361262B882F9C009E8882 /* InputBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A361252B882F9C009E8882 /* InputBar.swift */; };
 		53BC61472B74764900EDE938 /* DirectMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BC61462B74764900EDE938 /* DirectMessageViewController.swift */; };
 		53BC614D2B74793200EDE938 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BC614C2B74793200EDE938 /* SearchViewController.swift */; };
 		53BC614F2B74793A00EDE938 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BC614E2B74793A00EDE938 /* SettingViewController.swift */; };
@@ -139,6 +141,8 @@
 		536DE87E2B830B1E00616E7B /* ChannelRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelRouter.swift; sourceTree = "<group>"; };
 		536DE8802B830F5000616E7B /* ChannelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelService.swift; sourceTree = "<group>"; };
 		539046B52B593F700075CE54 /* UIImage + Resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + Resize.swift"; sourceTree = "<group>"; };
+		53A361232B86FDE2009E8882 /* ChannelChattingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelChattingViewController.swift; sourceTree = "<group>"; };
+		53A361252B882F9C009E8882 /* InputBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBar.swift; sourceTree = "<group>"; };
 		53BC61462B74764900EDE938 /* DirectMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectMessageViewController.swift; sourceTree = "<group>"; };
 		53BC614C2B74793200EDE938 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		53BC614E2B74793A00EDE938 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
@@ -199,6 +203,7 @@
 				53D7B21C2B44CF90003116D7 /* PrimaryButton.swift */,
 				5302F9EA2B4985F7001B3F47 /* SocialLoginButton.swift */,
 				536D6AE62B68AC32008BC481 /* CancelButton.swift */,
+				53A361252B882F9C009E8882 /* InputBar.swift */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -340,6 +345,14 @@
 			path = Initial;
 			sourceTree = "<group>";
 		};
+		53A361222B86FDB0009E8882 /* Channel */ = {
+			isa = PBXGroup;
+			children = (
+				53A361232B86FDE2009E8882 /* ChannelChattingViewController.swift */,
+			);
+			path = Channel;
+			sourceTree = "<group>";
+		};
 		53BC61412B74744700EDE938 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -350,6 +363,7 @@
 				53F5D84C2B50AF3100809760 /* Login */,
 				53D7B2272B451896003116D7 /* SignUp */,
 				533FBA952B53CD7800A1196B /* Home */,
+				53A361222B86FDB0009E8882 /* Channel */,
 				53F5D8302B4F6B9C00809760 /* Workspace */,
 				53BC61432B7475D900EDE938 /* DirectMessage */,
 				53BC614B2B74791500EDE938 /* Search */,
@@ -598,6 +612,7 @@
 				536D6AE12B64F9BE008BC481 /* DmsModel.swift in Sources */,
 				536DE87F2B830B1E00616E7B /* ChannelRouter.swift in Sources */,
 				536D6ACA2B5AB0E8008BC481 /* WorkspaceListViewController.swift in Sources */,
+				53A361242B86FDE2009E8882 /* ChannelChattingViewController.swift in Sources */,
 				536D6AFB2B70F3F0008BC481 /* WorkspaceChangeAdminViewModel.swift in Sources */,
 				53D7B2292B4518EB003116D7 /* SignUpViewController.swift in Sources */,
 				533FBAA32B555D9500A1196B /* WorkspaceModel.swift in Sources */,
@@ -609,6 +624,7 @@
 				536D6AD02B608490008BC481 /* WorkspaceListTableViewCell.swift in Sources */,
 				536D6ACE2B5F4E43008BC481 /* WorkspaceListViewModel.swift in Sources */,
 				533FBA902B538CFA00A1196B /* AuthRouter.swift in Sources */,
+				53A361262B882F9C009E8882 /* InputBar.swift in Sources */,
 				536D6AF62B6CE1F1008BC481 /* UIViewController + Toast.swift in Sources */,
 				53E643022B57FE60000CBC1F /* WorkspaceAddViewModel.swift in Sources */,
 				536D6AFF2B71130E008BC481 /* MemberListTableViewCell.swift in Sources */,

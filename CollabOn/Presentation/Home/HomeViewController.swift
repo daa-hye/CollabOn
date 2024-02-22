@@ -406,7 +406,8 @@ extension HomeViewController {
 extension HomeViewController: FooterClickDelegate {
 
     func addChannel() {
-        print("addChannel")
+        let vc = ChannelChattingViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     func addMessage() {
