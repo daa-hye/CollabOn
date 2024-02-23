@@ -23,8 +23,6 @@ extension UserService {
                 switch response.result {
                 case .success(let data):
                     if let result = self.handleResponse(data, type: LoginResponse.self) {
-                        AppUserData.nickname = result.nickname
-                        AppUserData.profileImage = result.profileImage ?? ""
                         AppUserData.token = result.token.accessToken
                         AppUserData.refreshToken = result.token.refreshToken
                         observer(.success(()))
@@ -76,7 +74,6 @@ extension UserService {
                     case .success(let data):
                         if let result = self.handleResponse(data, type: EmailLoginResponse.self) {
                             AppUserData.userId = result.userId
-                            AppUserData.nickname = result.nickname
                             AppUserData.token = result.accessToken
                             AppUserData.refreshToken = result.refreshToken
                             observer(.success(()))
@@ -105,8 +102,6 @@ extension UserService {
                     case .success(let data):
                         if let result = self.handleResponse(data, type: LoginResponse.self) {
                             AppUserData.userId = result.userId
-                            AppUserData.nickname = result.nickname
-                            AppUserData.profileImage = result.profileImage ?? ""
                             AppUserData.token = result.token.accessToken
                             AppUserData.refreshToken = result.token.refreshToken
                             observer(.success(()))
@@ -135,8 +130,6 @@ extension UserService {
                     case .success(let data):
                         if let result = self.handleResponse(data, type: LoginResponse.self) {
                             AppUserData.userId = result.userId
-                            AppUserData.nickname = result.nickname
-                            AppUserData.profileImage = result.profileImage ?? ""
                             AppUserData.token = result.token.accessToken
                             AppUserData.refreshToken = result.token.refreshToken
                             observer(.success(()))
@@ -165,8 +158,6 @@ extension UserService {
                     case .success(let data):
                         if let result = self.handleResponse(data, type: LoginResponse.self) {
                             AppUserData.userId = result.userId
-                            AppUserData.nickname = result.nickname
-                            AppUserData.profileImage = result.profileImage ?? ""
                             AppUserData.token = result.token.accessToken
                             AppUserData.refreshToken = result.token.refreshToken
                             observer(.success(()))
@@ -211,6 +202,30 @@ extension UserService {
                 request.cancel()
             }
             
+        }
+    }
+
+    func deviceToken() -> Single<Void> {
+        Single.create { observer in
+            let request = self.AFManager.request(UserRouter.deviceToken)
+                .validate(statusCode: 200..<300)
+                .response { response in
+                switch response.result {
+                case .success:
+                    observer(.success(()))
+                case .failure:
+                    guard let statusCode = response.response?.statusCode, let data = response.data else {
+                        return observer(.failure(EndPointError.networkError))
+                    }
+                    let error = self.handleError(statusCode: statusCode, data)
+                    observer(.failure(error))
+                }
+            }
+
+            return Disposables.create {
+                request.cancel()
+            }
+
         }
     }
 

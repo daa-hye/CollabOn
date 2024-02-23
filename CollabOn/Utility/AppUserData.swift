@@ -11,21 +11,14 @@ enum AppUserData {
 
     enum Key: String {
         case userId
-        case nickname
-        case profileImage
         case token
         case refreshToken
         case currentWorkspace
+        case deviceToken
     }
 
     @UserDafaultsManager(key: Key.userId.rawValue, defaultValue: 0)
     static var userId
-
-    @UserDafaultsManager(key: Key.nickname.rawValue, defaultValue: "")
-    static var nickname
-
-    @UserDafaultsManager(key: Key.profileImage.rawValue, defaultValue: "")
-    static var profileImage
 
     @UserDafaultsManager(key: Key.token.rawValue, defaultValue: "")
     static var token
@@ -35,5 +28,8 @@ enum AppUserData {
 
     @UserDafaultsManager(key: Key.currentWorkspace.rawValue, defaultValue: 0)
     static var currentWorkspace
+
+    @UserDafaultsManager(key: Key.deviceToken.rawValue, defaultValue: "")
+    static var deviceToken
 
 }

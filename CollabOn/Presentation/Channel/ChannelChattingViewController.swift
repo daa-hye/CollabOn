@@ -14,6 +14,8 @@ final class ChannelChattingViewController: BaseViewController {
 
     private let inputBar = InputBar()
 
+    let viewModel = ChannelChattingViewModel()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavItem()

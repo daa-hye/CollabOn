@@ -20,6 +20,9 @@
 		5302FA152B4BF32D001B3F47 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5302FA142B4BF32D001B3F47 /* ErrorResponse.swift */; };
 		5302FA1A2B4C260F001B3F47 /* UserDafaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5302FA192B4C260F001B3F47 /* UserDafaultsManager.swift */; };
 		5302FA1C2B4C2985001B3F47 /* AppUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5302FA1B2B4C2985001B3F47 /* AppUserData.swift */; };
+		5305E2A82B88DACC0054EB06 /* ChannelChattingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5305E2A72B88DACC0054EB06 /* ChannelChattingViewModel.swift */; };
+		5305E2AC2B88E3400054EB06 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5305E2AB2B88E3400054EB06 /* GoogleService-Info.plist */; };
+		5305E2AF2B88E3FA0054EB06 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 5305E2AE2B88E3FA0054EB06 /* FirebaseMessaging */; };
 		53393C832B595AB100917096 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 53393C822B595AB100917096 /* RxGesture */; };
 		533FBA7A2B52C0DF00A1196B /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 533FBA792B52C0DF00A1196B /* KakaoSDK */; };
 		533FBA7C2B52C0DF00A1196B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 533FBA7B2B52C0DF00A1196B /* KakaoSDKAuth */; };
@@ -107,6 +110,8 @@
 		5302FA142B4BF32D001B3F47 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		5302FA192B4C260F001B3F47 /* UserDafaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDafaultsManager.swift; sourceTree = "<group>"; };
 		5302FA1B2B4C2985001B3F47 /* AppUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUserData.swift; sourceTree = "<group>"; };
+		5305E2A72B88DACC0054EB06 /* ChannelChattingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelChattingViewModel.swift; sourceTree = "<group>"; };
+		5305E2AB2B88E3400054EB06 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		533FBA8A2B537E6900A1196B /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		533FBA8D2B53805B00A1196B /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		533FBA8F2B538CFA00A1196B /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
@@ -179,6 +184,7 @@
 			files = (
 				53D7B2242B44D7DC003116D7 /* RxSwift in Frameworks */,
 				533FBA7E2B52C0DF00A1196B /* KakaoSDKCommon in Frameworks */,
+				5305E2AF2B88E3FA0054EB06 /* FirebaseMessaging in Frameworks */,
 				533FBA7A2B52C0DF00A1196B /* KakaoSDK in Frameworks */,
 				5302F9FB2B4AA464001B3F47 /* Alamofire in Frameworks */,
 				53D7B2222B44D7DC003116D7 /* RxCocoa in Frameworks */,
@@ -349,6 +355,7 @@
 			isa = PBXGroup;
 			children = (
 				53A361232B86FDE2009E8882 /* ChannelChattingViewController.swift */,
+				5305E2A72B88DACC0054EB06 /* ChannelChattingViewModel.swift */,
 			);
 			path = Channel;
 			sourceTree = "<group>";
@@ -416,6 +423,7 @@
 			isa = PBXGroup;
 			children = (
 				53F5D82F2B4E6FA600809760 /* CollabOn.entitlements */,
+				5305E2AB2B88E3400054EB06 /* GoogleService-Info.plist */,
 				53D7B1FC2B43F638003116D7 /* AppDelegate.swift */,
 				53D7B1FE2B43F638003116D7 /* SceneDelegate.swift */,
 				53BC61412B74744700EDE938 /* Presentation */,
@@ -523,6 +531,7 @@
 				53393C822B595AB100917096 /* RxGesture */,
 				536D6AD22B609A4E008BC481 /* RxDataSources */,
 				536D6AD72B60D9C7008BC481 /* Kingfisher */,
+				5305E2AE2B88E3FA0054EB06 /* FirebaseMessaging */,
 			);
 			productName = CollabOn;
 			productReference = 53D7B1F92B43F638003116D7 /* CollabOn.app */;
@@ -562,6 +571,7 @@
 				53393C812B595AB100917096 /* XCRemoteSwiftPackageReference "RxGesture" */,
 				536D6AD12B609A4E008BC481 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 				536D6AD62B60D9C7008BC481 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				5305E2AD2B88E3FA0054EB06 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 53D7B1FA2B43F638003116D7 /* Products */;
 			projectDirPath = "";
@@ -578,6 +588,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				53D7B2092B43F639003116D7 /* LaunchScreen.storyboard in Resources */,
+				5305E2AC2B88E3400054EB06 /* GoogleService-Info.plist in Resources */,
 				53D7B2062B43F639003116D7 /* Assets.xcassets in Resources */,
 				53D7B22E2B457B20003116D7 /* Localizable.xcstrings in Resources */,
 			);
@@ -650,6 +661,7 @@
 				5302F9EB2B4985F7001B3F47 /* SocialLoginButton.swift in Sources */,
 				53D7B1FF2B43F638003116D7 /* SceneDelegate.swift in Sources */,
 				536D6AEF2B6B385C008BC481 /* UIViewcontroller + Alert.swift in Sources */,
+				5305E2A82B88DACC0054EB06 /* ChannelChattingViewModel.swift in Sources */,
 				533FBA9D2B55038C00A1196B /* TabBarController.swift in Sources */,
 				536DE87D2B82FB8000616E7B /* ChannelModel.swift in Sources */,
 				533FBA992B53D45000A1196B /* TokenErrorInterceptor.swift in Sources */,
@@ -893,6 +905,14 @@
 				minimumVersion = 5.8.1;
 			};
 		};
+		5305E2AD2B88E3FA0054EB06 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.21.0;
+			};
+		};
 		53393C812B595AB100917096 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture";
@@ -956,6 +976,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5302F9F92B4AA464001B3F47 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		5305E2AE2B88E3FA0054EB06 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5305E2AD2B88E3FA0054EB06 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 		53393C822B595AB100917096 /* RxGesture */ = {
 			isa = XCSwiftPackageProductDependency;

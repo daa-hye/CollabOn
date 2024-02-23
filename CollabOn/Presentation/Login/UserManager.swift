@@ -24,6 +24,7 @@ final class UserManager {
             }
             .subscribe { value in
                 self.userInfo.accept(value)
+                _ = UserService.shared.deviceToken()
             }
     }
 
