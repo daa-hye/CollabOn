@@ -45,6 +45,19 @@ final class HomeViewController: BaseViewController {
 
     override func bindRx() {
 
+        collectionView.rx.modelSelected(HomeViewSectionItem.self)
+            .bind(with: self) { owner, item in
+                switch item {
+                case .channelItem(let data):
+                    let viewModel = ChannelChattingViewModel(data.channelId)
+                    let vc = ChannelChattingViewController(viewModel: viewModel)
+                    owner.navigationController?.pushViewController(vc, animated: true)
+                case .dmsItem(let data):
+                    print()
+                }
+            }
+            .disposed(by: disposeBag)
+
         createButton.rx.tap
             .bind(with: self) { owner, _ in
                 let vc = WorkspaceAddViewController()
@@ -406,8 +419,7 @@ extension HomeViewController {
 extension HomeViewController: FooterClickDelegate {
 
     func addChannel() {
-        let vc = ChannelChattingViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        print("addChannel")
     }
 
     func addMessage() {
