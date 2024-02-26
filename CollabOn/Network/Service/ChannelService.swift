@@ -24,7 +24,29 @@ extension ChannelService {
                     switch response.result {
                     case .success(let value):
                         observer(.success(value))
-                    case .failure(let failure):
+                    case .failure:
+                        guard let statusCode = response.response?.statusCode, let data = response.data else {
+                            return observer(.failure(EndPointError.networkError))
+                        }
+                        let error = self.handleError(statusCode: statusCode, data)
+                        observer(.failure(error))
+                    }
+                }
+            return Disposables.create {
+                request.cancel()
+            }
+        }
+    }
+
+    func sendChannelChat(id: Int, name: String, model: Chats) -> Single<ChatResponse> {
+        Single.create { observer in
+            let request = self.AFManager.upload(multipartFormData: ChannelRouter.sendChannelChat(id: id, name: name, model: model).multipart, with: ChannelRouter.sendChannelChat(id: id, name: name, model: model))
+                .validate(statusCode: 200...300)
+                .responseDecodable(of: ChatResponse.self) { response in
+                    switch response.result {
+                    case .success(let value):
+                        observer(.success(value))
+                    case .failure:
                         guard let statusCode = response.response?.statusCode, let data = response.data else {
                             return observer(.failure(EndPointError.networkError))
                         }

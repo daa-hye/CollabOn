@@ -37,14 +37,23 @@ final class ChannelChattingViewController: BaseViewController {
 
     override func bindRx() {
         inputBar.addImageButtonDidTap.asSignal()
-            .emit(with: self, onNext: { owner, _ in
+            .emit(with: self) { owner, _ in
                 owner.presentPickerView()
-            })
+            }
+            .disposed(by: disposeBag)
+
+        inputBar.sendButtonDidTap.asSignal()
+            .emit(to: viewModel.input.sendButtonDidTap)
+            .disposed(by: disposeBag)
+
+        inputBar.text
+            .bind(to: viewModel.input.chatText)
             .disposed(by: disposeBag)
     }
 
     override func configHierarchy() {
         view.addSubview(inputBar)
+        view.addSubview(chatTableView)
     }
 
     override func setLayout() {
@@ -107,12 +116,13 @@ extension ChannelChattingViewController: PHPickerViewControllerDelegate {
         for result in results {
             let itemProvider = result.itemProvider
             if itemProvider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
-                itemProvider.loadDataRepresentation(forTypeIdentifier: UTType.image.identifier) { data, error in
+                itemProvider.loadDataRepresentation(forTypeIdentifier: UTType.image.identifier) { [weak self] data, error in
                     guard let data, let image = UIImage(data: data) else { return }
                     image.resizeImage(toTargetSizeMB: 1) { image in
                         guard let image = image, let data = image.jpegData(compressionQuality: 1) else { return }
                         DispatchQueue.main.async {
-                            self.inputBar.addPicture(image)
+                            self?.inputBar.addPicture(image)
+                            self?.viewModel.input.file.onNext(data)
                         }
                     }
                 }

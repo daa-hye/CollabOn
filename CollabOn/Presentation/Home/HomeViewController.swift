@@ -49,7 +49,7 @@ final class HomeViewController: BaseViewController {
             .bind(with: self) { owner, item in
                 switch item {
                 case .channelItem(let data):
-                    let viewModel = ChannelChattingViewModel(data.channelId)
+                    let viewModel = ChannelChattingViewModel(data)
                     let vc = ChannelChattingViewController(viewModel: viewModel)
                     owner.navigationController?.pushViewController(vc, animated: true)
                 case .dmsItem(let data):

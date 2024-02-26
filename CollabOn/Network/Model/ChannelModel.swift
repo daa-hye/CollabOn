@@ -78,6 +78,48 @@ struct Member: Decodable, Hashable {
     }
 }
 
+struct ChatResponse: Decodable {
+    let channelId: Int
+    let channelName: String
+    let chatId: Int
+    let content: String?
+    let createdAt: String
+    let files: [URL]
+    let user: Member
+
+    enum CodingKeys: String, CodingKey {
+        case channelId = "channel_id"
+        case channelName
+        case chatId = "chat_id"
+        case content
+        case createdAt
+        case files
+        case user
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.channelId = try container.decode(Int.self, forKey: .channelId)
+        self.channelName = try container.decode(String.self, forKey: .channelName)
+        self.chatId = try container.decode(Int.self, forKey: .chatId)
+        self.content = try container.decode(String.self, forKey: .content)
+        self.createdAt = try container.decode(String.self, forKey: .createdAt)
+        self.user = try container.decode(Member.self, forKey: .user)
+
+        let paths = try container.decode([String].self, forKey: .files)
+        var urls: [URL] = []
+
+        for path in paths {
+            if let url = URL(string: "\(SLP.baseURL)/v1\(path)") {
+                urls.append(url)
+            }
+        }
+
+        self.files = urls
+    }
+
+}
+
 struct Channel: Encodable {
     let name: String
     let description: String?
