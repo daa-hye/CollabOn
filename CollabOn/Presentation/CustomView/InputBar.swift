@@ -77,7 +77,10 @@ final class InputBar: UIView {
             .disposed(by: disposeBag)
 
         sendButton.rx.tap
-            .bind(to: sendButtonDidTap)
+            .bind(with: self) { owner, _ in
+                owner.sendButtonDidTap.accept(())
+                owner.textView.text = ""
+            }
             .disposed(by: disposeBag)
 
         textView.rx.didBeginEditing

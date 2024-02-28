@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ChannelChattingTableViewCell: UITableViewCell {
 
@@ -15,25 +16,31 @@ final class ChannelChattingTableViewCell: UITableViewCell {
     private let chatBubbleView = UIView()
     private let chatTextLabel = UILabel()
     private let timeLabel = UILabel()
+    private let fileImageView = UIImageView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        configHierarchy()
+        setLayout()
+        setUIProperties()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configHierarchy() {
+    private func configHierarchy() {
         addSubview(profileImageView)
         addSubview(stackview)
         stackview.addArrangedSubview(nicknameLabel)
         stackview.addArrangedSubview(chatBubbleView)
+        stackview.addArrangedSubview(fileImageView)
         chatBubbleView.addSubview(chatTextLabel)
         addSubview(timeLabel)
     }
 
-    func setLayout() {
+    private func setLayout() {
         profileImageView.snp.makeConstraints {
             $0.size.equalTo(34)
             $0.leading.equalToSuperview()
@@ -54,9 +61,14 @@ final class ChannelChattingTableViewCell: UITableViewCell {
         chatTextLabel.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(8)
         }
+
+        fileImageView.snp.makeConstraints {
+            $0.width.equalTo(244)
+            $0.height.equalTo(160)
+        }
     }
 
-    func setUIProperties() {
+    private func setUIProperties() {
         profileImageView.layer.cornerRadius = 8
         profileImageView.clipsToBounds = true
 
@@ -70,6 +82,40 @@ final class ChannelChattingTableViewCell: UITableViewCell {
         nicknameLabel.font = .caption
 
         chatTextLabel.font = .body
+        chatTextLabel.numberOfLines = 0
+
+        fileImageView.layer.cornerRadius = 10
+        fileImageView.clipsToBounds = true
+        fileImageView.contentMode = .scaleAspectFill
+
+        stackview.axis = .vertical
+        stackview.spacing = 5
+        stackview.alignment = .leading
+        stackview.distribution = .fillProportionally
+    }
+
+    func setData(_ chat: ChannelChat) {
+        nicknameLabel.text = chat.user?.nickname
+
+        if chat.content == nil || chat.content == "" {
+            chatBubbleView.isHidden = true
+        } else {
+            chatTextLabel.text = chat.content
+        }
+
+        if !chat.files.isEmpty, let file = chat.files.first?.path, let url = URL(string: file) {
+            fileImageView.kf.setImage(with: url, options: [.requestModifier(ImageService.shared.getImage())])
+        } else {
+            fileImageView.isHidden = true
+        }
+
+        timeLabel.text = chat.createdAt.formatted()
+
+        if let path = chat.user?.profileImage, let url = URL(string: path) {
+            profileImageView.kf.setImage(with: url, options: [.requestModifier(ImageService.shared.getImage())])
+        } else {
+            profileImageView.image = .noProfile
+        }
     }
 
 }

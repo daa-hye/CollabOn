@@ -102,7 +102,7 @@ struct ChatResponse: Decodable {
         self.channelId = try container.decode(Int.self, forKey: .channelId)
         self.channelName = try container.decode(String.self, forKey: .channelName)
         self.chatId = try container.decode(Int.self, forKey: .chatId)
-        self.content = try container.decode(String.self, forKey: .content)
+        self.content = try container.decode(String?.self, forKey: .content)
         self.createdAt = try container.decode(String.self, forKey: .createdAt)
         self.user = try container.decode(Member.self, forKey: .user)
 

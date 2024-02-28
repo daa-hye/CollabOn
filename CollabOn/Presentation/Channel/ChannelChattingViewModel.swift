@@ -16,14 +16,18 @@ class ChannelChattingViewModel: ViewModelType {
     let output: Output
 
     private let channel: ChannelResponse
+
+    private lazy var channelManager = ChannelManager(channel)
     private lazy var url = URL(string: "\(SLP.baseURL)/ws-channel-{\(channel.channelId)}")!
-    private lazy var manager = SocketManager(socketURL: url, config: [.log(true), .compress])
-    private lazy var socket = manager.defaultSocket
+    //private lazy var manager = SocketManager(socketURL: url, config: [.log(true), .compress])
+    //private lazy var socket = manager.defaultSocket
 
     private let chatText = PublishSubject<String>()
     private let file = PublishSubject<Data>()
     private var files: [Data] = []
     private let sendButtonDidTap = PublishSubject<Void>()
+
+    private let chatList = ReplayRelay<[ChannelChat]>.create(bufferSize: 1)
 
     let disposeBag = DisposeBag()
 
@@ -34,7 +38,7 @@ class ChannelChattingViewModel: ViewModelType {
     }
 
     struct Output {
-
+        let chatList: Observable<[ChannelChat]>
     }
 
     init(_ channel: ChannelResponse) {
@@ -46,12 +50,20 @@ class ChannelChattingViewModel: ViewModelType {
             sendButtonDidTap: sendButtonDidTap.asObserver()
         )
 
-        output = .init()
+        output = .init(
+            chatList: chatList.observe(on: MainScheduler.instance)
+        )
 
         file.bind(with: self) { owner, data in
             owner.files.append(data)
         }
         .disposed(by: disposeBag)
+
+        channelManager.chatList
+            .bind(to: chatList)
+            .disposed(by: disposeBag)
+
+        channelManager.getChatList()
 
         sendButtonDidTap
             .withLatestFrom(chatText)
@@ -64,8 +76,7 @@ class ChannelChattingViewModel: ViewModelType {
             .subscribe(with: self) { owner, event in
                 switch event {
                 case .next(let value):
-                    print(value)
-                    // db작업
+                    owner.channelManager.addChat(value)
                 case .error(let error):
                     print(error)
                 default:
@@ -73,7 +84,6 @@ class ChannelChattingViewModel: ViewModelType {
                 }
             }
             .disposed(by: disposeBag)
-
 
 //        socket.connect()
 //

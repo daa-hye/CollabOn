@@ -36,6 +36,12 @@ final class ChannelChattingViewController: BaseViewController {
     let disposeBag = DisposeBag()
 
     override func bindRx() {
+        viewModel.output.chatList
+            .bind(to: chatTableView.rx.items(cellIdentifier: ChannelChattingTableViewCell.className, cellType: ChannelChattingTableViewCell.self)) { (row, element, cell) in
+                cell.setData(element)
+            }
+            .disposed(by: disposeBag)
+
         inputBar.addImageButtonDidTap.asSignal()
             .emit(with: self) { owner, _ in
                 owner.presentPickerView()
@@ -64,13 +70,18 @@ final class ChannelChattingViewController: BaseViewController {
 
         chatTableView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.horizontalEdges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(16)
             $0.bottom.equalTo(inputBar.snp.top)
         }
     }
 
     override func setUIProperties() {
         chatTableView.register(ChannelChattingTableViewCell.self, forCellReuseIdentifier: ChannelChattingTableViewCell.className)
+        chatTableView.separatorStyle = .none
+        chatTableView.backgroundColor = .clear
+        chatTableView.rowHeight = UITableView.automaticDimension
+        chatTableView.estimatedRowHeight = 150
+        chatTableView.allowsSelection = false
     }
 
 }

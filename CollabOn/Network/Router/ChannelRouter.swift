@@ -16,7 +16,7 @@ enum ChannelRouter {
     case editChannel(id: Int, name: String, model: Channel)
     case deleteChannel(id: Int, name: String)
     case sendChannelChat(id: Int, name: String, model: Chats)
-    case getChannelChats(id: Int, name: String, cursor: String?)
+    case getChannelChats(id: Int, name: String, cursor: String)
     case getNumberOfUnreadChannelChats(id: Int, name: String, after: String?)
 }
 
@@ -59,14 +59,14 @@ extension ChannelRouter: Router {
         case .createChannel(_, let model), .editChannel(_, _, let model):
             let body: [String: Any] = [
                 "name": model.name,
-                "description" :model.description
+                "description" :model.description ?? ""
             ]
             return .requestBody(body)
         case .getAllChannels, .getMyChannels, .getChannelByName, .deleteChannel, .sendChannelChat:
             return .none
         case .getChannelChats(_,_,let cursor):
             let query: [String: String] = [
-                "cursor_date" : cursor ?? ""
+                "cursor_date" : cursor
             ]
             return .query(query)
         case .getNumberOfUnreadChannelChats(_,_,let after):
@@ -87,7 +87,7 @@ extension ChannelRouter: Router {
 
             multiPart.append(content, withName: "content")
             for file in files {
-                multiPart.append(file, withName: "image", fileName: "\(Date()).jpeg", mimeType: "image/jpeg")
+                multiPart.append(file, withName: "files", fileName: "\(Date()).jpeg", mimeType: "image/jpeg")
             }
             return multiPart
         default:

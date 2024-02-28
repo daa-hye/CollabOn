@@ -60,4 +60,26 @@ extension ChannelService {
         }
     }
 
+    func getChannelChats(id: Int, name: String, cursor: String) -> Single<[ChatResponse]> {
+        Single.create { observer in
+            let request = self.AFManager.request(ChannelRouter.getChannelChats(id: id, name: name, cursor: cursor))
+                .validate(statusCode: 200...300)
+                .responseDecodable(of: [ChatResponse].self) { response in
+                    switch response.result {
+                    case .success(let value):
+                        observer(.success(value))
+                    case .failure:
+                        guard let statusCode = response.response?.statusCode, let data = response.data else {
+                            return observer(.failure(EndPointError.networkError))
+                        }
+                        let error = self.handleError(statusCode: statusCode, data)
+                        observer(.failure(error))
+                    }
+                }
+            return Disposables.create {
+                request.cancel()
+            }
+        }
+    }
+
 }

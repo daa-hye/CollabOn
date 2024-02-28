@@ -70,6 +70,13 @@
 		536DE87F2B830B1E00616E7B /* ChannelRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536DE87E2B830B1E00616E7B /* ChannelRouter.swift */; };
 		536DE8812B830F5000616E7B /* ChannelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536DE8802B830F5000616E7B /* ChannelService.swift */; };
 		539046B62B593F700075CE54 /* UIImage + Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539046B52B593F700075CE54 /* UIImage + Resize.swift */; };
+		5399D0442B8C604D00C89A70 /* ChannelChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5399D0432B8C604D00C89A70 /* ChannelChat.swift */; };
+		5399D0462B8C64FD00C89A70 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5399D0452B8C64FD00C89A70 /* User.swift */; };
+		5399D0482B8C65AA00C89A70 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5399D0472B8C65AA00C89A70 /* File.swift */; };
+		5399D04E2B8C719700C89A70 /* ChannelObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5399D04D2B8C719700C89A70 /* ChannelObject.swift */; };
+		5399D0502B8C74A400C89A70 /* ChannelRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5399D04F2B8C74A400C89A70 /* ChannelRepository.swift */; };
+		5399D0572B8DB4D100C89A70 /* String + Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5399D0562B8DB4D100C89A70 /* String + Date.swift */; };
+		5399D0592B8DCCB900C89A70 /* ChannelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5399D0582B8DCCB900C89A70 /* ChannelManager.swift */; };
 		53A361242B86FDE2009E8882 /* ChannelChattingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A361232B86FDE2009E8882 /* ChannelChattingViewController.swift */; };
 		53A361262B882F9C009E8882 /* InputBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A361252B882F9C009E8882 /* InputBar.swift */; };
 		53BC61472B74764900EDE938 /* DirectMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BC61462B74764900EDE938 /* DirectMessageViewController.swift */; };
@@ -151,6 +158,13 @@
 		536DE87E2B830B1E00616E7B /* ChannelRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelRouter.swift; sourceTree = "<group>"; };
 		536DE8802B830F5000616E7B /* ChannelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelService.swift; sourceTree = "<group>"; };
 		539046B52B593F700075CE54 /* UIImage + Resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + Resize.swift"; sourceTree = "<group>"; };
+		5399D0432B8C604D00C89A70 /* ChannelChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelChat.swift; sourceTree = "<group>"; };
+		5399D0452B8C64FD00C89A70 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		5399D0472B8C65AA00C89A70 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		5399D04D2B8C719700C89A70 /* ChannelObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelObject.swift; sourceTree = "<group>"; };
+		5399D04F2B8C74A400C89A70 /* ChannelRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelRepository.swift; sourceTree = "<group>"; };
+		5399D0562B8DB4D100C89A70 /* String + Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Date.swift"; sourceTree = "<group>"; };
+		5399D0582B8DCCB900C89A70 /* ChannelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelManager.swift; sourceTree = "<group>"; };
 		53A361232B86FDE2009E8882 /* ChannelChattingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelChattingViewController.swift; sourceTree = "<group>"; };
 		53A361252B882F9C009E8882 /* InputBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBar.swift; sourceTree = "<group>"; };
 		53BC61462B74764900EDE938 /* DirectMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectMessageViewController.swift; sourceTree = "<group>"; };
@@ -359,12 +373,41 @@
 			path = Initial;
 			sourceTree = "<group>";
 		};
+		5399D0422B8C5FE800C89A70 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				5399D04A2B8C6FA300C89A70 /* Repository */,
+				5399D0492B8C6F7D00C89A70 /* Model */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		5399D0492B8C6F7D00C89A70 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5399D04D2B8C719700C89A70 /* ChannelObject.swift */,
+				5399D0432B8C604D00C89A70 /* ChannelChat.swift */,
+				5399D0472B8C65AA00C89A70 /* File.swift */,
+				5399D0452B8C64FD00C89A70 /* User.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5399D04A2B8C6FA300C89A70 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				5399D04F2B8C74A400C89A70 /* ChannelRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
 		53A361222B86FDB0009E8882 /* Channel */ = {
 			isa = PBXGroup;
 			children = (
 				53A361232B86FDE2009E8882 /* ChannelChattingViewController.swift */,
 				5305E2A72B88DACC0054EB06 /* ChannelChattingViewModel.swift */,
 				5305E2B62B8ABE200054EB06 /* ChannelChattingTableViewCell.swift */,
+				5399D0582B8DCCB900C89A70 /* ChannelManager.swift */,
 			);
 			path = Channel;
 			sourceTree = "<group>";
@@ -437,6 +480,7 @@
 				53D7B1FE2B43F638003116D7 /* SceneDelegate.swift */,
 				53BC61412B74744700EDE938 /* Presentation */,
 				5302F9F42B4A9F34001B3F47 /* Network */,
+				5399D0422B8C5FE800C89A70 /* Database */,
 				5302FA162B4C25E0001B3F47 /* Utility */,
 				53D7B2052B43F639003116D7 /* Assets.xcassets */,
 				53D7B2072B43F639003116D7 /* LaunchScreen.storyboard */,
@@ -474,6 +518,7 @@
 				539046B52B593F700075CE54 /* UIImage + Resize.swift */,
 				536D6AD42B60CD2E008BC481 /* NSObject + ClassName.swift */,
 				536D6AEE2B6B385C008BC481 /* UIViewcontroller + Alert.swift */,
+				5399D0562B8DB4D100C89A70 /* String + Date.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -626,6 +671,7 @@
 				536D6AE72B68AC32008BC481 /* CancelButton.swift in Sources */,
 				536DE8782B8192F500616E7B /* UserManager.swift in Sources */,
 				5302F9FD2B4AAF04001B3F47 /* HeaderType.swift in Sources */,
+				5399D0482B8C65AA00C89A70 /* File.swift in Sources */,
 				53D7B1FD2B43F638003116D7 /* AppDelegate.swift in Sources */,
 				53D7B2302B466A41003116D7 /* SignUpViewModel.swift in Sources */,
 				536D6AF42B6CAFA9008BC481 /* WorkspaceEditViewModel.swift in Sources */,
@@ -633,6 +679,7 @@
 				53F5D8502B50FE8C00809760 /* LoginViewModel.swift in Sources */,
 				5302FA062B4AE4A5001B3F47 /* Service.swift in Sources */,
 				533FBAA12B555D8B00A1196B /* WorkspaceService.swift in Sources */,
+				5399D0502B8C74A400C89A70 /* ChannelRepository.swift in Sources */,
 				5302FA0C2B4B75FA001B3F47 /* UserService.swift in Sources */,
 				536D6AE12B64F9BE008BC481 /* DmsModel.swift in Sources */,
 				536DE87F2B830B1E00616E7B /* ChannelRouter.swift in Sources */,
@@ -644,14 +691,17 @@
 				533FBAA32B555D9500A1196B /* WorkspaceModel.swift in Sources */,
 				536DE8812B830F5000616E7B /* ChannelService.swift in Sources */,
 				536D6AF92B70F303008BC481 /* WorkspaceChangeAdminViewController.swift in Sources */,
+				5399D0442B8C604D00C89A70 /* ChannelChat.swift in Sources */,
 				536D6ADA2B60DBDB008BC481 /* ImageService.swift in Sources */,
 				5302FA042B4AD9F5001B3F47 /* UserRouter.swift in Sources */,
 				536D6AE32B64FE20008BC481 /* HomeCollectoinViewCell.swift in Sources */,
+				5399D0572B8DB4D100C89A70 /* String + Date.swift in Sources */,
 				536D6AD02B608490008BC481 /* WorkspaceListTableViewCell.swift in Sources */,
 				536D6ACE2B5F4E43008BC481 /* WorkspaceListViewModel.swift in Sources */,
 				533FBA902B538CFA00A1196B /* AuthRouter.swift in Sources */,
 				53A361262B882F9C009E8882 /* InputBar.swift in Sources */,
 				536D6AF62B6CE1F1008BC481 /* UIViewController + Toast.swift in Sources */,
+				5399D0592B8DCCB900C89A70 /* ChannelManager.swift in Sources */,
 				53E643022B57FE60000CBC1F /* WorkspaceAddViewModel.swift in Sources */,
 				536D6AFF2B71130E008BC481 /* MemberListTableViewCell.swift in Sources */,
 				533FBA922B53940000A1196B /* AuthService.swift in Sources */,
@@ -663,6 +713,7 @@
 				536D6AF22B6CAE8C008BC481 /* WorkspaceEditViewController.swift in Sources */,
 				539046B62B593F700075CE54 /* UIImage + Resize.swift in Sources */,
 				53D7B22B2B451C17003116D7 /* InputTextField.swift in Sources */,
+				5399D04E2B8C719700C89A70 /* ChannelObject.swift in Sources */,
 				53D7B2182B43FC01003116D7 /* BaseViewController.swift in Sources */,
 				53E643002B57CE77000CBC1F /* WorkspaceAddViewController.swift in Sources */,
 				5302FA0A2B4AED54001B3F47 /* NetworkConstants.swift in Sources */,
@@ -675,6 +726,7 @@
 				53D7B21D2B44CF90003116D7 /* PrimaryButton.swift in Sources */,
 				5302F9EB2B4985F7001B3F47 /* SocialLoginButton.swift in Sources */,
 				53D7B1FF2B43F638003116D7 /* SceneDelegate.swift in Sources */,
+				5399D0462B8C64FD00C89A70 /* User.swift in Sources */,
 				536D6AEF2B6B385C008BC481 /* UIViewcontroller + Alert.swift in Sources */,
 				5305E2A82B88DACC0054EB06 /* ChannelChattingViewModel.swift in Sources */,
 				533FBA9D2B55038C00A1196B /* TabBarController.swift in Sources */,
