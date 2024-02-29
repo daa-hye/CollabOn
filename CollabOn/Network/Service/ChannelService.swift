@@ -82,4 +82,26 @@ extension ChannelService {
         }
     }
 
+    func getNumberOfUnreadChannelChats(id: Int, name: String, after: String?) -> Single<Int> {
+        Single.create { observer in
+            let request = self.AFManager.request(ChannelRouter.getNumberOfUnreadChannelChats(id: id, name: name, after: after))
+                .validate(statusCode: 200...300)
+                .responseDecodable(of: UnreadResponse.self) { response in
+                    switch response.result {
+                    case .success(let value):
+                        observer(.success(value.count))
+                    case .failure:
+                        guard let statusCode = response.response?.statusCode, let data = response.data else {
+                            return observer(.failure(EndPointError.networkError))
+                        }
+                        let error = self.handleError(statusCode: statusCode, data)
+                        observer(.failure(error))
+                    }
+                }
+            return Disposables.create {
+                request.cancel()
+            }
+        }
+    }
+
 }

@@ -21,12 +21,11 @@
 		5302FA1A2B4C260F001B3F47 /* UserDafaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5302FA192B4C260F001B3F47 /* UserDafaultsManager.swift */; };
 		5302FA1C2B4C2985001B3F47 /* AppUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5302FA1B2B4C2985001B3F47 /* AppUserData.swift */; };
 		5305E2A82B88DACC0054EB06 /* ChannelChattingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5305E2A72B88DACC0054EB06 /* ChannelChattingViewModel.swift */; };
-		5305E2AC2B88E3400054EB06 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5305E2AB2B88E3400054EB06 /* GoogleService-Info.plist */; };
 		5305E2AF2B88E3FA0054EB06 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 5305E2AE2B88E3FA0054EB06 /* FirebaseMessaging */; };
-		5305E2B52B8A3A050054EB06 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 5305E2B42B8A3A050054EB06 /* SocketIO */; };
 		5305E2B72B8ABE200054EB06 /* ChannelChattingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5305E2B62B8ABE200054EB06 /* ChannelChattingTableViewCell.swift */; };
 		5305E2BA2B8AD46B0054EB06 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 5305E2B92B8AD46B0054EB06 /* Realm */; };
 		5305E2BC2B8AD46B0054EB06 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5305E2BB2B8AD46B0054EB06 /* RealmSwift */; };
+		530DFE442B90629E00690082 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 530DFE432B90629E00690082 /* GoogleService-Info.plist */; };
 		53393C832B595AB100917096 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 53393C822B595AB100917096 /* RxGesture */; };
 		533FBA7A2B52C0DF00A1196B /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 533FBA792B52C0DF00A1196B /* KakaoSDK */; };
 		533FBA7C2B52C0DF00A1196B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 533FBA7B2B52C0DF00A1196B /* KakaoSDKAuth */; };
@@ -77,6 +76,8 @@
 		5399D0502B8C74A400C89A70 /* ChannelRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5399D04F2B8C74A400C89A70 /* ChannelRepository.swift */; };
 		5399D0572B8DB4D100C89A70 /* String + Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5399D0562B8DB4D100C89A70 /* String + Date.swift */; };
 		5399D0592B8DCCB900C89A70 /* ChannelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5399D0582B8DCCB900C89A70 /* ChannelManager.swift */; };
+		539D976D2B8F98E10033363E /* Date + String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539D976C2B8F98E10033363E /* Date + String.swift */; };
+		539D97732B902A460033363E /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 539D97722B902A460033363E /* SocketIO */; };
 		53A361242B86FDE2009E8882 /* ChannelChattingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A361232B86FDE2009E8882 /* ChannelChattingViewController.swift */; };
 		53A361262B882F9C009E8882 /* InputBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A361252B882F9C009E8882 /* InputBar.swift */; };
 		53BC61472B74764900EDE938 /* DirectMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BC61462B74764900EDE938 /* DirectMessageViewController.swift */; };
@@ -122,8 +123,8 @@
 		5302FA192B4C260F001B3F47 /* UserDafaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDafaultsManager.swift; sourceTree = "<group>"; };
 		5302FA1B2B4C2985001B3F47 /* AppUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUserData.swift; sourceTree = "<group>"; };
 		5305E2A72B88DACC0054EB06 /* ChannelChattingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelChattingViewModel.swift; sourceTree = "<group>"; };
-		5305E2AB2B88E3400054EB06 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5305E2B62B8ABE200054EB06 /* ChannelChattingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelChattingTableViewCell.swift; sourceTree = "<group>"; };
+		530DFE432B90629E00690082 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		533FBA8A2B537E6900A1196B /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		533FBA8D2B53805B00A1196B /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		533FBA8F2B538CFA00A1196B /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
@@ -165,6 +166,7 @@
 		5399D04F2B8C74A400C89A70 /* ChannelRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelRepository.swift; sourceTree = "<group>"; };
 		5399D0562B8DB4D100C89A70 /* String + Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Date.swift"; sourceTree = "<group>"; };
 		5399D0582B8DCCB900C89A70 /* ChannelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelManager.swift; sourceTree = "<group>"; };
+		539D976C2B8F98E10033363E /* Date + String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + String.swift"; sourceTree = "<group>"; };
 		53A361232B86FDE2009E8882 /* ChannelChattingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelChattingViewController.swift; sourceTree = "<group>"; };
 		53A361252B882F9C009E8882 /* InputBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBar.swift; sourceTree = "<group>"; };
 		53BC61462B74764900EDE938 /* DirectMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectMessageViewController.swift; sourceTree = "<group>"; };
@@ -207,11 +209,11 @@
 				533FBA7A2B52C0DF00A1196B /* KakaoSDK in Frameworks */,
 				5302F9FB2B4AA464001B3F47 /* Alamofire in Frameworks */,
 				53D7B2222B44D7DC003116D7 /* RxCocoa in Frameworks */,
+				539D97732B902A460033363E /* SocketIO in Frameworks */,
 				5305E2BA2B8AD46B0054EB06 /* Realm in Frameworks */,
 				533FBA812B52C0EC00A1196B /* RxKakaoSDK in Frameworks */,
 				533FBA852B52C0EC00A1196B /* RxKakaoSDKCommon in Frameworks */,
 				5305E2BC2B8AD46B0054EB06 /* RealmSwift in Frameworks */,
-				5305E2B52B8A3A050054EB06 /* SocketIO in Frameworks */,
 				533FBA832B52C0EC00A1196B /* RxKakaoSDKAuth in Frameworks */,
 				536D6AD82B60D9C7008BC481 /* Kingfisher in Frameworks */,
 				53393C832B595AB100917096 /* RxGesture in Frameworks */,
@@ -475,7 +477,7 @@
 			isa = PBXGroup;
 			children = (
 				53F5D82F2B4E6FA600809760 /* CollabOn.entitlements */,
-				5305E2AB2B88E3400054EB06 /* GoogleService-Info.plist */,
+				530DFE432B90629E00690082 /* GoogleService-Info.plist */,
 				53D7B1FC2B43F638003116D7 /* AppDelegate.swift */,
 				53D7B1FE2B43F638003116D7 /* SceneDelegate.swift */,
 				53BC61412B74744700EDE938 /* Presentation */,
@@ -519,6 +521,7 @@
 				536D6AD42B60CD2E008BC481 /* NSObject + ClassName.swift */,
 				536D6AEE2B6B385C008BC481 /* UIViewcontroller + Alert.swift */,
 				5399D0562B8DB4D100C89A70 /* String + Date.swift */,
+				539D976C2B8F98E10033363E /* Date + String.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -586,9 +589,9 @@
 				536D6AD22B609A4E008BC481 /* RxDataSources */,
 				536D6AD72B60D9C7008BC481 /* Kingfisher */,
 				5305E2AE2B88E3FA0054EB06 /* FirebaseMessaging */,
-				5305E2B42B8A3A050054EB06 /* SocketIO */,
 				5305E2B92B8AD46B0054EB06 /* Realm */,
 				5305E2BB2B8AD46B0054EB06 /* RealmSwift */,
+				539D97722B902A460033363E /* SocketIO */,
 			);
 			productName = CollabOn;
 			productReference = 53D7B1F92B43F638003116D7 /* CollabOn.app */;
@@ -629,8 +632,8 @@
 				536D6AD12B609A4E008BC481 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 				536D6AD62B60D9C7008BC481 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				5305E2AD2B88E3FA0054EB06 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				5305E2B32B8A3A050054EB06 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
 				5305E2B82B8AD46B0054EB06 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				539D97712B902A460033363E /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
 			);
 			productRefGroup = 53D7B1FA2B43F638003116D7 /* Products */;
 			projectDirPath = "";
@@ -647,7 +650,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				53D7B2092B43F639003116D7 /* LaunchScreen.storyboard in Resources */,
-				5305E2AC2B88E3400054EB06 /* GoogleService-Info.plist in Resources */,
+				530DFE442B90629E00690082 /* GoogleService-Info.plist in Resources */,
 				53D7B2062B43F639003116D7 /* Assets.xcassets in Resources */,
 				53D7B22E2B457B20003116D7 /* Localizable.xcstrings in Resources */,
 			);
@@ -695,6 +698,7 @@
 				536D6ADA2B60DBDB008BC481 /* ImageService.swift in Sources */,
 				5302FA042B4AD9F5001B3F47 /* UserRouter.swift in Sources */,
 				536D6AE32B64FE20008BC481 /* HomeCollectoinViewCell.swift in Sources */,
+				539D976D2B8F98E10033363E /* Date + String.swift in Sources */,
 				5399D0572B8DB4D100C89A70 /* String + Date.swift in Sources */,
 				536D6AD02B608490008BC481 /* WorkspaceListTableViewCell.swift in Sources */,
 				536D6ACE2B5F4E43008BC481 /* WorkspaceListViewModel.swift in Sources */,
@@ -880,9 +884,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CollabOn/CollabOn.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KLYH4UN5ZC;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = VYC9A4SEQS;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CollabOn/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -895,8 +901,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				NATIVE_APP_KEY = d00b46460dead69c7cb692d474b92bee;
-				PRODUCT_BUNDLE_IDENTIFIER = com.dahye.CollabOn;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sesac.SeSACTalkSLP;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = SeSACTalkSLP;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -913,9 +921,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CollabOn/CollabOn.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KLYH4UN5ZC;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = VYC9A4SEQS;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CollabOn/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -928,8 +938,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				NATIVE_APP_KEY = d00b46460dead69c7cb692d474b92bee;
-				PRODUCT_BUNDLE_IDENTIFIER = com.dahye.CollabOn;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sesac.SeSACTalkSLP;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = SeSACTalkSLP;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -980,14 +992,6 @@
 				minimumVersion = 10.21.0;
 			};
 		};
-		5305E2B32B8A3A050054EB06 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		5305E2B82B8AD46B0054EB06 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-swift.git";
@@ -1036,6 +1040,14 @@
 				minimumVersion = 7.10.2;
 			};
 		};
+		539D97712B902A460033363E /* XCRemoteSwiftPackageReference "socket.io-client-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 16.1.0;
+			};
+		};
 		53D7B2132B43F9B7003116D7 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -1064,11 +1076,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5305E2AD2B88E3FA0054EB06 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
-		};
-		5305E2B42B8A3A050054EB06 /* SocketIO */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5305E2B32B8A3A050054EB06 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;
-			productName = SocketIO;
 		};
 		5305E2B92B8AD46B0054EB06 /* Realm */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1124,6 +1131,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 536D6AD62B60D9C7008BC481 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		539D97722B902A460033363E /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 539D97712B902A460033363E /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;
+			productName = SocketIO;
 		};
 		53D7B2142B43F9B7003116D7 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

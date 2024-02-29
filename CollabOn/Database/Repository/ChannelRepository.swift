@@ -45,9 +45,11 @@ final class ChannelRepository {
 
     func insertChat(_ id: Int, _ chat: ChatResponse) {
         guard let realm, let object = fetch(id) else { return }
+        if object.chats.contains(where: { data in
+            data.chatId == chat.chatId
+        }) { return }
         do {
             try realm.write {
-                object.lastConnection = chat.createdAt
                 object.chats.append(chat.convertToObject())
             }
         } catch let error {
@@ -57,6 +59,9 @@ final class ChannelRepository {
 
     func insertChats(_ id: Int, _ chats: [ChatResponse]) {
         guard let realm, let object = fetch(id) else { return }
+        if object.chats.contains(where: { data in
+            data.chatId == chats.first?.chatId
+        }) { return }
         for chat in chats {
             do {
                 try realm.write {
@@ -67,14 +72,22 @@ final class ChannelRepository {
             }
         }
 
+    }
+
+    func getLastConnect(_ id: Int) -> String? {
+        guard let object = fetch(id) else { return nil }
+        return object.lastConnection
+    }
+
+    func saveLastConnect(_ id: Int, time: String) {
+        guard let realm, let object = fetch(id) else { return }
         do {
             try realm.write {
-                object.lastConnection = chats.last?.createdAt
+                object.lastConnection = time
             }
         } catch let error {
             print(error.localizedDescription)
         }
-
     }
 
 }

@@ -62,7 +62,7 @@ final class HomeCollectoinViewCell: UICollectionViewListCell {
         badgeLabel.clipsToBounds = true
     }
 
-    func setData(channel: ChannelResponse) {
+    func setData(channel: ChannelResponse, count: Int) {
         titleLabel.text = channel.name
         imageView.image = .hashtag
 
@@ -71,21 +71,39 @@ final class HomeCollectoinViewCell: UICollectionViewListCell {
             $0.size.equalTo(18)
             $0.centerY.equalToSuperview()
         }
+        
         titleLabel.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.trailing).offset(16)
             $0.centerY.equalToSuperview()
         }
+
+        if count != 0 {
+            badgeLabel.text = "\(count)"
+            badgeLabel.snp.makeConstraints {
+                $0.centerY.equalToSuperview()
+                $0.trailing.equalToSuperview().inset(17)
+            }
+        }
     }
 
-    func setData(dms: DmsResponse) {
+    func setData(dms: DmsResponse, count: Int) {
         imageView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(14)
             $0.size.equalTo(24)
             $0.centerY.equalToSuperview()
         }
+
         titleLabel.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.trailing).offset(11)
             $0.centerY.equalToSuperview()
+        }
+
+        if count != 0 {
+            badgeLabel.text = "\(count)"
+            badgeLabel.snp.makeConstraints {
+                $0.centerY.equalToSuperview()
+                $0.trailing.equalToSuperview().inset(17)
+            }
         }
     }
 

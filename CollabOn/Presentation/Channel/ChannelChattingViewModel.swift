@@ -8,7 +8,6 @@
 import Foundation
 import RxSwift
 import RxRelay
-import SocketIO
 
 class ChannelChattingViewModel: ViewModelType {
 
@@ -18,9 +17,6 @@ class ChannelChattingViewModel: ViewModelType {
     private let channel: ChannelResponse
 
     private lazy var channelManager = ChannelManager(channel)
-    private lazy var url = URL(string: "\(SLP.baseURL)/ws-channel-{\(channel.channelId)}")!
-    //private lazy var manager = SocketManager(socketURL: url, config: [.log(true), .compress])
-    //private lazy var socket = manager.defaultSocket
 
     private let chatText = PublishSubject<String>()
     private let file = PublishSubject<Data>()
@@ -63,7 +59,7 @@ class ChannelChattingViewModel: ViewModelType {
             .bind(to: chatList)
             .disposed(by: disposeBag)
 
-        channelManager.getChatList()
+        channelManager.socketConnect()
 
         sendButtonDidTap
             .withLatestFrom(chatText)
@@ -85,23 +81,12 @@ class ChannelChattingViewModel: ViewModelType {
             }
             .disposed(by: disposeBag)
 
-//        socket.connect()
-//
-//        socket.on(clientEvent: .connect) { data, ack in
-//            print("SOCKET IS CONNECTED", data, ack)
-//        }
-//
-//
-//        socket.on("channel") { dataArray, ack in
-//            print("CHANNEL RECEIVED", dataArray, ack)
-//        }
     }
 
-//    deinit {
-//        socket.on(clientEvent: .disconnect) { data, ack in
-//            print("SOCKET IS DISCONNECTED", data, ack)
-//        }
-//    }
+    deinit {
+        channelManager.saveLastConnect(Date().convertToString())
+        channelManager.socketDisconnect()
+    }
 
 
 

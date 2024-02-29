@@ -120,6 +120,18 @@ struct ChatResponse: Decodable {
 
 }
 
+struct UnreadResponse: Decodable {
+    let channelId: Int
+    let name: String
+    let count: Int
+
+    enum CodingKeys: String, CodingKey {
+        case channelId = "channel_id"
+        case name
+        case count
+    }
+}
+
 struct Channel: Encodable {
     let name: String
     let description: String?

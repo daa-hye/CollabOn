@@ -11,6 +11,8 @@ extension String {
 
     func convertToDate() -> Date {
         let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.timeZone = TimeZone.current
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         return dateFormatter.date(from: self) ?? Date()
     }

@@ -30,6 +30,14 @@ final class ChannelChattingTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func prepareForReuse() {
+        profileImageView.image = nil
+        nicknameLabel.text = nil
+        chatTextLabel.text = nil
+        timeLabel.text = nil
+        fileImageView.image = nil
+    }
+
     private func configHierarchy() {
         addSubview(profileImageView)
         addSubview(stackview)
@@ -60,6 +68,7 @@ final class ChannelChattingTableViewCell: UITableViewCell {
 
         chatTextLabel.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(8)
+            $0.height.greaterThanOrEqualTo(18)
         }
 
         fileImageView.snp.makeConstraints {

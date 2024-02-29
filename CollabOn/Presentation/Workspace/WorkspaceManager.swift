@@ -13,6 +13,8 @@ final class WorkspaceManager {
 
     static let shared = WorkspaceManager()
 
+    private let repository = ChannelRepository()
+
     private init() {
         _ = currentWorkspace
             .compactMap { $0?.workspaceId }
@@ -53,6 +55,10 @@ final class WorkspaceManager {
             .subscribe {
                 self.currentWorkspace.accept($0)
             }
+    }
+
+    func getLastConnect(_ id: Int) -> String? {
+        repository.getLastConnect(id)
     }
 
 }

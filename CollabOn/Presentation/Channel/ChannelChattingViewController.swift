@@ -25,7 +25,7 @@ final class ChannelChattingViewController: BaseViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavItem()
@@ -80,8 +80,10 @@ final class ChannelChattingViewController: BaseViewController {
         chatTableView.separatorStyle = .none
         chatTableView.backgroundColor = .clear
         chatTableView.rowHeight = UITableView.automaticDimension
-        chatTableView.estimatedRowHeight = 150
+        chatTableView.estimatedRowHeight = 180
         chatTableView.allowsSelection = false
+        chatTableView.showsVerticalScrollIndicator = false
+        chatTableView.delegate = self
     }
 
 }
@@ -103,6 +105,13 @@ extension ChannelChattingViewController {
 
     private func setNavItem() {
 
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .backgroundSecondary
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        self.title = String(localized: "?????")
+
         let settingButton = UIBarButtonItem(
             image: .list,
             style: .done,
@@ -110,7 +119,7 @@ extension ChannelChattingViewController {
             action: #selector(settingButtonDidTap)
         )
         settingButton.tintColor = .black
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.tintColor = .white.withAlphaComponent(0.75)
         navigationItem.rightBarButtonItem = settingButton
 
     }
@@ -143,6 +152,14 @@ extension ChannelChattingViewController: PHPickerViewControllerDelegate {
         DispatchQueue.main.async {
             picker.dismiss(animated: true)
         }
+    }
+
+}
+
+extension ChannelChattingViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
 
 }

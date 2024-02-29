@@ -141,7 +141,15 @@ final class HomeViewModel: ViewModelType {
             .map { channels in
                 var items: [HomeViewSectionItem] = []
                 for channel in channels {
-                    items.append(HomeViewSectionItem.channelItem(data: channel))
+                    var num = 0
+                    let lastConnect = WorkspaceManager.shared.getLastConnect(channel.channelId)
+                    _ = ChannelService.shared.getNumberOfUnreadChannelChats(id: channel.workspaceId, name: channel.name, after: lastConnect)
+                        .asObservable()
+                        .observe(on: MainScheduler.instance)
+                        .bind {
+                            num = $0
+                        }
+                    items.append(HomeViewSectionItem.channelItem(data: channel, count: num))
                 }
                 return [HomeViewSection.channel(items: items),
                         HomeViewSection.dms(items: []),
@@ -151,22 +159,6 @@ final class HomeViewModel: ViewModelType {
                 owner.sections.accept(value)
             }
             .disposed(by: disposeBag)
-
-//        viewDidLoad
-//            .flatMap { _ in
-//                Single.zip(api1, api2)
-//            }
-//            .map {
-//                [HomeViewSection.channel(title: "header", items: $0.0),
-//                 HomeViewSection.dms(title: "header", items: $0.1)
-//                 ]
-//            }
-//
-//        [
-//            HomeViewSection.channel(title: "channel", items: [.channelItem(data: data)])
-//            HomeViewSection.channel(title: "channel", items: [.dmsItem(data: )])
-//            HomeViewSection.channel(title: "channel", items: [.addItem(title: <#T##String#>)])
-//        ]
 
     }
 }
@@ -230,7 +222,7 @@ extension HomeViewSection {
 }
 
 enum HomeViewSectionItem {
-    case channelItem(data: ChannelResponse)
-    case dmsItem(data: DmsResponse)
+    case channelItem(data: ChannelResponse, count: Int)
+    case dmsItem(data: DmsResponse, count: Int)
 }
 

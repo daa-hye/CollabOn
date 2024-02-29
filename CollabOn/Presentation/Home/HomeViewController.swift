@@ -48,11 +48,11 @@ final class HomeViewController: BaseViewController {
         collectionView.rx.modelSelected(HomeViewSectionItem.self)
             .bind(with: self) { owner, item in
                 switch item {
-                case .channelItem(let data):
+                case .channelItem(let data, let _):
                     let viewModel = ChannelChattingViewModel(data)
                     let vc = ChannelChattingViewController(viewModel: viewModel)
                     owner.navigationController?.pushViewController(vc, animated: true)
-                case .dmsItem(let data):
+                case .dmsItem(let data, let _):
                     print()
                 }
             }
@@ -70,6 +70,15 @@ final class HomeViewController: BaseViewController {
             .when(.recognized)
             .bind(with: self) { owner, _ in
                 owner.sideMenuViewController.isExpanded.accept(true)
+                owner.tabBarController?.tabBar.isHidden = true
+            }
+            .disposed(by: disposeBag)
+
+        titleLabel.rx.tapGesture()
+            .when(.recognized)
+            .bind(with: self) { owner, _ in
+                owner.sideMenuViewController.isExpanded.accept(true)
+                owner.tabBarController?.tabBar.isHidden = true
             }
             .disposed(by: disposeBag)
 
@@ -77,6 +86,7 @@ final class HomeViewController: BaseViewController {
             .when(.recognized)
             .bind(with: self) { owner, _ in
                 owner.sideMenuViewController.isExpanded.accept(false)
+                owner.tabBarController?.tabBar.isHidden = false
             }
             .disposed(by: disposeBag)
 
@@ -84,6 +94,7 @@ final class HomeViewController: BaseViewController {
             .when(.recognized)
             .bind(with: self) { owner, _ in
                 owner.sideMenuViewController.isExpanded.accept(false)
+                owner.tabBarController?.tabBar.isHidden = false
             }
             .disposed(by: disposeBag)
 
@@ -347,10 +358,10 @@ extension HomeViewController {
             }
 
             switch item {
-            case .channelItem(let data):
-                cell.setData(channel: data)
-            case .dmsItem(let data):
-                cell.setData(dms: data)
+            case .channelItem(let data, let count):
+                cell.setData(channel: data, count: count)
+            case .dmsItem(let data, let count):
+                cell.setData(dms: data, count: count)
             }
 
             cell.backgroundConfiguration = UIBackgroundConfiguration.clear()
