@@ -10,7 +10,7 @@ import SocketIO
 import RxSwift
 import RxRelay
 
-class ChannelManager {
+final class ChannelManager {
 
     private let channel: ChannelResponse
 
@@ -108,9 +108,6 @@ extension ChannelManager {
         }
 
         socket.on("channel") { [weak self] dataArray, ack in
-            //dataArray가 직렬화(Serialization)이 된 데이터인가
-            //그렇다면 어떤 형식으로 직렬화된 데이터인가
-            // 그 형식을 Swift Decodable은 지원하는가
 
             let data = dataArray.first
             guard let data else { return }

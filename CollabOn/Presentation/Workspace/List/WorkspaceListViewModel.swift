@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RxRelay
 
-class WorkspaceListViewModel: ViewModelType {
+final class WorkspaceListViewModel: ViewModelType {
 
     let disposeBag = DisposeBag()
 

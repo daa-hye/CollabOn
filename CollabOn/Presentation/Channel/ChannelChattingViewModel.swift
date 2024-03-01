@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RxRelay
 
-class ChannelChattingViewModel: ViewModelType {
+final class ChannelChattingViewModel: ViewModelType {
 
     let input: Input
     let output: Output
