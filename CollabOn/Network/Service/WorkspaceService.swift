@@ -42,14 +42,10 @@ extension WorkspaceService {
         Single.create { observer in
             let request = self.AFManager.request(WorkspaceRouter.getAllWorkspaces)
                 .validate(statusCode: 200...300)
-                .responseData { response in
+                .responseDecodable(of: [WorkspaceResponse].self) { response in
                     switch response.result {
-                    case .success(let data):
-                        if let result = self.handleResponse(data, type: [WorkspaceResponse].self) {
-                            observer(.success(result))
-                        } else {
-                            observer(.failure(EndPointError.undefinedError))
-                        }
+                    case .success(let value):
+                        observer(.success(value))
                     case .failure:
                         guard let statusCode = response.response?.statusCode, let data = response.data else {
                             return observer(.failure(EndPointError.networkError))

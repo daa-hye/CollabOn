@@ -22,12 +22,6 @@ class Service {
         return session
     }()
 
-    func handleResponse<T: Decodable>(_ data: Data, type: T.Type) -> T? {
-        let decoder = JSONDecoder()
-        guard let decodedData = try? decoder.decode(type, from: data) else { return nil }
-        return decodedData
-    }
-
     func handleError(statusCode: Int, _ data: Data) -> EndPointError {
         let decoder = JSONDecoder()
         switch statusCode {

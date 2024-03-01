@@ -19,14 +19,12 @@ extension UserService {
     func join(_ data: Join) -> Single<Void> {
         Single.create { observer in
             let request = self.AFManager.request(UserRouter.join(model: data))
-                .responseData { response in
+                .responseDecodable(of: LoginResponse.self) { response in
                 switch response.result {
-                case .success(let data):
-                    if let result = self.handleResponse(data, type: LoginResponse.self) {
-                        AppUserData.token = result.token.accessToken
-                        AppUserData.refreshToken = result.token.refreshToken
-                        observer(.success(()))
-                    }
+                case .success(let value):
+                    AppUserData.token = value.token.accessToken
+                    AppUserData.refreshToken = value.token.refreshToken
+                    observer(.success(()))
                 case .failure:
                     guard let statusCode = response.response?.statusCode, let data = response.data else {
                         return observer(.failure(EndPointError.networkError))
@@ -69,15 +67,13 @@ extension UserService {
     func emailLogin(_ data: EmailLogin) -> Single<Void> {
         Single.create { observer in
             let request = self.AFManager.request(UserRouter.emailLogin(model: data))
-                .responseData { response in
+                .responseDecodable(of: EmailLoginResponse.self) { response in
                     switch response.result {
-                    case .success(let data):
-                        if let result = self.handleResponse(data, type: EmailLoginResponse.self) {
-                            AppUserData.userId = result.userId
-                            AppUserData.token = result.accessToken
-                            AppUserData.refreshToken = result.refreshToken
-                            observer(.success(()))
-                        }
+                    case .success(let value):
+                        AppUserData.userId = value.userId
+                        AppUserData.token = value.accessToken
+                        AppUserData.refreshToken = value.refreshToken
+                        observer(.success(()))
                     case .failure:
                         guard let statusCode = response.response?.statusCode, let data = response.data else {
                             return observer(.failure(EndPointError.networkError))
@@ -97,15 +93,13 @@ extension UserService {
     func appleJoin(_ data: AppleJoin) -> Single<Void> {
         Single.create { observer in
             let request = self.AFManager.request(UserRouter.appleJoin(model: data))
-                .responseData { response in
+                .responseDecodable(of: LoginResponse.self) { response in
                     switch response.result {
-                    case .success(let data):
-                        if let result = self.handleResponse(data, type: LoginResponse.self) {
-                            AppUserData.userId = result.userId
-                            AppUserData.token = result.token.accessToken
-                            AppUserData.refreshToken = result.token.refreshToken
-                            observer(.success(()))
-                        }
+                    case .success(let value):
+                        AppUserData.userId = value.userId
+                        AppUserData.token = value.token.accessToken
+                        AppUserData.refreshToken = value.token.refreshToken
+                        observer(.success(()))
                     case .failure:
                         guard let statusCode = response.response?.statusCode, let data = response.data else {
                             return observer(.failure(EndPointError.networkError))
@@ -125,15 +119,13 @@ extension UserService {
     func appleLogin(_ data: AppleLogin) -> Single<Void> {
         Single.create { observer in
             let request = self.AFManager.request(UserRouter.appleLogin(model: data))
-                .responseData { response in
+                .responseDecodable(of: LoginResponse.self) { response in
                     switch response.result {
-                    case .success(let data):
-                        if let result = self.handleResponse(data, type: LoginResponse.self) {
-                            AppUserData.userId = result.userId
-                            AppUserData.token = result.token.accessToken
-                            AppUserData.refreshToken = result.token.refreshToken
-                            observer(.success(()))
-                        }
+                    case .success(let value):
+                        AppUserData.userId = value.userId
+                        AppUserData.token = value.token.accessToken
+                        AppUserData.refreshToken = value.token.refreshToken
+                        observer(.success(()))
                     case .failure:
                         guard let statusCode = response.response?.statusCode, let data = response.data else {
                             return observer(.failure(EndPointError.networkError))
@@ -153,15 +145,13 @@ extension UserService {
     func kakaoLogin(_ data: KakaoLogin) -> Single<Void> {
         Single.create { observer in
             let request = self.AFManager.request(UserRouter.kakakLogin(model: data))
-                .responseData { response in
+                .responseDecodable(of: LoginResponse.self) { response in
                     switch response.result {
-                    case .success(let data):
-                        if let result = self.handleResponse(data, type: LoginResponse.self) {
-                            AppUserData.userId = result.userId
-                            AppUserData.token = result.token.accessToken
-                            AppUserData.refreshToken = result.token.refreshToken
-                            observer(.success(()))
-                        }
+                    case .success(let value):
+                        AppUserData.userId = value.userId
+                        AppUserData.token = value.token.accessToken
+                        AppUserData.refreshToken = value.token.refreshToken
+                        observer(.success(()))
                     case .failure:
                         guard let statusCode = response.response?.statusCode, let data = response.data else {
                             return observer(.failure(EndPointError.networkError))
@@ -182,12 +172,10 @@ extension UserService {
         Single.create { observer in
             let request = self.AFManager.request(UserRouter.getMyProfile)
                 .validate(statusCode: 200..<300)
-                .responseData { response in
+                .responseDecodable(of: MyInfo.self) { response in
                     switch response.result {
-                    case .success(let data):
-                        if let result = self.handleResponse(data, type: MyInfo.self) {
-                            observer(.success(result))
-                        }
+                    case .success(let value):
+                        observer(.success(value))
                     case .failure:
                         guard let statusCode = response.response?.statusCode, let data = response.data else {
                             observer(.failure(EndPointError.networkError))

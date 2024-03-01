@@ -20,13 +20,11 @@ extension AuthService {
         Single.create { observer in
             let request = self.AFManager.request(AuthRouter.refreshToken)
                 .validate(statusCode: 200..<300)
-                .responseData { response in
+                .responseDecodable(of: RefreshTokenResponse.self) { response in
                     switch response.result {
-                    case .success(let data):
-                        if let result = self.handleResponse(data, type: RefreshTokenResponse.self) {
-                            AppUserData.token = result.accessToken
-                            observer(.success(()))
-                        }
+                    case .success(let value):
+                        AppUserData.token = value.accessToken
+                        observer(.success(()))
                     case .failure:
                         guard let statusCode = response.response?.statusCode, let data = response.data else {
                             return observer(.failure(EndPointError.networkError))
