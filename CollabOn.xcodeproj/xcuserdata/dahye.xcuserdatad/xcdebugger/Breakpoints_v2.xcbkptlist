@@ -3,4 +3,86 @@
    uuid = "F6100C73-F77C-4C15-867A-57BD7238F859"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "051C3853-2B36-4C09-9B41-CEF905A5635B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CollabOn/Presentation/Profile/PaymentViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "bindRx()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "945E3620-D6E0-4649-BBFD-3863F3C5EEBE"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CollabOn/Presentation/Profile/PaymentViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "init(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "557C27C6-1973-44A1-BE11-6B841BD3CA26"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CollabOn/Network/Common/Service.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "handleError(statusCode:_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "557C27C6-1973-44A1-BE11-6B841BD3CA26 - d3a799c246ed2b56"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CollabOn.Service.handleError(statusCode: Swift.Int, _: Foundation.Data) -&gt; CollabOn.EndPointError"
+                  moduleName = "CollabOn"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dahye/Desktop/dahye/CollabOn/CollabOn/Network/Common/Service.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "304">
+               </Location>
+               <Location
+                  uuid = "557C27C6-1973-44A1-BE11-6B841BD3CA26 - d3a799c246ed2b56"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CollabOn.Service.handleError(statusCode: Swift.Int, _: Foundation.Data) -&gt; CollabOn.EndPointError"
+                  moduleName = "CollabOn"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dahye/Desktop/dahye/CollabOn/CollabOn/Network/Common/Service.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "412">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

@@ -48,11 +48,11 @@ final class HomeViewController: BaseViewController {
         collectionView.rx.modelSelected(HomeViewSectionItem.self)
             .bind(with: self) { owner, item in
                 switch item {
-                case .channelItem(let data, let _):
+                case .channelItem(let data, _):
                     let viewModel = ChannelChattingViewModel(data)
                     let vc = ChannelChattingViewController(viewModel: viewModel)
                     owner.navigationController?.pushViewController(vc, animated: true)
-                case .dmsItem(let data, let _):
+                case .dmsItem(let data, _):
                     print()
                 }
             }
@@ -95,6 +95,16 @@ final class HomeViewController: BaseViewController {
             .bind(with: self) { owner, _ in
                 owner.sideMenuViewController.isExpanded.accept(false)
                 owner.tabBarController?.tabBar.isHidden = false
+            }
+            .disposed(by: disposeBag)
+
+        profileView.rx.tapGesture()
+            .when(.recognized)
+            .bind(with: self) { owner, _ in
+                let vc = ProfileViewController()
+                let nav = UINavigationController(rootViewController: vc)
+                nav.modalPresentationStyle = .fullScreen
+                owner.present(nav, animated: true)
             }
             .disposed(by: disposeBag)
 
