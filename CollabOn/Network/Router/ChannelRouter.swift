@@ -18,6 +18,9 @@ enum ChannelRouter {
     case sendChannelChat(id: Int, name: String, model: Chats)
     case getChannelChats(id: Int, name: String, cursor: String)
     case getNumberOfUnreadChannelChats(id: Int, name: String, after: String?)
+    case getChannelMembers(id: Int, name: String)
+    case leaveChannel(id: Int, name: String)
+    case changeChannelAdmin(id: Int, name: String, userId: Int)
 }
 
 extension ChannelRouter: Router {
@@ -38,6 +41,12 @@ extension ChannelRouter: Router {
             return "/\(id)/channels/\(name)/chats"
         case .getNumberOfUnreadChannelChats(let id, let name, _):
             return "/\(id)/channels/\(name)/unreads"
+        case .getChannelMembers(let id, let name):
+            return "\(id)/channels/\(name)/members"
+        case .leaveChannel(let id, let name):
+            return "\(id)/channels/\(name)/leave"
+        case .changeChannelAdmin(let id, let name, let userId):
+            return "\(id)/channels/\(name)/change/admin/\(userId)"
         }
     }
 
@@ -45,9 +54,9 @@ extension ChannelRouter: Router {
         switch self {
         case .createChannel, .sendChannelChat:
             return .post
-        case .getAllChannels, .getMyChannels, .getChannelByName, .getChannelChats, .getNumberOfUnreadChannelChats:
+        case .getAllChannels, .getMyChannels, .getChannelByName, .getChannelChats, .getNumberOfUnreadChannelChats, .getChannelMembers, .leaveChannel:
             return .get
-        case .editChannel:
+        case .editChannel, .changeChannelAdmin:
             return .put
         case .deleteChannel:
             return .delete
@@ -62,7 +71,7 @@ extension ChannelRouter: Router {
                 "description" :model.description ?? ""
             ]
             return .requestBody(body)
-        case .getAllChannels, .getMyChannels, .getChannelByName, .deleteChannel, .sendChannelChat:
+        case .getAllChannels, .getMyChannels, .getChannelByName, .deleteChannel, .sendChannelChat, .getChannelMembers, .leaveChannel, .changeChannelAdmin:
             return .none
         case .getChannelChats(_,_,let cursor):
             let query: [String: String] = [
